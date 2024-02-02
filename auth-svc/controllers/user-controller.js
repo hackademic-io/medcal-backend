@@ -1,22 +1,35 @@
+const UserRepository = require('../service/db-service/UserRepository');
 const userService = require('../service/user-service');
-const { validationResult } = require('express-validator');
+const mailService = require('../service/mail-service');
+const tokenService = require('../service/token-service');
 const ApiError = require('../exeptions/api-error');
+const UserDto = require('../dtos/user-dto');
 
 class UserController {
   async registration(req, res, next) {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return next(ApiError.BadRequest('Validation error', errors.array()));
+      const { email } = req.body;
+      const userExists = await UserRepository.findByEmail(email);
+
+      if (userExists) {
+        throw ApiError.BadRequest(`User with email ${email} already exists`);
       }
-      const { email, password, name, last_name, role } = req.body;
-      const userData = await userService.registration(
-        email,
-        password,
-        name,
-        last_name,
-        role
-      );
+
+      const registrationPayload =
+        await userService.buildUserRegistrationPayload(req.body);
+      const user = await UserRepository.createUser(registrationPayload);
+
+      mailService.sendActivationMail(email, user.activationlink);
+
+      const userDto = new UserDto(user);
+      const tokens = tokenService.generateTokens({ ...userDto });
+      await tokenService.saveToken(userDto.id, tokens.refreshToken);
+
+      const userData = {
+        ...tokens,
+        user: userDto,
+      };
+
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,

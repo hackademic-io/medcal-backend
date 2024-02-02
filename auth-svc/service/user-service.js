@@ -1,41 +1,24 @@
 const db = require('../db');
 const bcrypt = require('bcrypt');
 const uuid = require('uuid');
-const mailService = require('./mail-service');
 const tokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
 const ApiError = require('../exeptions/api-error');
 
 class UserService {
-  async registration(email, password, name, last_name, role) {
-    const candidate = await db.query('SELECT * FROM users WHERE email = $1', [
-      email,
-    ]);
-
-    if (candidate.rows[0]) {
-      throw ApiError.BadRequest(`User with email ${email} already exists`);
-    }
+  async buildUserRegistrationPayload(req) {
+    const { email, password, name, last_name, role } = req;
 
     const hashPassword = await bcrypt.hash(password, 3);
     const activationLink = uuid.v4();
 
-    const user = await db.query(
-      'INSERT INTO users (email, password, name, last_name, role, activationLink) values ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [email, hashPassword, name, last_name, role, activationLink]
-    );
-
-    await mailService.sendActivationMail(
-      email,
-      `${process.env.API_URL}/api/activate/${activationLink}`
-    );
-
-    const userDto = new UserDto(user.rows[0]);
-    const tokens = tokenService.generateTokens({ ...userDto });
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
-
     return {
-      ...tokens,
-      user: userDto,
+      email: email,
+      password: hashPassword,
+      name: name,
+      last_name: last_name,
+      role: role,
+      activationlink: activationLink,
     };
   }
 
