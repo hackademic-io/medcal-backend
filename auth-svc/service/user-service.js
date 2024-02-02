@@ -4,7 +4,6 @@ const uuid = require('uuid');
 const tokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
 const ApiError = require('../exeptions/api-error');
-const UserRepository = require('./db-service/UserRepository');
 
 class UserService {
   async buildUserRegistrationPayload(req) {
@@ -19,7 +18,7 @@ class UserService {
       name: name,
       last_name: last_name,
       role: role,
-      activationLink: activationLink,
+      activationlink: activationLink,
     };
   }
 

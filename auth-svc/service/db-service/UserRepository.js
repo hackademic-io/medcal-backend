@@ -5,14 +5,7 @@ const prisma = new PrismaClient();
 class UserRepository {
   async createUser(registrationPayload) {
     const user = await prisma.users.create({
-      data: {
-        email: registrationPayload.email,
-        password: registrationPayload.password,
-        name: registrationPayload.name,
-        last_name: registrationPayload.last_name,
-        activationlink: registrationPayload.activationLink,
-        role: registrationPayload.role,
-      },
+      data: registrationPayload,
     });
 
     return user;
@@ -20,9 +13,7 @@ class UserRepository {
 
   async findByEmail(email) {
     const user = await prisma.users.findUnique({
-      where: {
-        email: email,
-      },
+      where: { email },
     });
 
     return user;

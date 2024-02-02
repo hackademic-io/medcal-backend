@@ -10,7 +10,6 @@ router.post(
   '/registration',
   body('email').isEmail(),
   body('password').isLength({ min: 3, max: 32 }),
-  validationMiddleware,
   userController.registration
 );
 router.post('/login', userController.login);

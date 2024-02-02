@@ -19,12 +19,7 @@ class UserController {
         await userService.buildUserRegistrationPayload(req.body);
       const user = await UserRepository.createUser(registrationPayload);
 
-      console.log(user);
-
-      await mailService.sendActivationMail(
-        email,
-        `${process.env.API_URL}/api/activate/${user.activationLink}`
-      );
+      mailService.sendActivationMail(email, user.activationlink);
 
       const userDto = new UserDto(user);
       const tokens = tokenService.generateTokens({ ...userDto });
