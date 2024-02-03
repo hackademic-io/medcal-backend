@@ -1,9 +1,10 @@
-const { PrismaClient } = require('@prisma/client');
+import { PrismaClient } from '@prisma/client';
+import { IRegistrationPayloadProps } from '../../types/registration';
 
 const prisma = new PrismaClient();
 
 class UserRepository {
-  async createUser(registrationPayload) {
+  async createUser(registrationPayload: IRegistrationPayloadProps) {
     const user = await prisma.users.create({
       data: registrationPayload,
     });
@@ -11,7 +12,7 @@ class UserRepository {
     return user;
   }
 
-  async findByEmail(email) {
+  async findByEmail(email: string) {
     const user = await prisma.users.findUnique({
       where: { email },
     });
@@ -20,4 +21,4 @@ class UserRepository {
   }
 }
 
-module.exports = new UserRepository();
+export default new UserRepository();

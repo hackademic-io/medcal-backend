@@ -1,16 +1,17 @@
-const db = require('../db');
-const bcrypt = require('bcrypt');
-const uuid = require('uuid');
-const tokenService = require('./token-service');
-const UserDto = require('../dtos/user-dto');
-const ApiError = require('../exeptions/api-error');
+import db from '../db';
+import bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
+import tokenService from './token-service';
+import UserDto from '../dtos/user-dto';
+import ApiError from '../exeptions/api-error';
+import { Request } from 'express';
 
 class UserService {
-  async buildUserRegistrationPayload(req) {
-    const { email, password, name, last_name, role } = req;
+  async buildUserRegistrationPayload(req: Request) {
+    const { email, password, name, last_name, role } = req.body;
 
     const hashPassword = await bcrypt.hash(password, 3);
-    const activationLink = uuid.v4();
+    const activationLink = uuidv4();
 
     return {
       email: email,
@@ -22,7 +23,7 @@ class UserService {
     };
   }
 
-  async activate(activationLink) {
+  async activate(activationLink: string) {
     const user = await db.query(
       'SELECT * FROM users WHERE activationLink = $1',
       [activationLink]
@@ -38,7 +39,7 @@ class UserService {
     ]);
   }
 
-  async login(email, password) {
+  async login(email: string, password: string) {
     const user = await db.query('SELECT * FROM users WHERE email = $1', [
       email,
     ]);
@@ -63,12 +64,12 @@ class UserService {
     };
   }
 
-  async logout(refreshToken) {
+  async logout(refreshToken: string) {
     const token = await tokenService.removeToken(refreshToken);
     return token;
   }
 
-  async refresh(refreshToken) {
+  async refresh(refreshToken: string) {
     if (!refreshToken) {
       throw ApiError.UnauthorizedError();
     }
@@ -99,4 +100,4 @@ class UserService {
   }
 }
 
-module.exports = new UserService();
+export default new UserService();
