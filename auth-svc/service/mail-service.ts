@@ -1,6 +1,7 @@
-const nodemailer = require('nodemailer');
+import nodemailer, { Transporter } from 'nodemailer';
 
 class MailService {
+  private transporter: Transporter;
   constructor() {
     this.transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -10,7 +11,7 @@ class MailService {
       },
     });
   }
-  async sendActivationMail(to, link) {
+  async sendActivationMail(to: string, link: string) {
     await this.transporter.sendMail({
       from: process.env.SMTP_USER,
       to,
@@ -26,4 +27,4 @@ class MailService {
   }
 }
 
-module.exports = new MailService();
+export default new MailService();

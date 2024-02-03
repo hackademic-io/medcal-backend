@@ -1,4 +1,6 @@
-module.exports = class UserDto {
+import { IUserDtoProps } from '../types/user-dto';
+
+export default class UserDto {
   email;
   name;
   last_name;
@@ -6,7 +8,7 @@ module.exports = class UserDto {
   id;
   isActivated;
 
-  constructor(model) {
+  constructor(model: IUserDtoProps) {
     this.email = model.email;
     this.id = model.user_id;
     this.role = model.role;
@@ -14,4 +16,4 @@ module.exports = class UserDto {
     this.last_name = model.last_name;
     this.isActivated = model.isactivated;
   }
-};
+}
