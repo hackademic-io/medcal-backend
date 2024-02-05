@@ -24,6 +24,7 @@ class TokenService {
       const userData = jwt.verify(token, jwtAccessSecret) as IUserProps;
       return userData;
     } catch (error) {
+      console.log(error);
       return null;
     }
   }
@@ -33,6 +34,7 @@ class TokenService {
       const userData = jwt.verify(token, jwtRefreshSecret) as IUserProps;
       return userData;
     } catch (error) {
+      console.log(error);
       return null;
     }
   }

@@ -20,6 +20,14 @@ class UserRepository {
     return user;
   }
 
+  async findById(user_id: number) {
+    const user = await prisma.users.findUnique({
+      where: { user_id },
+    });
+
+    return user;
+  }
+
   async findByActivationLink(activationlink: string) {
     const user = await prisma.users.findUnique({
       where: { activationlink },

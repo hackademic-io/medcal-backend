@@ -5,6 +5,7 @@ import mailService from '../service/mail-service';
 import tokenService from '../service/token-service';
 import ApiError from '../exeptions/api-error';
 import UserDto from '../dtos/user-dto';
+import { IUserDtoProps } from '../types/user-dto';
 
 const clientUrl = process.env.CLIENT_URL as string;
 
@@ -103,7 +104,33 @@ class UserController {
   async refresh(req: Request, res: Response, next: NextFunction) {
     try {
       const refreshToken = req.cookies;
-      const userData = await userService.refresh(refreshToken.refreshToken);
+
+      if (!refreshToken) {
+        throw ApiError.UnauthorizedError();
+      }
+
+      console.log(refreshToken);
+
+      const userDataFromToken = tokenService.validateRefreshToken(
+        refreshToken.refreshToken
+      );
+      const tokenFromDb = await tokenService.findToken(refreshToken);
+
+      if (!userDataFromToken || !tokenFromDb) {
+        throw ApiError.UnauthorizedError();
+      }
+
+      const user = await UserRepository.findById(userDataFromToken.id);
+      const userDto = new UserDto(user as IUserDtoProps);
+      const tokens = tokenService.generateTokens({ ...userDto });
+
+      await tokenService.saveToken(userDto.id, tokens.refreshToken);
+
+      const userData = {
+        ...tokens,
+        user: userDto,
+      };
+
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
