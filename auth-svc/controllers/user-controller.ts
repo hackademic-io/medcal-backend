@@ -87,7 +87,13 @@ class UserController {
   async activate(req: Request, res: Response, next: NextFunction) {
     try {
       const activationLink = req.params.link;
-      await userService.activate(activationLink);
+      const user = await UserRepository.findByActivationLink(activationLink);
+
+      if (!user) {
+        throw ApiError.BadRequest('Activation link is incorrect');
+      }
+
+      await UserRepository.updateUserIsActivatedState(user.user_id, true);
       return res.redirect(clientUrl);
     } catch (error) {
       next(error);

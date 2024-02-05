@@ -23,22 +23,6 @@ class UserService {
     };
   }
 
-  async activate(activationLink: string) {
-    const user = await db.query(
-      'SELECT * FROM users WHERE activationLink = $1',
-      [activationLink]
-    );
-
-    if (!user.rows[0]) {
-      throw ApiError.BadRequest('Activation link is incorrect');
-    }
-
-    await db.query('UPDATE users SET isActivated = $1 WHERE user_id = $2', [
-      true,
-      user.rows[0].user_id,
-    ]);
-  }
-
   async checkPassword(password: string, typedPassword: string) {
     const isPassEquals = await bcrypt.compare(password, typedPassword);
 
@@ -73,6 +57,8 @@ class UserService {
       user: userDto,
     };
   }
+
+  // Test route to check auth
 
   async getAllUsers() {
     const users = await db.query('SELECT * FROM users');

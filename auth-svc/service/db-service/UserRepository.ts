@@ -19,6 +19,25 @@ class UserRepository {
 
     return user;
   }
+
+  async findByActivationLink(activationlink: string) {
+    const user = await prisma.users.findUnique({
+      where: { activationlink },
+    });
+
+    return user;
+  }
+
+  async updateUserIsActivatedState(userId: number, value: boolean) {
+    const user = await prisma.users.update({
+      where: {
+        user_id: userId,
+      },
+      data: {
+        isactivated: value,
+      },
+    });
+  }
 }
 
 export default new UserRepository();

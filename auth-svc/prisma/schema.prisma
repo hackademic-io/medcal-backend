@@ -22,6 +22,6 @@ model users {
   last_name      String   @db.VarChar(255)
   role           String   @db.VarChar(55)
   isactivated    Boolean  @default(false)
-  activationlink String   @db.VarChar(255)
+  activationlink String   @unique @db.VarChar(255)
   tokens         tokens[]
 }
