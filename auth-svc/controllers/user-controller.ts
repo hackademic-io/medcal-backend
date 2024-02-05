@@ -46,7 +46,23 @@ class UserController {
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;
-      const userData = await userService.login(email, password);
+      const user = await UserRepository.findByEmail(email);
+
+      if (!user) {
+        throw ApiError.BadRequest(`User with email ${email} is not found`);
+      }
+
+      await userService.checkPassword(password, user.password);
+
+      const userDto = new UserDto(user);
+      const tokens = tokenService.generateTokens({ ...userDto });
+      await tokenService.saveToken(userDto.id, tokens.refreshToken);
+
+      const userData = {
+        ...tokens,
+        user: userDto,
+      };
+
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,

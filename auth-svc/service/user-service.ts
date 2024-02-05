@@ -39,29 +39,14 @@ class UserService {
     ]);
   }
 
-  async login(email: string, password: string) {
-    const user = await db.query('SELECT * FROM users WHERE email = $1', [
-      email,
-    ]);
-
-    if (!user.rows[0]) {
-      throw ApiError.BadRequest(`User with email ${email} is not found`);
-    }
-
-    const isPassEquals = await bcrypt.compare(password, user.rows[0].password);
+  async checkPassword(password: string, typedPassword: string) {
+    const isPassEquals = await bcrypt.compare(password, typedPassword);
 
     if (!isPassEquals) {
       throw ApiError.BadRequest(`Incorrect password`);
     }
 
-    const userDto = new UserDto(user.rows[0]);
-    const tokens = tokenService.generateTokens({ ...userDto });
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
-
-    return {
-      ...tokens,
-      user: userDto,
-    };
+    return isPassEquals;
   }
 
   async refresh(refreshToken: string) {
