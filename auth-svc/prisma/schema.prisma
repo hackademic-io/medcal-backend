@@ -9,7 +9,7 @@ datasource db {
 
 model tokens {
   id           Int    @id @default(autoincrement())
-  user_id      Int?
+  user_id      Int?   @unique
   refreshtoken String @db.VarChar(512)
   users        users? @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }

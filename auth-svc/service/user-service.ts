@@ -1,8 +1,6 @@
 import db from '../db';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import tokenService from './token-service';
-import UserDto from '../dtos/user-dto';
 import ApiError from '../exeptions/api-error';
 import { Request } from 'express';
 
