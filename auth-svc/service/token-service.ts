@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import db from '../db';
 import { IUserProps } from '../types/user';
+import TokensRepository from './db-service/TokensRepository';
 
 const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET as string;
 const jwtAccessSecret = process.env.JWT_ACCESS_SECRET as string;
@@ -24,6 +24,7 @@ class TokenService {
       const userData = jwt.verify(token, jwtAccessSecret) as IUserProps;
       return userData;
     } catch (error) {
+      console.log(error);
       return null;
     }
   }
@@ -33,44 +34,33 @@ class TokenService {
       const userData = jwt.verify(token, jwtRefreshSecret) as IUserProps;
       return userData;
     } catch (error) {
+      console.log(error);
       return null;
     }
   }
 
   async saveToken(userId: number, refreshToken: string) {
-    const tokenData = await db.query(
-      'SELECT * FROM tokens WHERE user_id = $1',
-      [userId]
-    );
+    const tokenData = await TokensRepository.findByUserId(userId);
 
-    if (tokenData.rows[0]) {
-      const newRefreshToken = await db.query(
-        'UPDATE tokens SET refreshToken = $1 WHERE user_id = $2',
-        [refreshToken, userId]
+    if (tokenData) {
+      const newRefreshToken = TokensRepository.updateRefreshTokenBasedByUserId(
+        userId,
+        refreshToken
       );
       return newRefreshToken;
     }
-    const token = await db.query(
-      'INSERT INTO tokens (user_id, refreshToken) values ($1,$2)',
-      [userId, refreshToken]
-    );
+    const token = TokensRepository.createToken(userId, refreshToken);
     return token;
   }
 
   async removeToken(refreshToken: string) {
-    const tokenData = await db.query(
-      'DELETE FROM tokens WHERE refreshToken = $1',
-      [refreshToken]
-    );
+    const tokenData = TokensRepository.deleteTokenByRefreshToken(refreshToken);
     return tokenData;
   }
 
   async findToken(refreshToken: string) {
-    const tokenData = await db.query(
-      'SELECT * FROM tokens WHERE refreshToken = $1',
-      [refreshToken]
-    );
-    return tokenData.rows[0];
+    const tokenData = TokensRepository.findTokenByRefreshToken(refreshToken);
+    return tokenData;
   }
 }
 
