@@ -8,31 +8,31 @@ datasource db {
 }
 
 model Patient {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   first_name String
   last_name String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @updatedAt
   opt_in Boolean @default(false)
   appointments Appointment[]
 }
 
 model Doctor {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   first_name String
   last_name String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @updatedAt
   appointments Appointment[]
 }
 
 model Appointment {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   date DateTime
-  patient_id Int
-  patient Patient @relation(fields: [patient_id], references: [id])
+  patient_id String?
+  patient Patient? @relation(fields: [patient_id], references: [id])
   doctor Doctor @relation(fields: [doctor_id], references: [id])
-  doctor_id Int
+  doctor_id String
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
   booked Boolean @default(false)
