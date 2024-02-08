@@ -15,6 +15,7 @@ model Patient {
   updated_at  DateTime? @updatedAt
   opt_in Boolean @default(false)
   appointments Appointment[]
+  offer Offer?
 }
 
 model Doctor {
@@ -36,5 +37,14 @@ model Appointment {
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
   booked Boolean @default(false)
+  offer Offer?
 }
 
+model Offer {
+  id String @id @default(uuid())
+  appointment_id String @unique
+  appointment Appointment @relation(fields: [appointment_id], references: [id])
+  status String @default("pending")
+  patient_id String @unique
+  patient Patient @relation(fields: [patient_id], references: [id])
+}
