@@ -4,14 +4,21 @@ const prisma = new PrismaClient();
 
 const fetchAvailableAppointments = async () => {
   try {
-    const availableAppointments = await prisma.appointment.findMany({
+    const availableAppointmentsWithOffers = await prisma.appointment.findMany({
       where: {
         booked: false,
+      },
+      include: {
+        offer: true,
       },
       orderBy: {
         date: 'asc',
       },
     });
+
+    const availableAppointments = availableAppointmentsWithOffers.filter(
+      (appointment) => !appointment.offer
+    );
     return availableAppointments;
   } catch (error) {
     console.error('Error fetching available appointments', error);
