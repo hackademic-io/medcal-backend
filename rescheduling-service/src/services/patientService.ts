@@ -4,11 +4,17 @@ const prisma = new PrismaClient();
 
 const fetchAvailablePatients = async () => {
   try {
-    const availablePatients = await prisma.patient.findMany({
+    const optedInPatients = await prisma.patient.findMany({
       where: {
         opt_in: true,
       },
+      include: {
+        offer: true,
+      },
     });
+    const availablePatients = optedInPatients.filter(
+      (patient) => !patient.offer
+    );
     return availablePatients;
   } catch (error) {
     console.error('Error fetching available patients', error);
