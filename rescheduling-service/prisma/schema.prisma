@@ -44,7 +44,7 @@ model Offer {
   id String @id @default(uuid())
   appointment_id String @unique
   appointment Appointment @relation(fields: [appointment_id], references: [id])
-  status String @default("pending")
+  status String @default("pending") //accepted, pending, declined
   patient_id String @unique
   patient Patient @relation(fields: [patient_id], references: [id])
 }
