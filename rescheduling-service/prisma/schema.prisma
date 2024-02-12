@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Patient {
+  id String @id @default(uuid())
+  first_name String
+  last_name String
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @updatedAt
+  opt_in Boolean @default(false)
+  appointments Appointment[]
+  offer Offer?
+}
+
+model Doctor {
+  id String @id @default(uuid())
+  first_name String
+  last_name String
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @updatedAt
+  appointments Appointment[]
+}
+
+model Appointment {
+  id String @id @default(uuid())
+  date DateTime
+  patient_id String?
+  patient Patient? @relation(fields: [patient_id], references: [id])
+  doctor Doctor @relation(fields: [doctor_id], references: [id])
+  doctor_id String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  booked Boolean @default(false)
+  offer Offer?
+}
+
+model Offer {
+  id String @id @default(uuid())
+  appointment_id String @unique
+  appointment Appointment @relation(fields: [appointment_id], references: [id])
+  status String @default("pending") //accepted, pending, declined
+  patient_id String @unique
+  patient Patient @relation(fields: [patient_id], references: [id])
+}
