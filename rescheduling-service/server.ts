@@ -9,10 +9,6 @@ app.use(cors({ origin: '*' }));
 
 const PORT = 3000;
 
-app.get('/reschedule', (req, res) => {
-  res.send('Rescheduling Service');
-});
-
 app.use('/api', routes);
 
 app.listen(PORT, () => {
