@@ -1,10 +1,10 @@
-const mailjet = require('node-mailjet')
+import mailjet from 'node-mailjet'
 require('dotenv').config();
 
-function sendEmail(msg) {
-    const mailjetConnection = mailjet.apiConnect(process.env.MAILJET_PUBLIC_KEY, process.env.MAILJET_SECRET_KEY);
+function sendEmail(msg: string) {
+    const mailjetConnection = process.env.MAILJET_SECRET_KEY && process.env.MAILJET_PUBLIC_KEY && mailjet.apiConnect(process.env.MAILJET_PUBLIC_KEY, process.env.MAILJET_SECRET_KEY);
 
-    mailjetConnection.post("send", { 'version': 'v3.1' }).request({
+    mailjetConnection && mailjetConnection.post("send", { 'version': 'v3.1' }).request({
         "Messages": [{
             "From": {
                 "Email": "misha.fomenko00@gmail.com",
@@ -21,4 +21,4 @@ function sendEmail(msg) {
     });
 }
 
-module.exports = sendEmail
+export default sendEmail
