@@ -19,6 +19,14 @@ class AppointmentRepository {
 
     return newAppointment;
   }
+
+  async deleteOne(id: string) {
+    const deletedAppointment = await prisma.appointment.delete({
+      where: { id },
+    });
+
+    return deletedAppointment;
+  }
 }
 
 export default new AppointmentRepository();

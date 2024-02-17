@@ -22,6 +22,19 @@ class AppoinmentController {
       console.error('Error creating appointment:', error);
     }
   }
+
+  async deleteOne(req: Request, res: Response, next: NextFunction) {
+    const appointment_id = req.params.id;
+
+    try {
+      const deletedAppointment = await AppointmentRepository.deleteOne(
+        appointment_id
+      );
+      res.json(deletedAppointment);
+    } catch (error) {
+      console.error('Error deleting appointment:', error);
+    }
+  }
 }
 
 export default new AppoinmentController();
