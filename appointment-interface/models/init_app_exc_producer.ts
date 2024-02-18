@@ -1,7 +1,12 @@
 import amqp from 'amqplib/callback_api'
 require('dotenv').config();
 
-async function sendMessageToInitAppExc({ msg, router_key }: { msg: string, router_key: string }) {
+async function sendMessageToInitAppExc({ email, id, first_name, last_name, open_to_earlier, date, time, booked }: { email: string, id: string, first_name: string, last_name: string, open_to_earlier: boolean, date: Date, time: Date, booked: boolean }) {
+
+    const exchange_router_keys = ["book", "cancel"] as const
+    const router_key = booked ? exchange_router_keys[0] : exchange_router_keys[1]
+    const msg = `on ${date} at ${time}`
+
     process.env.RABBITMQ_URL && amqp.connect(process.env.RABBITMQ_URL, function (error0, connection) {
         if (error0) {
             throw error0

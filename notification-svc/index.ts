@@ -1,6 +1,7 @@
 import express, { Express } from 'express'
 import cors from 'cors'
 import initAppExcReceiver from './models/init_app_exc_receiver'
+import reschedulingPromptRoutes from './routes/rescheduling-prompt'
 require('dotenv').config()
 
 const app: Express = express()
@@ -13,6 +14,8 @@ app.use(cors({ origin: '*' }))
 app.listen(PORT, () => {
     console.log(`server is listening to port ${PORT}`)
 })
+
+app.use('/notification', reschedulingPromptRoutes)
 
 initAppExcReceiver()
 

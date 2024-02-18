@@ -16,8 +16,14 @@ app.listen(PORT, () => {
 
 {/* receives the post request with the .body like: */ }
 // {
-//     msg: string
-//     router_key: 'book' | 'cancel'
-// }
+//     email: data.email,
+//     id: v4(),
+//     first_name: data.first_name,
+//     last_name: data.last_name,
+//     open_to_earlier: data.open_to_earlier,
+//     date,
+//     time,
+//     booked: true,
+//   }
 
 app.use('/action', actionAppRoutes)

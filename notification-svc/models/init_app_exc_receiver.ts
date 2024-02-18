@@ -1,5 +1,7 @@
 import amqp from 'amqplib/callback_api'
 import sendEmail from './sendEmail'
+import cron from 'node-cron'
+import { reminderEmitter } from '../utils/customEventEmitters'
 require('dotenv').config()
 
 async function receiveMessageFromInitAppExc() {
@@ -31,7 +33,16 @@ async function receiveMessageFromInitAppExc() {
                 });
 
                 channel.consume(q.queue, function (msg) {
-                    msg && sendEmail(msg.content.toString())
+                    msg && sendEmail('confirm', msg.content.toString())
+                    const reminder = cron.schedule('10 * * * * *', async () => {
+                        console.log('reminder sent')
+                        msg && await sendEmail('remind', msg.content.toString() + '(reminder)')
+                        reminderEmitter.emit('reminder-sent')
+                    })
+                    reminderEmitter.on('reminder-sent', () => {
+                        console.log('reminder stopped')
+                        reminder.stop()
+                    })
                 }, {
                     noAck: true
                 });

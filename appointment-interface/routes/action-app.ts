@@ -1,12 +1,13 @@
 import express, { Response, Request } from 'express'
-const sendMessageToInitAppExc = require('../models/init_app_exc_producer')
+import sendMessageToInitAppExc from '../models/init_app_exc_producer'
 
 const actionAppRoutes = express.Router()
 
 actionAppRoutes.post('/appointment', (req: Request, res: Response) => {
-    const { msg, router_key } = req.body
+    const { email, id, first_name, last_name, open_to_earlier, date, time, booked } = req.body
+    // const { msg, router_key } = req.body
 
-    sendMessageToInitAppExc({ msg, router_key }).then(() => {
+    sendMessageToInitAppExc({ email, id, first_name, last_name, open_to_earlier, date, time, booked }).then(() => {
         res.status(200).send('Message successfully sent to the exchange')
     }).catch((error: Error) => {
         console.error('Failed to send message to RabbitMQ:', error);
