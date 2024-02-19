@@ -21,8 +21,14 @@ class AppointmentRepository {
   }
 
   async deleteOne(id: string) {
-    const deletedAppointment = await prisma.appointment.delete({
+    const deletedAppointment = await prisma.appointment.update({
       where: { id },
+      data: {
+        email: null,
+        first_name: null,
+        last_name: null,
+        status: 'CANCELED',
+      },
     });
 
     return deletedAppointment;

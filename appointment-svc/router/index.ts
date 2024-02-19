@@ -4,7 +4,7 @@ import authMiddleware from '../middlewares/auth-middleware';
 
 const router = Router();
 
-router.get('/appointment', authMiddleware(), appointmentController.getAll);
+router.get('/appointments', authMiddleware(), appointmentController.getAll);
 router.post('/appointment', authMiddleware(), appointmentController.createOne);
 router.delete(
   '/appointment/:id',
