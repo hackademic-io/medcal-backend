@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export class PatientRepository {
+class PatientRepository {
   async fetchAvailablePatients() {
     try {
       const optedInPatients = await prisma.patient.findMany({
@@ -24,4 +24,5 @@ export class PatientRepository {
   }
 }
 
-export default new PatientRepository();
+const patientRepository = new PatientRepository();
+export default patientRepository;

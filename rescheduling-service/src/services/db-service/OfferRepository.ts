@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export class OfferRepository {
+class OfferRepository {
   async createOffer(appointmentId: string, patientId: string) {
     try {
       const offer = await prisma.offer.create({
@@ -19,3 +19,6 @@ export class OfferRepository {
     }
   }
 }
+
+const offerRepository = new OfferRepository();
+export default offerRepository;

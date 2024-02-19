@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export class AppointmentRepository {
+class AppointmentRepository {
   async fetchAvailableAppointments() {
     try {
       const availableAppointmentsWithOffers = await prisma.appointment.findMany(
@@ -24,4 +24,5 @@ export class AppointmentRepository {
   }
 }
 
-export default new AppointmentRepository();
+const appointmentRepository = new AppointmentRepository();
+export default appointmentRepository;
