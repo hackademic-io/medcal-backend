@@ -3,8 +3,23 @@ import AppointmentRepository from '../service/db-service/AppointmentRepository';
 
 class AppoinmentController {
   async getAll(req: Request, res: Response, next: NextFunction) {
+    let queryDate;
+
+    console.log(queryDate);
+
+    if (req.query.date !== undefined) {
+      queryDate = req.query.date as string;
+    }
+
     try {
-      const appointments = await AppointmentRepository.getAll();
+      let appointments;
+
+      if (queryDate) {
+        appointments = await AppointmentRepository.getAllByDate(queryDate);
+      } else {
+        appointments = await AppointmentRepository.getAll();
+      }
+
       res.json(appointments);
     } catch (error) {
       console.error('Error fetching all appointments:', error);

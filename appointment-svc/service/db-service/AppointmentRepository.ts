@@ -13,6 +13,16 @@ class AppointmentRepository {
     return appointments;
   }
 
+  async getAllByDate(date: string) {
+    const appointments = await prisma.appointment.findMany({
+      where: {
+        date,
+      },
+    });
+
+    return appointments;
+  }
+
   async getOne(id: string) {
     const appointment = await prisma.appointment.findFirst({
       where: { id },
