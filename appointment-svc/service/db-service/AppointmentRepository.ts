@@ -10,6 +10,14 @@ class AppointmentRepository {
     return appointments;
   }
 
+  async getOne(id: string) {
+    const appointment = await prisma.appointment.findFirst({
+      where: { id },
+    });
+
+    return appointment;
+  }
+
   async createOne(data: IAppointmentProps) {
     const newAppointment = await prisma.appointment.create({
       data: {
