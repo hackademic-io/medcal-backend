@@ -7,6 +7,11 @@ const router = Router();
 router.get('/appointments', authMiddleware(), appointmentController.getAll);
 router.get('/appointment/:id', authMiddleware(), appointmentController.getOne);
 router.post('/appointment', authMiddleware(), appointmentController.createOne);
+router.put(
+  '/appointment/:id',
+  authMiddleware(),
+  appointmentController.updateOne
+);
 router.delete(
   '/appointment/:id',
   authMiddleware(),

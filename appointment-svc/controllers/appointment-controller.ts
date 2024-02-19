@@ -22,6 +22,21 @@ class AppoinmentController {
     }
   }
 
+  async updateOne(req: Request, res: Response, next: NextFunction) {
+    const appointment_id = req.params.id;
+    const appointment_data = req.body;
+
+    try {
+      const appointment = await AppointmentRepository.updateOne(
+        appointment_data,
+        appointment_id
+      );
+      res.json(appointment);
+    } catch (error) {
+      console.error('Error fetching all appointments:', error);
+    }
+  }
+
   async createOne(req: Request, res: Response, next: NextFunction) {
     const appointment_data = req.body;
     try {
