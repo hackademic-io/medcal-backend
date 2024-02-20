@@ -21,6 +21,7 @@ class AppoinmentController {
       res.json(appointments);
     } catch (error) {
       console.error('Error fetching all appointments:', error);
+      res.status(500).json({ error: 'Error fetching all appointments:' });
     }
   }
 
@@ -32,12 +33,15 @@ class AppoinmentController {
       res.json(appointment);
     } catch (error) {
       console.error('Error fetching all appointments:', error);
+      res.status(500).json({ error: 'Error getting one appointment:' });
     }
   }
 
   async updateOne(req: Request, res: Response, next: NextFunction) {
     const appointment_id = req.params.id;
     const appointment_data = req.body;
+
+    console.log(appointment_data);
 
     try {
       const appointment = await AppointmentRepository.updateOne(
@@ -46,7 +50,8 @@ class AppoinmentController {
       );
       res.json(appointment);
     } catch (error) {
-      console.error('Error fetching all appointments:', error);
+      console.error('Error updating one appointment:', error);
+      res.status(500).json({ error: 'Error updating one appointment:' });
     }
   }
 
@@ -59,6 +64,7 @@ class AppoinmentController {
       res.json(appointment);
     } catch (error) {
       console.error('Error creating appointment:', error);
+      res.status(500).json({ error: 'Error creating appointment' });
     }
   }
 
@@ -66,12 +72,13 @@ class AppoinmentController {
     const appointment_id = req.params.id;
 
     try {
-      const deletedAppointment = await AppointmentRepository.deleteOne(
+      const canceledAppointment = await AppointmentRepository.deleteOne(
         appointment_id
       );
-      res.json(deletedAppointment);
+      res.json(canceledAppointment);
     } catch (error) {
       console.error('Error deleting appointment:', error);
+      res.status(500).json({ error: 'Error deleting appointment' });
     }
   }
 }
