@@ -7,16 +7,13 @@ import {
 const prisma = new PrismaClient();
 
 class AppointmentRepository {
-  async getAll() {
-    const appointments = await prisma.appointment.findMany();
+  async getAll(queryMaxDate: string, queryMinDate: string) {
+    let maxDate = new Date(queryMaxDate);
+    let minDate = new Date(queryMinDate);
 
-    return appointments;
-  }
-
-  async getAllByDate(date: string) {
     const appointments = await prisma.appointment.findMany({
       where: {
-        date,
+        AND: [{ date: { gte: minDate } }, { date: { lte: maxDate } }],
       },
     });
 

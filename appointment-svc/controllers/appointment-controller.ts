@@ -3,20 +3,14 @@ import AppointmentRepository from '../service/db-service/AppointmentRepository';
 
 class AppoinmentController {
   async getAll(req: Request, res: Response, next: NextFunction) {
-    let queryDate;
-
-    if (req.query.date !== undefined) {
-      queryDate = req.query.date as string;
-    }
+    let queryMaxDate = req.query.MaxDate as string;
+    let queryMinDate = req.query.MinDate as string;
 
     try {
-      let appointments;
-
-      if (queryDate) {
-        appointments = await AppointmentRepository.getAllByDate(queryDate);
-      } else {
-        appointments = await AppointmentRepository.getAll();
-      }
+      const appointments = await AppointmentRepository.getAll(
+        queryMaxDate,
+        queryMinDate
+      );
 
       res.json(appointments);
     } catch (error) {
@@ -40,8 +34,6 @@ class AppoinmentController {
   async updateOne(req: Request, res: Response, next: NextFunction) {
     const appointment_id = req.params.id;
     const appointment_data = req.body;
-
-    console.log(appointment_data);
 
     try {
       const appointment = await AppointmentRepository.updateOne(
