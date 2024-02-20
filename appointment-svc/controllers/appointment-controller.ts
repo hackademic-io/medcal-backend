@@ -5,8 +5,6 @@ class AppoinmentController {
   async getAll(req: Request, res: Response, next: NextFunction) {
     let queryDate;
 
-    console.log(queryDate);
-
     if (req.query.date !== undefined) {
       queryDate = req.query.date as string;
     }
