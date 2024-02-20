@@ -66,6 +66,15 @@ class AppointmentRepository {
 
     return deletedAppointment;
   }
+
+  async checkStatus(id: string) {
+    const appointmentStatus = await prisma.appointment.findFirst({
+      where: { id },
+      select: { status: true },
+    });
+
+    return appointmentStatus?.status;
+  }
 }
 
 export default new AppointmentRepository();
