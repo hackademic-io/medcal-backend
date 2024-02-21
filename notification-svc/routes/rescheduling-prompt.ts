@@ -8,7 +8,7 @@ const reschedulingPromptRoutes = express.Router()
 reschedulingPromptRoutes.post('/rescheduling-prompt', (req: Request, res: Response) => {
   const { patient, appointment } = req.body
   let isPending = true
-  sendEmail('prompt', `Dear ${patient}, would you like to take an earlier appointment ${appointment}.`)
+  sendEmail(`Dear ${patient}, would you like to take an earlier appointment ${appointment}.`)
   isPending && reschedulingEventEmitter.once('prompt-handled', message => {
     res.status(200).send(message);
     isPending = false
@@ -19,7 +19,6 @@ reschedulingPromptRoutes.post('/rescheduling-prompt', (req: Request, res: Respon
     isPending = false
   }, 1000)
 })
-
 
 reschedulingPromptRoutes.post('/rescheduling-confirm', (req: Request, res: Response) => {
   console.log('rescheduling confirmed')

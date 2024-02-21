@@ -1,7 +1,7 @@
 import mailjet from 'node-mailjet'
 require('dotenv').config();
 
-function sendEmail(type: string, msg: string) {
+function sendEmail(msg: string) {
     const mailjetConnection = process.env.MAILJET_SECRET_KEY && process.env.MAILJET_PUBLIC_KEY && mailjet.apiConnect(process.env.MAILJET_PUBLIC_KEY, process.env.MAILJET_SECRET_KEY);
 
     mailjetConnection && mailjetConnection.post("send", { 'version': 'v3.1' }).request({
