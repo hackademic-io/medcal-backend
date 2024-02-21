@@ -10,17 +10,22 @@ async function consumeAppointmentQueue() {
 
     console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queue);
 
-    channel.consume(
-      queue,
-      (msg) => {
-        if (msg !== null) {
-          console.log(' [x] Received %s', msg.content.toString());
-        }
-      },
-      {
-        noAck: true,
+    channel.consume(queue, (msg) => {
+      if (msg !== null) {
+        const appointment = JSON.parse(msg.content.toString());
+
+        const id = appointment.id;
+        const date = new Date(appointment.date);
+        const time = appointment.time;
+        const status = appointment.status;
+
+        console.log(
+          `Received appointment with id: ${id}, date: ${date}, time: ${time}, status: ${status}`
+        );
+
+        channel.ack(msg);
       }
-    );
+    });
   } catch (error) {
     console.error('Error consuming messages', error);
   }
