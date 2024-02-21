@@ -35,6 +35,14 @@ class AppoinmentController {
     const appointment_id = req.params.id;
     const appointment_data = req.body;
 
+    const currentStatus = await AppointmentRepository.checkStatus(
+      appointment_id
+    );
+
+    if (currentStatus === 'CONFIRMED') {
+      return res.status(400).json({ error: 'Appointment already confirmed' });
+    }
+
     try {
       const appointment = await AppointmentRepository.updateOne(
         appointment_data,
@@ -63,6 +71,14 @@ class AppoinmentController {
   async deleteOne(req: Request, res: Response, next: NextFunction) {
     const appointment_id = req.params.id;
 
+    const currentStatus = await AppointmentRepository.checkStatus(
+      appointment_id
+    );
+
+    if (currentStatus === 'CANCELED') {
+      return res.status(400).json({ error: 'Appointment already canceled' });
+    }
+
     try {
       const canceledAppointment = await AppointmentRepository.deleteOne(
         appointment_id
@@ -70,7 +86,9 @@ class AppoinmentController {
       res.json(canceledAppointment);
     } catch (error) {
       console.error('Error deleting appointment:', error);
-      res.status(500).json({ error: 'Error deleting appointment' });
+      res
+        .status(500)
+        .json({ error: 'Error canceling appointment, please try again later' });
     }
   }
 }
