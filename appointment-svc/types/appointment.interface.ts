@@ -1,10 +1,18 @@
 export interface IAppointmentProps {
   id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
+  email: string | null;
+  first_name: string | null;
+  last_name: string | null;
   open_to_earlier: boolean;
   date: Date;
   time: string;
-  booked: boolean;
+  status: 'BOOKED' | 'CANCELED' | 'CONFIRMED';
+}
+
+export interface IUpdateAppointmentProps {
+  email: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  open_to_earlier: boolean;
+  status: 'BOOKED' | 'CANCELED' | 'CONFIRMED';
 }

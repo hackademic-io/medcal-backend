@@ -8,12 +8,18 @@ datasource db {
 }
 
 model Appointment {
-  id   String      @id
-  email     String  
-  first_name String
-  last_name String
+  id             String      @id
+  email          String?   
+  first_name     String?
+  last_name      String?
   open_to_earlier Boolean
-  date DateTime
-  time String
-  booked Boolean
+  date           DateTime
+  time           String
+  status         AppointmentStatus
+}
+
+enum AppointmentStatus {
+  BOOKED
+  CANCELED
+  CONFIRMED
 }
