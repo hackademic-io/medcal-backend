@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { AppointmentStatus, PrismaClient } from '@prisma/client';
 import {
   IAppointmentProps,
   IUpdateAppointmentProps,
@@ -60,6 +60,7 @@ class AppointmentRepository {
         email: null,
         first_name: null,
         last_name: null,
+        open_to_earlier: false,
         status: 'CANCELED',
       },
     });
@@ -71,6 +72,17 @@ class AppointmentRepository {
     const appointmentStatus = await prisma.appointment.findFirst({
       where: { id },
       select: { status: true },
+    });
+
+    return appointmentStatus?.status;
+  }
+
+  async updateStatusToConfirmed(id: string) {
+    const appointmentStatus = await prisma.appointment.update({
+      where: { id },
+      data: {
+        status: 'CONFIRMED',
+      },
     });
 
     return appointmentStatus?.status;
