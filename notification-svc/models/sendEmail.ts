@@ -16,7 +16,10 @@ function sendEmail(msg: string) {
             }],
             "Subject": `${msg}`,
             "TextPart": "My first Mailjet email",
-            "HTMLPart": "<h3>Dear patient, welcome to <p>MedCal</p>!</h3><br />We wish you get better asap!"
+            "HTMLPart": `<h3>Dear patient, welcome to MedCal!</h3><br />
+            We wish you get better asap!<br /><br />
+            <a href="http://localhost:3001/notification/rescheduling-confirm" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px;">Confirm</a><br /><br />
+            <a href="http://localhost:3001/notification/rescheduling-reject" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px;">Reject</a><br /><br />`
         }]
     });
 }
