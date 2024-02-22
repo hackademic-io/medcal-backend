@@ -21,7 +21,25 @@ class AppointmentRepository {
       },
     });
 
-    return availableAppointments;
+    let pendingAppointment = null;
+
+    if (availableAppointments.length > 0) {
+      pendingAppointment = availableAppointments[0];
+      await this.markAsPending(pendingAppointment.id);
+    }
+
+    return { availableAppointments, pendingAppointment };
+  }
+
+  async markAsPending(appointmentId: string) {
+    await prisma.appointment.update({
+      where: {
+        id: appointmentId,
+      },
+      data: {
+        status: 'PENDING',
+      },
+    });
   }
 }
 
