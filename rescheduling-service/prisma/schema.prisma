@@ -22,4 +22,5 @@ enum AppointmentStatus {
   BOOKED
   CANCELED
   CONFIRMED
+  PENDING
 }

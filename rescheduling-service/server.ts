@@ -10,7 +10,7 @@ app.use(cors({ origin: '*' }));
 
 const PORT = 3000;
 
-app.use('/api', routes);
+app.use('/', routes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT: ${PORT}`);
