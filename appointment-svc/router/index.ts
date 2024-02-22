@@ -6,12 +6,21 @@ const router = Router();
 
 router.get('/appointments', appointmentController.getAll);
 router.get('/appointment/:id', authMiddleware(), appointmentController.getOne);
-router.post('/appointment', appointmentController.createOne);
+router.post('/appointment', authMiddleware(), appointmentController.createOne);
 router.put(
   '/appointment/:id',
   authMiddleware(),
   appointmentController.updateOne
 );
+router.put(
+  '/appointment/reschedule/:id',
+  appointmentController.rescheduleAppointment
+);
+router.put(
+  '/appointment/confirm/:id',
+  appointmentController.confirmAppointment
+);
+
 router.delete(
   '/appointment/:id',
   authMiddleware(),
