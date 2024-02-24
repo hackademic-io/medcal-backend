@@ -20,6 +20,14 @@ router.put(
   '/appointment/confirm/:id',
   appointmentController.confirmAppointment
 );
+router.put(
+  '/appointment/changeOpenToEarlierStatus/:id',
+  appointmentController.changeOpenToEarlier
+);
+router.put(
+  '/appointment/changePendingStatus/:id',
+  appointmentController.changeIsPending
+);
 
 router.delete(
   '/appointment/:id',
