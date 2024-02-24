@@ -66,6 +66,7 @@ class AppoinmentController {
       first_name: appointment_data.first_name,
       email: appointment_data.email,
       open_to_earlier: false,
+      isPending: false,
       status: 'BOOKED',
     };
 
@@ -108,6 +109,23 @@ class AppoinmentController {
 
   async createOne(req: Request, res: Response, next: NextFunction) {
     const appointment_data = req.body;
+
+    const validTimes = [
+      '08:00 AM',
+      '09:00 AM',
+      '10:00 AM',
+      '01:00 PM',
+      '02:00 PM',
+      '03:00 PM',
+    ];
+
+    if (!validTimes.includes(appointment_data.time)) {
+      const validTimeSlots = validTimes.join(', ');
+      res.status(500).json({
+        error: `Error creating appointment, time should be one of these slots: ${validTimeSlots}`,
+      });
+    }
+
     try {
       const appointment = await AppointmentRepository.createOne(
         appointment_data
@@ -137,9 +155,41 @@ class AppoinmentController {
       res.json(canceledAppointment);
     } catch (error) {
       console.error('Error deleting appointment:', error);
-      res
-        .status(500)
-        .json({ error: 'Error canceling appointment, please try again later' });
+      res.status(500).json({ error: 'Error canceling appointment' });
+    }
+  }
+
+  async changeOpenToEarlier(req: Request, res: Response, next: NextFunction) {
+    const appointment_id = req.params.id;
+    const open_earlier_status = req.body.open_to_earlier;
+
+    try {
+      const appointmentOpenToEarlier =
+        await AppointmentRepository.changeOpenToEarlier(
+          appointment_id,
+          open_earlier_status
+        );
+
+      res.json(appointmentOpenToEarlier);
+    } catch (error) {
+      console.error('Error changing open_to_earlier value:', error);
+      res.status(500).json({ error: 'Error changing open_to_earlier value' });
+    }
+  }
+
+  async changeIsPending(req: Request, res: Response, next: NextFunction) {
+    const appointment_id = req.params.id;
+    const is_pending_status = req.body.isPending;
+
+    try {
+      const isPendingStatus = await AppointmentRepository.changeIsPendingValue(
+        appointment_id,
+        is_pending_status
+      );
+      res.json(isPendingStatus);
+    } catch (error) {
+      console.error('Error changing isPending value:', error);
+      res.status(500).json({ error: 'Error changing isPending value' });
     }
   }
 }

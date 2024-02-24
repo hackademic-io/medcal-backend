@@ -87,6 +87,28 @@ class AppointmentRepository {
 
     return appointmentStatus?.status;
   }
+
+  async changeOpenToEarlier(id: string, open_to_earlier: boolean) {
+    const appointmentOpenToEarlier = await prisma.appointment.update({
+      where: { id },
+      data: {
+        open_to_earlier,
+      },
+    });
+
+    return appointmentOpenToEarlier;
+  }
+
+  async changeIsPendingValue(id: string, isPending: boolean) {
+    const isPendingStatus = await prisma.appointment.update({
+      where: { id },
+      data: {
+        isPending,
+      },
+    });
+
+    return isPendingStatus;
+  }
 }
 
 export default new AppointmentRepository();
