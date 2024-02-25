@@ -6,6 +6,7 @@ export interface IAppointmentProps {
   open_to_earlier: boolean;
   date: Date;
   time: string;
+  isPending: boolean;
   status: 'BOOKED' | 'CANCELED' | 'CONFIRMED';
 }
 
@@ -14,5 +15,6 @@ export interface IUpdateAppointmentProps {
   first_name: string | null;
   last_name: string | null;
   open_to_earlier: boolean;
+  isPending: boolean;
   status: 'BOOKED' | 'CANCELED' | 'CONFIRMED';
 }
