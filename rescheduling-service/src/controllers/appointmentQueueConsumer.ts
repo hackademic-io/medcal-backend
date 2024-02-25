@@ -16,15 +16,6 @@ async function consumeAppointmentQueue() {
       if (msg !== null) {
         const appointment = JSON.parse(msg.content.toString());
 
-        const id = appointment.id;
-        const date = new Date(appointment.date);
-        const time = appointment.time;
-        const status = appointment.status;
-
-        console.log(
-          `Received appointment with id: ${id}, date: ${date}, time: ${time}, status: ${status}`
-        );
-
         channel.ack(msg);
 
         const { pendingAppointment } =
@@ -32,10 +23,9 @@ async function consumeAppointmentQueue() {
 
         if (pendingAppointment) {
           await NotificationService.sendReschedulingPrompt(
-            pendingAppointment,
-            date
+            appointment,
+            pendingAppointment
           );
-          console.log(pendingAppointment, date);
         }
       }
     });

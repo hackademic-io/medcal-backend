@@ -1,10 +1,13 @@
 const axios = require('axios');
 
 class NotificationService {
-  async sendReschedulingPrompt(email, appointmentData) {
+  async sendReschedulingPrompt(appointmentData, pendingAppointment) {
+    console.log('appointmentData:', appointmentData);
+    console.log('pendingAppointment:', pendingAppointment);
+
     const data = {
-      email: email,
-      appointment: appointmentData,
+      appointmentData,
+      pendingAppointment,
     };
 
     try {
@@ -12,6 +15,8 @@ class NotificationService {
         'http://localhost:3001/notification/rescheduling-prompt',
         data
       );
+
+      console.log('successfully sent msg');
 
       if (response.status !== 200) {
         console.log(
@@ -22,7 +27,11 @@ class NotificationService {
         throw new Error('Failed to send rescheduling prompt');
       }
     } catch (error) {
-      console.error('Error sending rescheduling prompt, error');
+      console.error('Error sending rescheduling prompt', error.message);
+
+      if (error.response) {
+        console.error('Response status', error.response.status);
+      }
       throw error;
     }
   }
