@@ -1,14 +1,15 @@
 import { Response, Request } from 'express'
-import sendEmail from '../models/sendEmail'
 import { reschedulingEventEmitter } from '../utils/customEventEmitters'
+import sendEmailWithHash from '../utils/encryption'
 
 class reschedulingController {
     prompt(req: Request, res: Response) {
-        const { patient, appointment } = req.body
+        const { appointment } = req.body
         let isPending = true
-        const listenerId = `${appointment}_${patient}`
-        const emailType = 'rescheduling-prompt'
-        sendEmail(emailType, appointment)
+        const listenerId = `${appointment}`
+
+        sendEmailWithHash(appointment)
+
         isPending && reschedulingEventEmitter.once('prompt-handled' + listenerId, message => {
             res.status(200).send(message);
             isPending = false
@@ -21,8 +22,8 @@ class reschedulingController {
     }
 
     confirm(req: Request, res: Response) {
-        const { patient, appointment } = req.body
-        const listenerId = `${appointment}_${patient}`
+        const { appointment } = req.body
+        const listenerId = `${appointment}`
         console.log('rescheduling confirmed')
         reschedulingEventEmitter.emit('prompt-handled' + listenerId, 'confirmed')
         res.status(200).send('Your rescheduling confirmed')

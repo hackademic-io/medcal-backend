@@ -2,7 +2,7 @@ import mailjet from 'node-mailjet'
 import { IAppointmentProps } from '../types/appointment.interface';
 require('dotenv').config();
 
-function sendEmail(emailType: string, appointment: IAppointmentProps) {
+function sendEmail(emailType: string, appointment: IAppointmentProps, hash?: string) {
     const mailjetConnection = process.env.MAILJET_SECRET_KEY && process.env.MAILJET_PUBLIC_KEY && mailjet.apiConnect(process.env.MAILJET_PUBLIC_KEY, process.env.MAILJET_SECRET_KEY);
 
     mailjetConnection && mailjetConnection.post("send", { 'version': 'v3.1' }).request({
