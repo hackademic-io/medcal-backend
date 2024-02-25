@@ -16,11 +16,11 @@ model Appointment {
   date           DateTime
   time           String
   status         AppointmentStatus
+  isPending Boolean? @default(false)
 }
 
 enum AppointmentStatus {
   BOOKED
   CANCELED
   CONFIRMED
-  PENDING
 }

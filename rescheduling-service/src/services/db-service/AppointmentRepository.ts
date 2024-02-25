@@ -4,19 +4,18 @@ const prisma = new PrismaClient();
 
 class AppointmentRepository {
   async fetchAvailableAppointments() {
-    const currentDate = new Date();
+    // manually inputted the date as March 3, 2024 since our table is populated with March dates but no February. Production code will just be new Date()
+    const currentDate = new Date(2024, 2, 3);
     const targetDate = new Date(currentDate);
     targetDate.setDate(currentDate.getDate() + 1);
 
     const availableAppointments = await prisma.appointment.findMany({
       where: {
+        open_to_earlier: true,
+        isPending: false,
         date: {
           gte: currentDate,
           lte: targetDate,
-        },
-        open_to_earlier: true,
-        status: {
-          not: 'PENDING',
         },
       },
     });
@@ -37,7 +36,7 @@ class AppointmentRepository {
         id: appointmentId,
       },
       data: {
-        status: 'PENDING',
+        isPending: true,
       },
     });
   }

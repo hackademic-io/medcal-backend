@@ -1,4 +1,6 @@
 import * as amqp from 'amqplib';
+import { sendReschedulingPrompt } from '../services/NotificationService';
+import AppointmentRepository from '../services/db-service/AppointmentRepository';
 
 async function consumeAppointmentQueue() {
   try {
@@ -10,7 +12,7 @@ async function consumeAppointmentQueue() {
 
     console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queue);
 
-    channel.consume(queue, (msg) => {
+    channel.consume(queue, async (msg) => {
       if (msg !== null) {
         const appointment = JSON.parse(msg.content.toString());
 
@@ -24,6 +26,14 @@ async function consumeAppointmentQueue() {
         );
 
         channel.ack(msg);
+
+        const { pendingAppointment } =
+          await AppointmentRepository.fetchAvailableAppointments();
+
+        if (pendingAppointment) {
+          await sendReschedulingPrompt(pendingAppointment, date);
+          console.log(pendingAppointment, date);
+        }
       }
     });
   } catch (error) {
@@ -31,4 +41,4 @@ async function consumeAppointmentQueue() {
   }
 }
 
-consumeAppointmentQueue();
+export { consumeAppointmentQueue };

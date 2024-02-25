@@ -3,6 +3,7 @@ import AppointmentRepository from '../services/db-service/AppointmentRepository'
 
 class AppointmentController {
   async getAvailableAppointments(req: Request, res: Response) {
+    console.log('Got available appointments');
     try {
       const availableAppointments =
         await AppointmentRepository.fetchAvailableAppointments();
