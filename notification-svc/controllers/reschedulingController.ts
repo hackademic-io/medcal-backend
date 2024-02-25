@@ -7,7 +7,8 @@ class reschedulingController {
         const { patient, appointment } = req.body
         let isPending = true
         const listenerId = `${appointment}_${patient}`
-        sendEmail(`Dear ${patient}, would you like to take an earlier appointment ${appointment}.`)
+        const emailType = 'rescheduling-prompt'
+        sendEmail(emailType, appointment)
         isPending && reschedulingEventEmitter.once('prompt-handled' + listenerId, message => {
             res.status(200).send(message);
             isPending = false
