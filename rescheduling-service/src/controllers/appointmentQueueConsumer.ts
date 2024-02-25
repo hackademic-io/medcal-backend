@@ -1,5 +1,5 @@
 import * as amqp from 'amqplib';
-import { sendReschedulingPrompt } from '../services/NotificationService';
+import NotificationService from '../services/NotificationService';
 import AppointmentRepository from '../services/db-service/AppointmentRepository';
 
 async function consumeAppointmentQueue() {
@@ -31,7 +31,10 @@ async function consumeAppointmentQueue() {
           await AppointmentRepository.fetchAvailableAppointments();
 
         if (pendingAppointment) {
-          await sendReschedulingPrompt(pendingAppointment, date);
+          await NotificationService.sendReschedulingPrompt(
+            pendingAppointment,
+            date
+          );
           console.log(pendingAppointment, date);
         }
       }

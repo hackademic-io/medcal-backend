@@ -1,29 +1,31 @@
 const axios = require('axios');
 
-export async function sendReschedulingPrompt(email, appointmentData) {
-  const data = {
-    email: email,
-    appointment: appointmentData,
-  };
+class NotificationService {
+  async sendReschedulingPrompt(email, appointmentData) {
+    const data = {
+      email: email,
+      appointment: appointmentData,
+    };
 
-  try {
-    const response = await axios.post(
-      'https://localhost:3001/notification/rescheduling-prompt',
-      data
-    );
-
-    if (response.status === 200) {
-      console.log('Rescheduling prompt sent successfully');
-    } else {
-      console.log(
-        'Failed to send rescheduling promp',
-        response.status,
-        response.data
+    try {
+      const response = await axios.post(
+        'http://localhost:3001/notification/rescheduling-prompt',
+        data
       );
+
+      if (response.status !== 200) {
+        console.log(
+          'Failed to send rescheduling prompt',
+          response.status,
+          response.data
+        );
+        throw new Error('Failed to send rescheduling prompt');
+      }
+    } catch (error) {
+      console.error('Error sending rescheduling prompt, error');
+      throw error;
     }
-  } catch (error) {
-    console.error('Error sending rescheduling prompt', error);
   }
 }
 
-module.exports = { sendReschedulingPrompt };
+export default new NotificationService();
