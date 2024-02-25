@@ -13,6 +13,23 @@ router.put(
   authMiddleware(),
   appointmentController.updateOne
 );
+router.put(
+  '/appointment/reschedule/:id',
+  appointmentController.rescheduleAppointment
+);
+router.put(
+  '/appointment/confirm/:id',
+  appointmentController.confirmAppointment
+);
+router.put(
+  '/appointment/changeOpenToEarlierStatus/:id',
+  appointmentController.changeOpenToEarlier
+);
+router.put(
+  '/appointment/changePendingStatus/:id',
+  appointmentController.changeIsPending
+);
+
 router.delete(
   '/appointment/:id',
   authMiddleware(),

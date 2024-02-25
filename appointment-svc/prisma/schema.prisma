@@ -17,6 +17,7 @@ model Appointment {
   open_to_earlier Boolean
   date           DateTime
   time           String
+  isPending      Boolean
   status         AppointmentStatus
 }
 
