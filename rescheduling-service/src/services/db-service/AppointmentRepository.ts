@@ -3,13 +3,14 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 class AppointmentRepository {
-  async fetchAvailableAppointments() {
+  async fetchAvailableAppointment() {
     // manually inputted the date as March 3, 2024 since our table is populated with March dates but no February. Production code will just be new Date()
     const currentDate = new Date(2024, 2, 8);
     const targetDate = new Date(currentDate);
-    targetDate.setDate(currentDate.getDate() + 5);
+    targetDate.setDate(currentDate.getDate() + 1);
 
-    const availableAppointments = await prisma.appointment.findMany({
+    //change to find one and add to vlads code
+    const availableAppointment = await prisma.appointment.findFirst({
       where: {
         open_to_earlier: true,
         isPending: false,
@@ -20,15 +21,14 @@ class AppointmentRepository {
       },
     });
 
-    let pendingAppointment = null;
-
-    if (availableAppointments.length > 0) {
-      pendingAppointment = availableAppointments[0];
-      await this.markAsPending(pendingAppointment.id);
-      console.log(pendingAppointment);
+    if (availableAppointment) {
+      await this.markAsPending(availableAppointment.id);
+      console.log(availableAppointment);
+    } else {
+      console.log('No available appointment at this time');
     }
 
-    return { availableAppointments, pendingAppointment };
+    return availableAppointment;
   }
 
   async markAsPending(appointmentId: string) {

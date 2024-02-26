@@ -6,7 +6,7 @@ class AppointmentController {
     console.log('Got available appointments');
     try {
       const availableAppointments =
-        await AppointmentRepository.fetchAvailableAppointments();
+        await AppointmentRepository.fetchAvailableAppointment();
       res.json(availableAppointments);
     } catch (error) {
       res.status(500).json({ error: 'Error fetching available appointments' });

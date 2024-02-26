@@ -18,13 +18,13 @@ async function consumeAppointmentQueue() {
 
         channel.ack(msg);
 
-        const { pendingAppointment } =
-          await AppointmentRepository.fetchAvailableAppointments();
+        const availableAppointment =
+          await AppointmentRepository.fetchAvailableAppointment();
 
-        if (pendingAppointment) {
+        if (availableAppointment) {
           await NotificationService.sendReschedulingPrompt(
             appointment,
-            pendingAppointment
+            availableAppointment
           );
         }
       }
