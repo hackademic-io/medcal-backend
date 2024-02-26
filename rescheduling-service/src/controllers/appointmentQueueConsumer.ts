@@ -1,6 +1,6 @@
 import * as amqp from 'amqplib';
 import NotificationService from '../services/NotificationService';
-import AppointmentRepository from '../services/db-service/AppointmentRepository';
+import AppointmentRepository from '../../../appointment-svc/service/db-service/AppointmentRepository';
 
 async function consumeAppointmentQueue() {
   try {
@@ -18,8 +18,11 @@ async function consumeAppointmentQueue() {
 
         channel.ack(msg);
 
+        // Will change the static date to the current date in production since db only has March dates
         const availableAppointment =
-          await AppointmentRepository.fetchAvailableAppointment();
+          await AppointmentRepository.getAvailableAppointment(
+            new Date(2024, 2, 8)
+          );
 
         if (availableAppointment) {
           await NotificationService.sendReschedulingPrompt(

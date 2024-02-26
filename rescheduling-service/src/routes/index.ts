@@ -1,11 +1,11 @@
 import express from 'express';
-import AppointmentController from '../controllers/appointment-controller';
+import AppointmentController from '../../../appointment-svc/controllers/appointment-controller';
 
 const router = express.Router();
 
 router.get(
   '/appointments/available',
-  AppointmentController.getAvailableAppointments
+  AppointmentController.getAvailableAppointment
 );
 
 export default router;
