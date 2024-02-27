@@ -125,13 +125,7 @@ class AppointmentRepository {
       },
     });
 
-    if (availableAppointment) {
-      await this.changeIsPendingValue(
-        availableAppointment.id,
-        availableAppointment.isPending
-      );
-      console.log(availableAppointment);
-    } else {
+    if (!availableAppointment) {
       console.log('No available appointment at this time');
     }
 

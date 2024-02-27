@@ -27,8 +27,6 @@ class AppoinmentController {
   ) {
     let queryCurrentDate = req.query.currentDate as string;
     let currentDate = new Date(queryCurrentDate);
-    let targetDate = new Date(currentDate);
-    targetDate.setDate(currentDate.getDate() + 1);
 
     try {
       const availableAppointment =

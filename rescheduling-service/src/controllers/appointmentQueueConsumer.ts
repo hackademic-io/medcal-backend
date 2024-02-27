@@ -24,6 +24,11 @@ async function consumeAppointmentQueue() {
             new Date(2024, 2, 8)
           );
 
+        await AppointmentRepository.changeIsPendingValue(
+          availableAppointment?.id,
+          true
+        );
+
         if (availableAppointment) {
           await NotificationService.sendReschedulingPrompt(
             appointment,
