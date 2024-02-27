@@ -1,7 +1,7 @@
 import express, { Express } from 'express'
 import cors from 'cors'
 import reschedulingPromptRoutes from './routes/rescheduling-prompt'
-import confirmationJob from './models/confirmationJob'
+import confirmationJob from './services/confirmationJob'
 
 require('dotenv').config()
 

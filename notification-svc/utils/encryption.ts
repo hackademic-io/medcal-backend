@@ -1,5 +1,4 @@
 import crypto, { CipherGCMTypes } from 'crypto'
-import sendEmail from '../models/sendEmail'
 import { IAppointmentProps } from '../types/appointment.interface';
 
 const secret_iv = crypto.randomBytes(16);
@@ -30,8 +29,7 @@ function encryptData(data: string) {
     ).toString('base64')
 }
 
-export default function sendEmailWithHash(appointment: IAppointmentProps) {
-    const emailType = 'rescheduling-prompt'
+export default function generateAndShareHash(appointment: IAppointmentProps) {
     const expirationDate = new Date();
     expirationDate.setHours(expirationDate.getHours() + 2);
     const toEncrypt = {
@@ -40,7 +38,7 @@ export default function sendEmailWithHash(appointment: IAppointmentProps) {
     }
     const toEncryptString = JSON.stringify(toEncrypt)
     const hash = encryptData(toEncryptString)
-    sendEmail(emailType, appointment, hash)
+
     fetch('http://localhost:3000/appointment/hash', {
         method: 'POST',
         headers: {
@@ -51,4 +49,5 @@ export default function sendEmailWithHash(appointment: IAppointmentProps) {
             encryptionIV,
         })
     })
+    return hash
 }

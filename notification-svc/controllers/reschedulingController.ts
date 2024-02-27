@@ -1,6 +1,7 @@
 import { Response, Request } from 'express'
 import { reschedulingEventEmitter } from '../utils/customEventEmitters'
-import sendEmailWithHash from '../utils/encryption'
+import sendEmail from '../services/sendEmail'
+import generateAndShareHash from '../utils/encryption'
 
 class reschedulingController {
     prompt(req: Request, res: Response) {
@@ -8,7 +9,9 @@ class reschedulingController {
         let isPending = true
         const listenerId = `${appointment}`
 
-        sendEmailWithHash(appointment)
+        const hash = generateAndShareHash(appointment)
+        const emailType = 'rescheduling-prompt'
+        sendEmail(emailType, appointment, hash)
 
         isPending && reschedulingEventEmitter.once('prompt-handled' + listenerId, message => {
             res.status(200).send(message);
