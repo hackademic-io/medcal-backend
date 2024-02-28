@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import routes from './src/routes';
 import 'dotenv/config';
+import { consumeAppointmentQueue } from './src/controllers/appointmentQueueConsumer';
 
 const app = express();
 
@@ -10,7 +11,9 @@ app.use(cors({ origin: '*' }));
 
 const PORT = 3000;
 
-app.use('/api', routes);
+app.use('/', routes);
+
+consumeAppointmentQueue();
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT: ${PORT}`);
