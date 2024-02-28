@@ -5,13 +5,13 @@ import generateAndShareHash from '../utils/encryption'
 
 class reschedulingController {
     prompt(req: Request, res: Response) {
-        const { appointment } = req.body
+        const { currentAppointment, newAppointment } = req.body
         let isPending = true
-        const listenerId = `${appointment}`
+        const listenerId = `_${currentAppointment.id}_${newAppointment.id}`
 
-        const { hash, encryptionIV } = generateAndShareHash(appointment)
+        const { hash, encryptionIV } = generateAndShareHash(currentAppointment, newAppointment)
         const emailType = 'rescheduling-prompt'
-        sendEmail(emailType, appointment, hash, encryptionIV)
+        sendEmail(emailType, hash, encryptionIV, currentAppointment, newAppointment)
 
         isPending && reschedulingEventEmitter.once('prompt-handled' + listenerId, message => {
             res.status(200).send(message);
@@ -25,16 +25,16 @@ class reschedulingController {
     }
 
     confirm(req: Request, res: Response) {
-        const { appointment } = req.body
-        const listenerId = `${appointment}`
+        const { currentAppointmentId, newAppointmentId } = req.query
+        const listenerId = `_${currentAppointmentId}_${newAppointmentId}`
         console.log('rescheduling confirmed')
         reschedulingEventEmitter.emit('prompt-handled' + listenerId, 'confirmed')
         res.status(200).send('Your rescheduling confirmed')
     }
 
     reject(req: Request, res: Response) {
-        const { patient, appointment } = req.body
-        const listenerId = `${appointment}_${patient}`
+        const { currentAppointmentId, newAppointmentId } = req.query
+        const listenerId = `_${currentAppointmentId}_${newAppointmentId}`
         console.log('rescheduling rejected')
         reschedulingEventEmitter.emit('prompt-handled' + listenerId, 'rejected')
         res.status(200).send('Your rescheduling rejected')

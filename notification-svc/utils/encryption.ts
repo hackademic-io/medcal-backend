@@ -23,11 +23,13 @@ const encryptionIV = crypto
     .substring(0, 16)
 
 
-export default function generateAndShareHash(appointment: IAppointmentProps) {
+export default function generateAndShareHash(currentAppointment: IAppointmentProps, newAppointment?: IAppointmentProps) {
     const expirationDate = new Date();
     expirationDate.setHours(expirationDate.getHours() + 2);
-    const toEncrypt = {
-        id: appointment.id,
+    let toEncrypt = {}
+    toEncrypt = {
+        currId: currentAppointment.id,
+        prevId: newAppointment ? newAppointment.id : null,
         expirationDate,
     }
     const toEncryptString = JSON.stringify(toEncrypt)
