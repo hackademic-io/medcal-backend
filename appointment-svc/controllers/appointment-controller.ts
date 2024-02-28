@@ -20,6 +20,23 @@ class AppoinmentController {
     }
   }
 
+  async getBooked(req: Request, res: Response, next: NextFunction) {
+    let queryMaxDate = req.query.MaxDate as string;
+    let queryMinDate = req.query.MinDate as string;
+
+    try {
+      const bookedAppointments = await AppointmentRepository.getBooked(
+        queryMaxDate,
+        queryMinDate
+      );
+
+      res.json(bookedAppointments);
+    } catch (error) {
+      console.error('Error fetching booked appointments:', error);
+      res.status(500).json({ error: 'Error fetching booked appointments:' });
+    }
+  }
+
   async getOne(req: Request, res: Response, next: NextFunction) {
     const appointment_id = req.params.id;
 
