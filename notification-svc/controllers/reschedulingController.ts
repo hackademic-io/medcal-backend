@@ -9,9 +9,9 @@ class reschedulingController {
         let isPending = true
         const listenerId = `${appointment}`
 
-        const hash = generateAndShareHash(appointment)
+        const { hash, encryptionIV } = generateAndShareHash(appointment)
         const emailType = 'rescheduling-prompt'
-        sendEmail(emailType, appointment, hash)
+        sendEmail(emailType, appointment, hash, encryptionIV)
 
         isPending && reschedulingEventEmitter.once('prompt-handled' + listenerId, message => {
             res.status(200).send(message);

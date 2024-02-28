@@ -22,12 +22,6 @@ const encryptionIV = crypto
     .digest('hex')
     .substring(0, 16)
 
-function encryptData(data: string) {
-    const cipher = crypto.createCipheriv(ecnryption_method, key, encryptionIV)
-    return Buffer.from(
-        cipher.update(data, 'utf8', 'hex') + cipher.final('hex')
-    ).toString('base64')
-}
 
 export default function generateAndShareHash(appointment: IAppointmentProps) {
     const expirationDate = new Date();
@@ -37,17 +31,10 @@ export default function generateAndShareHash(appointment: IAppointmentProps) {
         expirationDate,
     }
     const toEncryptString = JSON.stringify(toEncrypt)
-    const hash = encryptData(toEncryptString)
+    const cipher = crypto.createCipheriv(ecnryption_method, key, encryptionIV)
+    const hash = Buffer.from(
+        cipher.update(toEncryptString, 'utf8', 'hex') + cipher.final('hex')
+    ).toString('base64')
 
-    fetch('http://localhost:3000/appointment/hash', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            hash,
-            encryptionIV,
-        })
-    })
-    return hash
+    return { hash, encryptionIV }
 }
