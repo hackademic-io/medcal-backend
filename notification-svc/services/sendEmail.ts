@@ -1,5 +1,8 @@
 import mailjet from 'node-mailjet'
 import { IAppointmentProps } from '../types/appointment.interface';
+import reschedulingEmailHTML from '../views/reschedulingEmail'
+import confirmationEmailHTML from '../views/confirmationEmail'
+
 require('dotenv').config();
 
 function sendEmail(emailType: string, hash: string, encryptionIV: string, currentAppointment: IAppointmentProps, newAppointment?: IAppointmentProps) {
@@ -21,11 +24,7 @@ function sendEmail(emailType: string, hash: string, encryptionIV: string, curren
 
                     "Subject": `Dear ${currentAppointment.first_name} ${currentAppointment.last_name}, we have an earlier appointment available for you on ${newAppointment.date} at ${newAppointment.time}.`,
                     "TextPart": `Dear ${newAppointment.first_name} ${newAppointment.last_name}`,
-                    "HTMLPart": `<h3>Dear patient, welcome to MedCal!</h3><br />
-            We wish you get better asap!<br /><br />
-            <a href="front-end-link?hash=${hash}&iv=${encryptionIV}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px;">Confirm</a><br /><br />
-            <a href="front-end-link?hash=${hash}&iv=${encryptionIV}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px;">Reject</a><br /><br />`
-
+                    "HTMLPart": reschedulingEmailHTML(currentAppointment, newAppointment, hash, encryptionIV)
                 }]
                 :
                 [{
@@ -35,15 +34,12 @@ function sendEmail(emailType: string, hash: string, encryptionIV: string, curren
                     },
                     "To": [{
                         "Email": "misha.fomenko00@gmail.com",
-                        "Name": "You"
+                        "Name": `${currentAppointment.first_name} ${currentAppointment.last_name}`
                     }],
 
                     "Subject": `Dear ${currentAppointment.first_name} ${currentAppointment.last_name}, are you still going to use your appointment on ${currentAppointment.date} at ${currentAppointment.time}?`,
-                    "TextPart": "My first Mailjet email",
-                    "HTMLPart": `<h3>Dear patient, welcome to MedCal!</h3><br />
-                We wish you get better asap!<br /><br />
-                <a href="link-to-be-determined" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px;">Confirm</a><br /><br />
-                <a href="link-to-be-determined" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px;">Cancel</a><br /><br />`
+                    "TextPart": `Dear ${currentAppointment.first_name} ${currentAppointment.last_name}`,
+                    "HTMLPart": confirmationEmailHTML(currentAppointment, hash, encryptionIV)
 
                 }]
     });

@@ -1,10 +1,10 @@
 import crypto, { CipherGCMTypes } from 'crypto'
 import { IAppointmentProps } from '../types/appointment.interface';
+require('dotenv').config()
 
 const secret_iv = crypto.randomBytes(16);
 const secret_key = process.env.HASH_SECRET_KEY
 const ecnryption_method = process.env.HASH_ENCRYPTION_METHOD as CipherGCMTypes
-
 
 if (!secret_key || !secret_iv || !ecnryption_method) {
     throw new Error('secretKey, secretIV, and ecnryptionMethod are required')
