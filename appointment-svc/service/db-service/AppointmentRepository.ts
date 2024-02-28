@@ -20,6 +20,23 @@ class AppointmentRepository {
     return appointments;
   }
 
+  async getBooked(queryMaxDate: string, queryMinDate: string) {
+    const appointmentsToConfirm = await prisma.appointment.findMany({
+      where: {
+        AND: [
+          { status: "BOOKED" },
+          {
+            date: {
+              gte: queryMinDate,
+              lt: queryMaxDate,
+            },
+          },
+        ]
+      },
+    });
+    return appointmentsToConfirm
+  }
+
   async getOne(id: string) {
     const appointment = await prisma.appointment.findFirst({
       where: { id },
