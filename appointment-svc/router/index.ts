@@ -38,7 +38,7 @@ router.delete(
 );
 
 router.delete(
-  '/appointment',
+  '/appointments',
   authMiddleware(),
   appointmentController.deleteMany
 );

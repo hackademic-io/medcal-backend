@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, query } from 'express';
 import AppointmentRepository from '../service/db-service/AppointmentRepository';
-import { IUpdateAppointmentProps } from '../types/appointment.interface';
+import { IUpdateAppointmentProps, AppointmentStatus } from '../types/appointment.interface';
 
 class AppoinmentController {
   async getAll(req: Request, res: Response, next: NextFunction) {
@@ -44,7 +44,7 @@ class AppoinmentController {
     try {
       const condition = {
         AND: [
-          { status: "BOOKED" },
+          { status: AppointmentStatus.BOOKED },
           {
             date: {
               gte: queryMinDate,
@@ -202,18 +202,18 @@ class AppoinmentController {
   }
 
   async deleteMany(req: Request, res: Response, next: NextFunction) {
-    const ignoredIds = req.body
+    const ignoredIds: string[] = req.body
     const condition = {
-      where: {
-        id: ignoredIds
-      }
+      AND: [
+        { status: AppointmentStatus.BOOKED },
+        { id: { in: ignoredIds } }
+      ]
     }
     const ignoredAppointments = await AppointmentRepository.getMany(condition)
+    const ignoredAppointmentIds = ignoredAppointments.map(appointment => appointment.id)
 
     try {
-      ignoredAppointments.forEach(async (appointment) => {
-        await AppointmentRepository.deleteOne(appointment.id)
-      })
+      await AppointmentRepository.deleteMany(ignoredAppointmentIds)
       res.status(200);
     } catch (error) {
       console.error('Error deleting appointment:', error);

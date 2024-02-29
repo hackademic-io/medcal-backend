@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import {
   IAppointmentProps,
   IUpdateAppointmentProps,
@@ -20,7 +20,7 @@ class AppointmentRepository {
     return appointments;
   }
 
-  async getMany(condition: Object) {
+  async getMany(condition: Prisma.AppointmentWhereInput) {
     const appointmentsToConfirm = await prisma.appointment.findMany({
       where: condition,
     });
@@ -73,6 +73,25 @@ class AppointmentRepository {
     });
 
     return deletedAppointment;
+  }
+
+  async deleteMany(ids: string[]) {
+    const deletedAppointments = await prisma.appointment.updateMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+      data: {
+        email: null,
+        first_name: null,
+        last_name: null,
+        open_to_earlier: false,
+        status: 'CANCELED',
+      },
+    });
+
+    return deletedAppointments;
   }
 
   async checkStatus(id: string) {

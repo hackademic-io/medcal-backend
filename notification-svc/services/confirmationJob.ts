@@ -39,7 +39,7 @@ const confirmationJob = () => {
         })
         const idsToConfirm = appointmentsToConfirm.map((appointment: IAppointmentProps) => appointment.id)
         setTimeout(async () => {
-            fetch("http://localhost:3000/appointment", {
+            fetch("http://localhost:3000/appointments", {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
