@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, query } from 'express';
 import AppointmentRepository from '../service/db-service/AppointmentRepository';
 import { IUpdateAppointmentProps } from '../types/appointment.interface';
 
@@ -17,6 +17,23 @@ class AppoinmentController {
     } catch (error) {
       console.error('Error fetching all appointments:', error);
       res.status(500).json({ error: 'Error fetching all appointments:' });
+    }
+  }
+
+  async getAvailableAppointment(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    let queryCurrentDate = req.query.currentDate as string;
+    let currentDate = new Date(queryCurrentDate);
+
+    try {
+      const availableAppointment =
+        await AppointmentRepository.getAvailableAppointment(currentDate);
+      res.json(availableAppointment);
+    } catch (error) {
+      res.status(500).json({ error: 'Error fetching available appointments' });
     }
   }
 

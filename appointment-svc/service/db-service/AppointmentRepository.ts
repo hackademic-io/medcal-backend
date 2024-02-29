@@ -1,4 +1,4 @@
-import { AppointmentStatus, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import {
   IAppointmentProps,
   IUpdateAppointmentProps,
@@ -115,6 +115,28 @@ class AppointmentRepository {
     });
 
     return isPendingStatus;
+  }
+
+  async getAvailableAppointment(currentDate: Date) {
+    const targetDate = new Date(currentDate);
+    targetDate.setDate(currentDate.getDate() + 1);
+
+    const availableAppointment = await prisma.appointment.findFirst({
+      where: {
+        open_to_earlier: true,
+        isPending: false,
+        date: {
+          gte: currentDate,
+          lte: targetDate,
+        },
+      },
+    });
+
+    if (!availableAppointment) {
+      console.log('No available appointment at this time');
+    }
+
+    return availableAppointment;
   }
 }
 
