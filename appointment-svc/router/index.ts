@@ -8,7 +8,7 @@ const router = Router();
 router.get('/appointments', appointmentController.getAll);
 router.get('/appointment/:id', authMiddleware(), appointmentController.getOne);
 router.get('/appointment/booked', appointmentController.getBooked);
-router.get('/appointment/open', appointmentController.getOpenAppointments);
+router.get('/appointments/open', appointmentController.getOpenAppointments);
 router.post('/appointment', authMiddleware(), appointmentController.createOne);
 router.put(
   '/appointment/:id',
