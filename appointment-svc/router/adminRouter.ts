@@ -11,10 +11,6 @@ adminRouter.post('/appointment', appointmentController.createOne);
 
 adminRouter.put('/appointment/:id', appointmentController.updateOne);
 adminRouter.put(
-  '/appointment/changeOpenToEarlierStatus/:id',
-  appointmentController.changeOpenToEarlier
-);
-adminRouter.put(
   '/appointment/changePendingStatus/:id',
   appointmentController.changeIsPending
 );

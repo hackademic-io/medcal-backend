@@ -164,24 +164,6 @@ class AppoinmentController {
     }
   }
 
-  async changeOpenToEarlier(req: Request, res: Response, next: NextFunction) {
-    const appointment_id = req.params.id;
-    const open_earlier_status = req.body.open_to_earlier;
-
-    try {
-      const appointmentOpenToEarlier =
-        await AppointmentRepository.changeOpenToEarlier(
-          appointment_id,
-          open_earlier_status
-        );
-
-      res.json(appointmentOpenToEarlier);
-    } catch (error) {
-      console.error('Error changing open_to_earlier value:', error);
-      res.status(500).json({ error: 'Error changing open_to_earlier value' });
-    }
-  }
-
   async changeIsPending(req: Request, res: Response, next: NextFunction) {
     const appointment_id = req.params.id;
     const is_pending_status = req.body.isPending;

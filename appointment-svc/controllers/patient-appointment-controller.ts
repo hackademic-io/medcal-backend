@@ -97,6 +97,22 @@ class PatientAppointmentController {
       res.status(500).json({ error: 'Error confirming appointment' });
     }
   }
+
+  async changeOpenToEarlier(req: Request, res: Response, next: NextFunction) {
+    const { decryptedData } = req.body;
+    try {
+      const appointmentOpenToEarlier =
+        await AppointmentRepository.changeOpenToEarlier(
+          decryptedData.current_app_id,
+          false
+        );
+
+      res.json(appointmentOpenToEarlier);
+    } catch (error) {
+      console.error('Error changing open_to_earlier value:', error);
+      res.status(500).json({ error: 'Error changing open_to_earlier value' });
+    }
+  }
 }
 
 export default new PatientAppointmentController();

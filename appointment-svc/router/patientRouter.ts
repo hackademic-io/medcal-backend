@@ -5,22 +5,23 @@ import hashMiddlware from '../middlewares/hash-middleware';
 const patientRouter = Router();
 
 patientRouter.put(
-  '/appointment/reschedule/:id',
+  '/appointment/reschedule',
+  hashMiddlware,
   patientAppointmentController.rescheduleAppointment
 );
 patientRouter.put(
-  '/appointment/confirm/:id',
+  '/appointment/confirm',
+  hashMiddlware,
   patientAppointmentController.confirmAppointment
 );
-
 patientRouter.delete(
-  '/appointment/:id',
+  '/appointment',
+  hashMiddlware,
   patientAppointmentController.cancelAppointment
 );
-
-patientRouter.post('/appointment/hash', hashMiddlware, (req, res) => {
-  const { decryptedData } = req.body;
-  res.send(decryptedData);
-});
+patientRouter.put(
+  '/appointment/changeOpenToEarlierStatus/:id',
+  patientAppointmentController.changeOpenToEarlier
+);
 
 export default patientRouter;
