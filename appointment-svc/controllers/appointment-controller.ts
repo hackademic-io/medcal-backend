@@ -132,14 +132,10 @@ class AppoinmentController {
 
   async confirmAppointment(req: Request, res: Response, next: NextFunction) {
     const appointment_id = req.params.id;
-    const { hash, encryptionIV } = req.body;
-    console.log(hash, encryptionIV);
 
     const currentStatus = await AppointmentRepository.checkStatus(
       appointment_id
     );
-
-    console.log(currentStatus);
 
     if (currentStatus === 'CONFIRMED') {
       return res.status(400).json({ error: 'Appointment already confirmed' });
@@ -188,8 +184,6 @@ class AppoinmentController {
 
   async deleteOne(req: Request, res: Response, next: NextFunction) {
     const appointment_id = req.params.id;
-    const { hash, encryptionIV } = req.body;
-    console.log(hash, encryptionIV);
 
     const currentStatus = await AppointmentRepository.checkStatus(
       appointment_id

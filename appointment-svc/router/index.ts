@@ -39,8 +39,6 @@ router.delete('/appointments', appointmentController.deleteMany);
 
 router.post('/appointment/hash', authMiddleware, (req, res) => {
   const { decryptedData } = req as IMiddlewareRequest;
-  console.log(decryptedData);
-
   res.send(decryptedData);
 });
 
