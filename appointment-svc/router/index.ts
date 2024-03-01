@@ -1,17 +1,19 @@
 import { Router } from 'express';
 import appointmentController from '../controllers/appointment-controller';
-import authMiddleware from '../middlewares/auth-middleware';
+import authMiddleware, {
+  IMiddlewareRequest,
+} from '../middlewares/auth-middleware';
 import decryptData from '../utils/decryption';
 
 const router = Router();
 
 router.get('/appointments', appointmentController.getAll);
-router.get('/appointment/:id', authMiddleware(), appointmentController.getOne);
+router.get('/appointment/:id', appointmentController.getOne);
 router.get('/appointment/booked', appointmentController.getBooked);
-router.post('/appointment', authMiddleware(), appointmentController.createOne);
+router.post('/appointment', appointmentController.createOne);
 router.put(
   '/appointment/:id',
-  authMiddleware(),
+
   appointmentController.updateOne
 );
 router.put(
@@ -33,18 +35,12 @@ router.put(
 
 router.delete('/appointment/:id', appointmentController.deleteOne);
 
-router.delete(
-  '/appointments',
-  authMiddleware(),
-  appointmentController.deleteMany
-);
+router.delete('/appointments', appointmentController.deleteMany);
 
-router.post('/appointment/hash', (req, res) => {
-  const { hash, encryptionIV } = req.body;
-  console.log(hash);
-  console.log(encryptionIV);
-  const decryptedString = decryptData(hash, encryptionIV);
-  const decryptedData = JSON.parse(decryptedString);
+router.post('/appointment/hash', authMiddleware, (req, res) => {
+  const { decryptedData } = req as IMiddlewareRequest;
+  console.log(decryptedData);
+
   res.send(decryptedData);
 });
 
