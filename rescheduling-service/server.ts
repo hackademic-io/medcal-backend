@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import routes from './src/routes';
 import 'dotenv/config';
-import { consumeAppointmentQueue } from './src/controllers/appointmentQueueConsumer';
+import { consumeAppointmentQueue } from './src/services/appointmentQueueConsumer';
 
 const app = express();
 
