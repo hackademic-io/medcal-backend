@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction, query } from 'express';
 import AppointmentRepository from '../service/db-service/AppointmentRepository';
-import { IUpdateAppointmentProps, AppointmentStatus } from '../types/appointment.interface';
+import {
+  IUpdateAppointmentProps,
+  AppointmentStatus,
+} from '../types/appointment.interface';
 
 class AppoinmentController {
   async getAll(req: Request, res: Response, next: NextFunction) {
@@ -51,8 +54,8 @@ class AppoinmentController {
               lt: queryMaxDate,
             },
           },
-        ]
-      }
+        ],
+      };
       const bookedAppointments = await AppointmentRepository.getMany(condition);
 
       res.json(bookedAppointments);
@@ -109,7 +112,7 @@ class AppoinmentController {
       email: appointment_data.email,
       open_to_earlier: false,
       isPending: false,
-      status: 'BOOKED',
+      status: AppointmentStatus.BOOKED,
     };
 
     try {
@@ -202,18 +205,17 @@ class AppoinmentController {
   }
 
   async deleteMany(req: Request, res: Response, next: NextFunction) {
-    const ignoredIds: string[] = req.body
+    const ignoredIds: string[] = req.body;
     const condition = {
-      AND: [
-        { status: AppointmentStatus.BOOKED },
-        { id: { in: ignoredIds } }
-      ]
-    }
-    const ignoredAppointments = await AppointmentRepository.getMany(condition)
-    const ignoredAppointmentIds = ignoredAppointments.map(appointment => appointment.id)
+      AND: [{ status: AppointmentStatus.BOOKED }, { id: { in: ignoredIds } }],
+    };
+    const ignoredAppointments = await AppointmentRepository.getMany(condition);
+    const ignoredAppointmentIds = ignoredAppointments.map(
+      (appointment) => appointment.id
+    );
 
     try {
-      await AppointmentRepository.deleteMany(ignoredAppointmentIds)
+      await AppointmentRepository.deleteMany(ignoredAppointmentIds);
       res.status(200);
     } catch (error) {
       console.error('Error deleting appointment:', error);
