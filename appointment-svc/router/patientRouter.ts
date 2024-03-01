@@ -20,7 +20,8 @@ patientRouter.delete(
   patientAppointmentController.cancelAppointment
 );
 patientRouter.put(
-  '/appointment/changeOpenToEarlierStatus/:id',
+  '/appointment/changeOpenToEarlierStatus',
+  hashMiddlware,
   patientAppointmentController.changeOpenToEarlier
 );
 
