@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
-const PORT = 3000;
+const PORT = 3002;
 
 app.use('/', routes);
 
