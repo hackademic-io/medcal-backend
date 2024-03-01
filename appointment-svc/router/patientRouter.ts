@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import patientAppointmentController from '../controllers/patient-appointment-controller';
+import hashMiddlware from '../middlewares/hash-middleware';
 
 const patientRouter = Router();
 
@@ -17,8 +18,9 @@ patientRouter.delete(
   patientAppointmentController.cancelAppointment
 );
 
-patientRouter.get('/appointment/hash', (req, res) => {
-  res.send('Connection good');
+patientRouter.post('/appointment/hash', hashMiddlware, (req, res) => {
+  const { decryptedData } = req.body;
+  res.send(decryptedData);
 });
 
 export default patientRouter;
