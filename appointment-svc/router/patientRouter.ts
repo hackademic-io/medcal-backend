@@ -15,7 +15,7 @@ patientRouter.put(
   patientAppointmentController.confirmAppointment
 );
 patientRouter.delete(
-  '/appointment',
+  '/appointment/cancel',
   hashMiddlware,
   patientAppointmentController.cancelAppointment
 );
