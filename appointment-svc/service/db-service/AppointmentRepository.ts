@@ -24,17 +24,17 @@ class AppointmentRepository {
     const appointmentsToConfirm = await prisma.appointment.findMany({
       where: {
         AND: [
-          { status: "BOOKED" },
+          { status: 'BOOKED' },
           {
             date: {
               gte: queryMinDate,
               lt: queryMaxDate,
             },
           },
-        ]
+        ],
       },
     });
-    return appointmentsToConfirm
+    return appointmentsToConfirm;
   }
 
   async getOne(id: string) {
@@ -147,6 +147,22 @@ class AppointmentRepository {
     }
 
     return availableAppointment;
+  }
+
+  async getOpenAppointments(currentDate: Date) {
+    const targetDate = new Date(currentDate);
+    targetDate.setDate(currentDate.getDate() + 1);
+
+    const openAppointments = await prisma.appointment.findMany({
+      where: {
+        date: {
+          gte: currentDate,
+          lte: targetDate,
+        },
+        status: 'CANCELED',
+      },
+    });
+    return openAppointments;
   }
 }
 
