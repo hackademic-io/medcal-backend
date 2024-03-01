@@ -1,9 +1,8 @@
 import cron from 'node-cron'
-import { PrismaClient } from '@prisma/client';
 import sendEmail from './sendEmail'
 import { IAppointmentProps } from '../types/appointment.interface';
+import generateAndShareHash from '../utils/encryption'
 
-const prisma = new PrismaClient();
 const confirmationJob = () => {
     cron.schedule('0 12 * * *', async () => {
 
@@ -32,24 +31,21 @@ const confirmationJob = () => {
                 console.error('There has been a problem with your fetch operation:', error);
             });
 
+
         const emailType = 'confimation'
-        appointmentsToConfirm.forEach((appointment: IAppointmentProps) => { sendEmail(emailType, appointment) })
+        appointmentsToConfirm.forEach((appointment: IAppointmentProps) => {
+            const { hash, encryptionIV } = generateAndShareHash(appointment)
+            sendEmail(emailType, hash, encryptionIV, appointment)
+        })
         const idsToConfirm = appointmentsToConfirm.map((appointment: IAppointmentProps) => appointment.id)
         setTimeout(async () => {
-            const ignoredAppointments = await prisma.appointment.findMany({
-                where: {
-                    id: {
-                        in: idsToConfirm
-                    }
-                }
-            })
-            ignoredAppointments.forEach((appointment: IAppointmentProps) => {
-                fetch(`http://localhost:3000/appointment/${appointment.id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: null
+            fetch("http://localhost:3000/appointments", {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    in: idsToConfirm
                 })
             })
         }, 1000 * 60 * 60 * 2)

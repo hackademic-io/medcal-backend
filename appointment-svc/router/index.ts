@@ -38,6 +38,12 @@ router.delete(
   appointmentController.deleteOne
 );
 
+router.delete(
+  '/appointments',
+  authMiddleware(),
+  appointmentController.deleteMany
+);
+
 router.post('/appointment/hash', (req, res) => {
   const { hash, encryptionIV } = req.body;
   const decryptedString = decryptData(hash, encryptionIV);
