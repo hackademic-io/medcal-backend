@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma, AppointmentStatus } from '@prisma/client';
 import {
   IAppointmentProps,
   IUpdateAppointmentProps,
@@ -24,7 +24,7 @@ class AppointmentRepository {
     const appointmentsToConfirm = await prisma.appointment.findMany({
       where: condition,
     });
-    return appointmentsToConfirm
+    return appointmentsToConfirm;
   }
 
   async getOne(id: string) {
@@ -107,7 +107,7 @@ class AppointmentRepository {
     const appointmentStatus = await prisma.appointment.update({
       where: { id },
       data: {
-        status: 'CONFIRMED',
+        status: AppointmentStatus.CONFIRMED,
       },
     });
 
