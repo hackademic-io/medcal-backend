@@ -57,6 +57,8 @@ class PatientAppointmentController {
   async cancelAppointment(req: Request, res: Response, next: NextFunction) {
     const { decryptedData } = req.body;
 
+    console.log(decryptedData);
+
     const currentStatus = await AppointmentRepository.checkStatus(
       decryptedData.current_app_id
     );

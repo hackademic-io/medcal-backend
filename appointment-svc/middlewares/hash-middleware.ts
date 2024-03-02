@@ -15,7 +15,7 @@ const hashMiddlware = (req: Request, res: Response, next: NextFunction) => {
     const currentDate = new Date();
     const expirationDate = new Date(decryptedData.expirationDate);
 
-    if (expirationDate > currentDate) {
+    if (expirationDate < currentDate) {
       return next(new Error('Hash expired'));
     }
 
