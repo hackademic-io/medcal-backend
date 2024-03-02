@@ -158,11 +158,11 @@ class AppointmentRepository {
     }
   }
 
-  async getOpenAppointments(currentDate: Date) {
+  async getCanceledAppointments(currentDate: Date) {
     const targetDate = new Date(currentDate);
     targetDate.setDate(currentDate.getDate() + 1);
 
-    const openAppointments = await prisma.appointment.findMany({
+    const canceledAppointments = await prisma.appointment.findMany({
       where: {
         date: {
           gte: currentDate,
@@ -171,7 +171,7 @@ class AppointmentRepository {
         status: 'CANCELED',
       },
     });
-    return openAppointments;
+    return canceledAppointments;
   }
 }
 

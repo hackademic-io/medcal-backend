@@ -257,15 +257,18 @@ class AppoinmentController {
     }
   }
 
-  async getOpenAppointments(req: Request, res: Response, next: NextFunction) {
+  async getCanceledAppointments(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     let queryCurrentDate = req.query.currentDate as string;
     let currentDate = new Date(queryCurrentDate);
 
     try {
-      const openAppointments = await AppointmentRepository.getOpenAppointments(
-        currentDate
-      );
-      res.json(openAppointments);
+      const canceledAppointments =
+        await AppointmentRepository.getCanceledAppointments(currentDate);
+      res.json(canceledAppointments);
     } catch (error) {
       res.status(500).json({ error: 'Error fetching open appointments' });
     }
