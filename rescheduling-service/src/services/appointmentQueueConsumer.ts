@@ -21,7 +21,7 @@ async function consumeAppointmentQueue() {
         // Will change the static date to the current date in production since db only has March dates
         const availableAppointment =
           await AppointmentRepository.getAvailableAppointment(
-            new Date(2024, 2, 8)
+            new Date(2024, 2, 15)
           );
 
         await AppointmentRepository.changeIsPendingValue(
