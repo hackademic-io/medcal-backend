@@ -7,8 +7,7 @@ export interface IAppointmentProps {
   date: Date;
   time: string;
   isPending: boolean;
-  // status: 'BOOKED' | 'CANCELED' | 'CONFIRMED';
-  status: AppointmentStatus
+  status: AppointmentStatus;
 }
 
 export interface IUpdateAppointmentProps {
@@ -17,12 +16,11 @@ export interface IUpdateAppointmentProps {
   last_name: string | null;
   open_to_earlier: boolean;
   isPending: boolean;
-  // status: 'BOOKED' | 'CANCELED' | 'CONFIRMED';
-  status: AppointmentStatus
+  status: AppointmentStatus;
 }
 
 export enum AppointmentStatus {
-  BOOKED = "BOOKED",
-  CANCELED = "CANCELED",
-  CONFIRMED = "CONFIRMED",
+  BOOKED = 'BOOKED',
+  CANCELED = 'CANCELED',
+  CONFIRMED = 'CONFIRMED',
 }

@@ -1,7 +1,9 @@
 import express, { Express } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import router from './router';
+
+import adminRouter from './router/adminRouter';
+import patientRouter from './router/patientRouter';
 
 dotenv.config();
 
@@ -14,9 +16,9 @@ const PORT =
 
 app.use(express.json());
 app.use(cors({ origin: '*' }));
-app.use('/', router);
+app.use('/', adminRouter);
+app.use('/patient', patientRouter);
 
 app.listen(PORT, () => {
   console.log(`server is listening to port ${PORT}`);
 });
-
