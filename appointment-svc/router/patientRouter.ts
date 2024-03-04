@@ -1,28 +1,28 @@
-import { Router } from 'express';
-import patientAppointmentController from '../controllers/patient-appointment-controller';
-import hashMiddlware from '../middlewares/hash-middleware';
+import { Router } from "express";
+import patientAppointmentController from "../controllers/patient-appointment-controller";
+import hashMiddlware from "../middlewares/hash-middleware";
 
 const patientRouter = Router();
 
 patientRouter.put(
-  '/appointment/reschedule',
+  "/appointment/reschedule",
   hashMiddlware,
-  patientAppointmentController.rescheduleAppointment
+  patientAppointmentController.rescheduleAppointment,
 );
 patientRouter.put(
-  '/appointment/confirm',
+  "/appointment/reject-reschedule",
   hashMiddlware,
-  patientAppointmentController.confirmAppointment
+  patientAppointmentController.rejectRescheduleAppointment,
+);
+patientRouter.put(
+  "/appointment/confirm",
+  hashMiddlware,
+  patientAppointmentController.confirmAppointment,
 );
 patientRouter.delete(
-  '/appointment/cancel',
+  "/appointment/cancel",
   hashMiddlware,
-  patientAppointmentController.cancelAppointment
-);
-patientRouter.put(
-  '/appointment/changeOpenToEarlierStatus',
-  hashMiddlware,
-  patientAppointmentController.changeOpenToEarlier
+  patientAppointmentController.cancelAppointment,
 );
 
 export default patientRouter;

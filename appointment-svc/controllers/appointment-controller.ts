@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction, query } from 'express';
-import AppointmentRepository from '../service/db-service/AppointmentRepository';
+import { Request, Response, NextFunction, query } from "express";
+import AppointmentRepository from "../service/db-service/AppointmentRepository";
 import {
   IUpdateAppointmentProps,
   AppointmentStatus,
-} from '../types/appointment.interface';
+} from "../types/appointment.interface";
 
 class AppoinmentController {
   async getAll(req: Request, res: Response, next: NextFunction) {
@@ -13,20 +13,20 @@ class AppoinmentController {
     try {
       const appointments = await AppointmentRepository.getAll(
         queryMaxDate,
-        queryMinDate
+        queryMinDate,
       );
 
       res.json(appointments);
     } catch (error) {
-      console.error('Error fetching all appointments:', error);
-      res.status(500).json({ error: 'Error fetching all appointments:' });
+      console.error("Error fetching all appointments:", error);
+      res.status(500).json({ error: "Error fetching all appointments:" });
     }
   }
 
   async getAvailableAppointment(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) {
     let queryCurrentDate = req.query.currentDate as string;
     let currentDate = new Date(queryCurrentDate);
@@ -36,7 +36,7 @@ class AppoinmentController {
         await AppointmentRepository.getAvailableAppointment(currentDate);
       res.json(availableAppointment);
     } catch (error) {
-      res.status(500).json({ error: 'Error fetching available appointments' });
+      res.status(500).json({ error: "Error fetching available appointments" });
     }
   }
 
@@ -60,8 +60,8 @@ class AppoinmentController {
 
       res.json(bookedAppointments);
     } catch (error) {
-      console.error('Error fetching booked appointments:', error);
-      res.status(500).json({ error: 'Error fetching booked appointments:' });
+      console.error("Error fetching booked appointments:", error);
+      res.status(500).json({ error: "Error fetching booked appointments:" });
     }
   }
 
@@ -72,8 +72,8 @@ class AppoinmentController {
       const appointment = await AppointmentRepository.getOne(appointment_id);
       res.json(appointment);
     } catch (error) {
-      console.error('Error fetching all appointments:', error);
-      res.status(500).json({ error: 'Error getting one appointment:' });
+      console.error("Error fetching all appointments:", error);
+      res.status(500).json({ error: "Error getting one appointment:" });
     }
   }
 
@@ -84,12 +84,12 @@ class AppoinmentController {
     try {
       const appointment = await AppointmentRepository.updateOne(
         appointment_data,
-        appointment_id
+        appointment_id,
       );
       res.json(appointment);
     } catch (error) {
-      console.error('Error updating one appointment:', error);
-      res.status(500).json({ error: 'Error updating appointment' });
+      console.error("Error updating one appointment:", error);
+      res.status(500).json({ error: "Error updating appointment" });
     }
   }
 
@@ -97,51 +97,48 @@ class AppoinmentController {
     const appointment_data = req.body;
 
     const validTimes = [
-      '08:00 AM',
-      '09:00 AM',
-      '10:00 AM',
-      '01:00 PM',
-      '02:00 PM',
-      '03:00 PM',
+      "08:00 AM",
+      "09:00 AM",
+      "10:00 AM",
+      "01:00 PM",
+      "02:00 PM",
+      "03:00 PM",
     ];
 
     if (!validTimes.includes(appointment_data.time)) {
-      const validTimeSlots = validTimes.join(', ');
+      const validTimeSlots = validTimes.join(", ");
       res.status(500).json({
         error: `Error creating appointment, time should be one of these slots: ${validTimeSlots}`,
       });
     }
 
     try {
-      const appointment = await AppointmentRepository.createOne(
-        appointment_data
-      );
+      const appointment =
+        await AppointmentRepository.createOne(appointment_data);
       res.json(appointment);
     } catch (error) {
-      console.error('Error creating appointment:', error);
-      res.status(500).json({ error: 'Error creating appointment' });
+      console.error("Error creating appointment:", error);
+      res.status(500).json({ error: "Error creating appointment" });
     }
   }
 
   async deleteOne(req: Request, res: Response, next: NextFunction) {
     const appointment_id = req.params.id;
 
-    const currentStatus = await AppointmentRepository.checkStatus(
-      appointment_id
-    );
+    const currentStatus =
+      await AppointmentRepository.checkStatus(appointment_id);
 
-    if (currentStatus === 'CANCELED') {
-      return res.status(400).json({ error: 'Appointment already canceled' });
+    if (currentStatus === "CANCELED") {
+      return res.status(400).json({ error: "Appointment already canceled" });
     }
 
     try {
-      const canceledAppointment = await AppointmentRepository.deleteOne(
-        appointment_id
-      );
+      const canceledAppointment =
+        await AppointmentRepository.deleteOne(appointment_id);
       res.json(canceledAppointment);
     } catch (error) {
-      console.error('Error deleting appointment:', error);
-      res.status(500).json({ error: 'Error canceling appointment' });
+      console.error("Error deleting appointment:", error);
+      res.status(500).json({ error: "Error canceling appointment" });
     }
   }
 
@@ -152,15 +149,15 @@ class AppoinmentController {
     };
     const ignoredAppointments = await AppointmentRepository.getMany(condition);
     const ignoredAppointmentIds = ignoredAppointments.map(
-      (appointment) => appointment.id
+      (appointment) => appointment.id,
     );
 
     try {
       await AppointmentRepository.deleteMany(ignoredAppointmentIds);
       res.status(200);
     } catch (error) {
-      console.error('Error deleting appointment:', error);
-      res.status(500).json({ error: 'Error canceling appointment' });
+      console.error("Error deleting appointment:", error);
+      res.status(500).json({ error: "Error canceling appointment" });
     }
   }
 
@@ -171,12 +168,12 @@ class AppoinmentController {
     try {
       const isPendingStatus = await AppointmentRepository.changeIsPendingValue(
         appointment_id,
-        is_pending_status
+        is_pending_status,
       );
       res.json(isPendingStatus);
     } catch (error) {
-      console.error('Error changing isPending value:', error);
-      res.status(500).json({ error: 'Error changing isPending value' });
+      console.error("Error changing isPending value:", error);
+      res.status(500).json({ error: "Error changing isPending value" });
     }
   }
 }

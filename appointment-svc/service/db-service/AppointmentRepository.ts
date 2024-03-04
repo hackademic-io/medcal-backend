@@ -1,8 +1,8 @@
-import { PrismaClient, Prisma, AppointmentStatus } from '@prisma/client';
+import { PrismaClient, Prisma, AppointmentStatus } from "@prisma/client";
 import {
   IAppointmentProps,
   IUpdateAppointmentProps,
-} from '../../types/appointment.interface';
+} from "../../types/appointment.interface";
 
 const prisma = new PrismaClient();
 
@@ -68,7 +68,7 @@ class AppointmentRepository {
         first_name: null,
         last_name: null,
         open_to_earlier: false,
-        status: 'CANCELED',
+        status: "CANCELED",
       },
     });
 
@@ -87,7 +87,7 @@ class AppointmentRepository {
         first_name: null,
         last_name: null,
         open_to_earlier: false,
-        status: 'CANCELED',
+        status: "CANCELED",
       },
     });
 
@@ -152,7 +152,7 @@ class AppointmentRepository {
     });
 
     if (!availableAppointment) {
-      console.log('No available appointment at this time');
+      console.log("No available appointment at this time");
     }
 
     return availableAppointment;

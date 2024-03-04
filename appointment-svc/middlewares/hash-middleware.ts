@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
-import decryptData from '../utils/decryption';
+import { Request, Response, NextFunction } from "express";
+import decryptData from "../utils/decryption";
 
 const hashMiddlware = (req: Request, res: Response, next: NextFunction) => {
   const { hash, encryptionIV } = req.body;
 
   if (!hash || !encryptionIV) {
-    return next(new Error('Hash or EncryptionIV is missing'));
+    return next(new Error("Hash or EncryptionIV is missing"));
   }
 
   try {
@@ -16,12 +16,12 @@ const hashMiddlware = (req: Request, res: Response, next: NextFunction) => {
     const expirationDate = new Date(decryptedData.expirationDate);
 
     if (expirationDate < currentDate) {
-      return next(new Error('Hash expired'));
+      return next(new Error("Hash expired"));
     }
 
     req.body.decryptedData = decryptedData;
   } catch (error) {
-    return next(new Error('Error decrypting the hash:' + error));
+    return next(new Error("Error decrypting the hash:" + error));
   }
 
   next();
