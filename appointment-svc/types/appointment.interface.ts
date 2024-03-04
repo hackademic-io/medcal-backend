@@ -20,7 +20,7 @@ export interface IUpdateAppointmentProps {
 }
 
 export enum AppointmentStatus {
-  BOOKED = 'BOOKED',
-  CANCELED = 'CANCELED',
-  CONFIRMED = 'CONFIRMED',
+  BOOKED = "BOOKED",
+  CANCELED = "CANCELED",
+  CONFIRMED = "CONFIRMED",
 }
