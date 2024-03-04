@@ -65,8 +65,8 @@ function confirmationEmailHTML(
             <p>Date: <strong>${currentAppointment.date}</strong><br>
             Time: <strong>${currentAppointment.time}</strong></p>
             <p>Please confirm your attendance or cancel if you're unable to make it using the links below:</p>
-            <a href="link-to-confirm" class="btn">Confirm Appointment</a>
-            <a href="link-to-cancel" class="btn">Cancel Appointment</a>
+            <a href="${process.env.FRONTEND_URL}/appointment/confirm?hash=${hash}&iv=${encryptionIV}"" class="btn">Confirm Appointment</a>
+            <a href="${process.env.FRONTEND_URL}/appointment/cancel?hash=${hash}&iv=${encryptionIV}"" class="btn">Cancel Appointment</a>
             <p class="expiration-note">Please note, that if you do not confirm your appointment within 24 hours, it will be automatically canceled.</p>
             <p>Your health is our top priority, and we're here to assist you every step of the way.</p>
             <p>Warm regards,</p>

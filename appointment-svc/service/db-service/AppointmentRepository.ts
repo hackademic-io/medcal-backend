@@ -1,8 +1,8 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma, AppointmentStatus } from "@prisma/client";
 import {
   IAppointmentProps,
   IUpdateAppointmentProps,
-} from '../../types/appointment.interface';
+} from "../../types/appointment.interface";
 
 const prisma = new PrismaClient();
 
@@ -24,7 +24,7 @@ class AppointmentRepository {
     const appointmentsToConfirm = await prisma.appointment.findMany({
       where: condition,
     });
-    return appointmentsToConfirm
+    return appointmentsToConfirm;
   }
 
   async getOne(id: string) {
@@ -68,7 +68,7 @@ class AppointmentRepository {
         first_name: null,
         last_name: null,
         open_to_earlier: false,
-        status: 'CANCELED',
+        status: "CANCELED",
       },
     });
 
@@ -87,7 +87,7 @@ class AppointmentRepository {
         first_name: null,
         last_name: null,
         open_to_earlier: false,
-        status: 'CANCELED',
+        status: "CANCELED",
       },
     });
 
@@ -107,7 +107,7 @@ class AppointmentRepository {
     const appointmentStatus = await prisma.appointment.update({
       where: { id },
       data: {
-        status: 'CONFIRMED',
+        status: AppointmentStatus.CONFIRMED,
       },
     });
 
@@ -152,7 +152,7 @@ class AppointmentRepository {
     });
 
     if (!availableAppointment) {
-      console.log('No available appointment at this time');
+      console.log("No available appointment at this time");
     }
 
     return availableAppointment;
