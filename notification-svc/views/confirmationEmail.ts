@@ -1,7 +1,11 @@
-import { IAppointmentProps } from '../types/appointment.interface';
+import { IAppointmentProps } from "../types/appointment.interface";
 
-function confirmationEmailHTML(currentAppointment: IAppointmentProps, hash: string, encryptionIV: string): string {
-    const html = `<!DOCTYPE html>
+function confirmationEmailHTML(
+  currentAppointment: IAppointmentProps,
+  hash: string,
+  encryptionIV: string
+): string {
+  const html = `<!DOCTYPE html>
 <html>
 <head>
     <style>
@@ -73,8 +77,8 @@ function confirmationEmailHTML(currentAppointment: IAppointmentProps, hash: stri
         </div>
     </div>
 </body>
-</html>`
-    return html
+</html>`;
+  return html;
 }
 
-export default confirmationEmailHTML
+export default confirmationEmailHTML;
