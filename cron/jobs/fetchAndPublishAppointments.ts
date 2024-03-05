@@ -2,11 +2,12 @@ import { publishAppointmentsToQueue } from "../../appointment-svc/service/publis
 import axios from "axios";
 
 export async function fetchAndPublishAppointments() {
-  const currentDate = new Date();
+  const currentDate = new Date().toDateString();
   const response = await axios.get(
-    `http://localhost:3000/appointment/canceled?currentDate=${currentDate}`
+    `http://localhost:3000/appointments/canceled?currentDate=${currentDate}`
   );
   const canceledAppointments = response.data;
+  console.log(response.data);
 
   publishAppointmentsToQueue(canceledAppointments);
 }
