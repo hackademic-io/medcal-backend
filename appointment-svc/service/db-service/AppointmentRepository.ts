@@ -157,22 +157,6 @@ class AppointmentRepository {
       return availableAppointment;
     }
   }
-
-  async getCanceledAppointments(currentDate: Date) {
-    const targetDate = new Date(currentDate);
-    targetDate.setDate(currentDate.getDate() + 1);
-
-    const condition: Prisma.AppointmentWhereInput = {
-      date: {
-        gte: currentDate,
-        lte: targetDate,
-      },
-      status: "CANCELED",
-    };
-
-    const canceledAppointments = await this.getMany(condition);
-    return canceledAppointments;
-  }
 }
 
 export default new AppointmentRepository();

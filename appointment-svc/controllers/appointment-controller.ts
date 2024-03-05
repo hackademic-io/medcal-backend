@@ -184,10 +184,20 @@ class AppoinmentController {
   ) {
     let queryCurrentDate = req.query.currentDate as string;
     let currentDate = new Date(queryCurrentDate);
+    let targetDate = new Date(currentDate);
+    targetDate.setDate(currentDate.getDate() + 1);
+
+    const condition = {
+      date: {
+        gte: currentDate,
+        lte: targetDate,
+      },
+      status: AppointmentStatus.CANCELED,
+    };
 
     try {
       const canceledAppointments =
-        await AppointmentRepository.getCanceledAppointments(currentDate);
+        await AppointmentRepository.getMany(condition);
       res.json(canceledAppointments);
     } catch (error) {
       res.status(500).json({ error: 'Error fetching open appointments' });
