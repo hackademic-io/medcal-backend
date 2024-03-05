@@ -1,8 +1,8 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma } from "@prisma/client";
 import {
   IAppointmentProps,
   IUpdateAppointmentProps,
-} from '../../types/appointment.interface';
+} from "../../types/appointment.interface";
 
 const prisma = new PrismaClient();
 
@@ -68,7 +68,7 @@ class AppointmentRepository {
         first_name: null,
         last_name: null,
         open_to_earlier: false,
-        status: 'CANCELED',
+        status: "CANCELED",
       },
     });
 
@@ -87,7 +87,7 @@ class AppointmentRepository {
         first_name: null,
         last_name: null,
         open_to_earlier: false,
-        status: 'CANCELED',
+        status: "CANCELED",
       },
     });
 
@@ -107,7 +107,7 @@ class AppointmentRepository {
     const appointmentStatus = await prisma.appointment.update({
       where: { id },
       data: {
-        status: 'CONFIRMED',
+        status: "CONFIRMED",
       },
     });
 
@@ -152,7 +152,7 @@ class AppointmentRepository {
     });
 
     if (!availableAppointment) {
-      console.log('No available appointment at this time');
+      console.log("No available appointment at this time");
     } else {
       return availableAppointment;
     }
@@ -162,15 +162,15 @@ class AppointmentRepository {
     const targetDate = new Date(currentDate);
     targetDate.setDate(currentDate.getDate() + 1);
 
-    const canceledAppointments = await prisma.appointment.findMany({
-      where: {
-        date: {
-          gte: currentDate,
-          lte: targetDate,
-        },
-        status: 'CANCELED',
+    const condition: Prisma.AppointmentWhereInput = {
+      date: {
+        gte: currentDate,
+        lte: targetDate,
       },
-    });
+      status: "CANCELED",
+    };
+
+    const canceledAppointments = await this.getMany(condition);
     return canceledAppointments;
   }
 }
