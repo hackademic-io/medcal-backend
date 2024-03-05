@@ -1,10 +1,12 @@
 import { publishAppointmentsToQueue } from "../../appointment-svc/service/publishAppointmentsToQueue";
-import AppointmentRepository from "../../appointment-svc/service/db-service/AppointmentRepository";
+import axios from "axios";
 
 export async function fetchAndPublishAppointments() {
-  const currentDate = new Date(2024, 2, 9);
-  const canceledAppointments =
-    await AppointmentRepository.getCanceledAppointments(currentDate);
+  const currentDate = new Date();
+  const response = await axios.get(
+    `http://localhost:3000/appointment/canceled?currentDate=${currentDate}`
+  );
+  const canceledAppointments = response.data;
 
   publishAppointmentsToQueue(canceledAppointments);
 }

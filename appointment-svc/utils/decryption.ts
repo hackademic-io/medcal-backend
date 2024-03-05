@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 import crypto, { CipherGCMTypes } from "crypto";
 
 const secret_key = process.env.HASH_SECRET_KEY;
@@ -15,13 +17,13 @@ const key = crypto
 
 export default function decryptData(
   encryptedData: string,
-  encryptionIV: string,
+  encryptionIV: string
 ) {
   const buff = Buffer.from(encryptedData, "base64");
   const decipher = crypto.createDecipheriv(
     ecnryption_method,
     key,
-    encryptionIV,
+    encryptionIV
   );
   return (
     decipher.update(buff.toString("utf8"), "hex", "utf8") +

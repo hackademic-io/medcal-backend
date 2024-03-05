@@ -13,7 +13,7 @@ class AppoinmentController {
     try {
       const appointments = await AppointmentRepository.getAll(
         queryMaxDate,
-        queryMinDate,
+        queryMinDate
       );
 
       res.json(appointments);
@@ -67,7 +67,7 @@ class AppoinmentController {
     try {
       const appointment = await AppointmentRepository.updateOne(
         appointment_data,
-        appointment_id,
+        appointment_id
       );
       res.json(appointment);
     } catch (error) {
@@ -132,7 +132,7 @@ class AppoinmentController {
     };
     const ignoredAppointments = await AppointmentRepository.getMany(condition);
     const ignoredAppointmentIds = ignoredAppointments.map(
-      (appointment) => appointment.id,
+      (appointment) => appointment.id
     );
 
     try {
@@ -151,7 +151,7 @@ class AppoinmentController {
     try {
       const isPendingStatus = await AppointmentRepository.changeIsPendingValue(
         appointment_id,
-        is_pending_status,
+        is_pending_status
       );
       res.json(isPendingStatus);
     } catch (error) {
@@ -173,7 +173,7 @@ class AppoinmentController {
         await AppointmentRepository.getAvailableAppointment(currentDate);
       res.json(availableAppointment);
     } catch (error) {
-      res.status(500).json({ error: 'Error fetching available appointments' });
+      res.status(500).json({ error: "Error fetching available appointments" });
     }
   }
 
@@ -200,7 +200,7 @@ class AppoinmentController {
         await AppointmentRepository.getMany(condition);
       res.json(canceledAppointments);
     } catch (error) {
-      res.status(500).json({ error: 'Error fetching open appointments' });
+      res.status(500).json({ error: "Error fetching open appointments" });
     }
   }
 }
