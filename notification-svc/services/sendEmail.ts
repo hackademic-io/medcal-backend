@@ -10,14 +10,14 @@ function sendEmail(
   hash: string,
   encryptionIV: string,
   currentAppointment: IAppointmentProps,
-  newAppointment?: IAppointmentProps,
+  newAppointment?: IAppointmentProps
 ) {
   const mailjetConnection =
     process.env.MAILJET_SECRET_KEY &&
     process.env.MAILJET_PUBLIC_KEY &&
     mailjet.apiConnect(
       process.env.MAILJET_PUBLIC_KEY,
-      process.env.MAILJET_SECRET_KEY,
+      process.env.MAILJET_SECRET_KEY
     );
 
   mailjetConnection &&
@@ -43,7 +43,7 @@ function sendEmail(
                   currentAppointment,
                   newAppointment,
                   hash,
-                  encryptionIV,
+                  encryptionIV
                 ),
               },
             ]
@@ -65,7 +65,7 @@ function sendEmail(
                 HTMLPart: confirmationEmailHTML(
                   currentAppointment,
                   hash,
-                  encryptionIV,
+                  encryptionIV
                 ),
               },
             ],

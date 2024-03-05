@@ -1,10 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import decryptData from "../utils/decryption";
 
 const dataValidationMiddlware = (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   const { open_appointment_id, current_appointment_id, status } = req.body;
 
