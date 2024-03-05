@@ -1,5 +1,5 @@
 import * as amqp from "amqplib";
-import NotificationService from "./NotificationService";
+import NotificationService from "../services/NotificationService";
 import AppointmentRepository from "../../../appointment-svc/service/db-service/AppointmentRepository";
 
 async function consumeAppointmentQueue() {
