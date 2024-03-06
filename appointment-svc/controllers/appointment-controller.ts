@@ -13,7 +13,7 @@ class AppoinmentController {
     try {
       const appointments = await AppointmentRepository.getAll(
         queryMaxDate,
-        queryMinDate,
+        queryMinDate
       );
 
       res.json(appointments);
@@ -26,7 +26,7 @@ class AppoinmentController {
   async getAvailableAppointment(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) {
     let queryCurrentDate = req.query.currentDate as string;
     let currentDate = new Date(queryCurrentDate);
@@ -84,7 +84,7 @@ class AppoinmentController {
     try {
       const appointment = await AppointmentRepository.updateOne(
         appointment_data,
-        appointment_id,
+        appointment_id
       );
       res.json(appointment);
     } catch (error) {
@@ -149,7 +149,7 @@ class AppoinmentController {
     };
     const ignoredAppointments = await AppointmentRepository.getMany(condition);
     const ignoredAppointmentIds = ignoredAppointments.map(
-      (appointment) => appointment.id,
+      (appointment) => appointment.id
     );
 
     try {
@@ -168,7 +168,7 @@ class AppoinmentController {
     try {
       const isPendingStatus = await AppointmentRepository.changeIsPendingValue(
         appointment_id,
-        is_pending_status,
+        is_pending_status
       );
       res.json(isPendingStatus);
     } catch (error) {
