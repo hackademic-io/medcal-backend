@@ -5,7 +5,13 @@ const hashMiddlware = (req: Request, res: Response, next: NextFunction) => {
   const { hash, encryptionIV } = req.body;
 
   if (!hash || !encryptionIV) {
-    return next(new Error("Hash or EncryptionIV is missing"));
+    console.log(new Error("Hash or EncryptionIV is missing"));
+    return res
+      .status(500)
+      .json({
+        error:
+          "We're sorry, but the link you've provided is invalid. Please double-check and try again.",
+      });
   }
 
   try {
@@ -15,13 +21,17 @@ const hashMiddlware = (req: Request, res: Response, next: NextFunction) => {
     const currentDate = new Date();
     const expirationDate = new Date(decryptedData.expirationDate);
 
-    if (expirationDate < currentDate) {
-      return next(new Error("Hash expired"));
+    if (expirationDate > currentDate) {
+      console.log(new Error("Hash expired"));
+      return res.status(500).json({ error: "Link expired" });
     }
 
     req.body.decryptedData = decryptedData;
   } catch (error) {
-    return next(new Error("Error decrypting the hash:" + error));
+    console.log(new Error("Error decrypting the hash" + error));
+    return res
+      .status(500)
+      .json({ error: "Something wrong with the link, please contact support" });
   }
 
   next();
