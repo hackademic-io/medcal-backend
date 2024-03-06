@@ -6,14 +6,14 @@ class NotificationService {
     console.log("pendingAppointment:", pendingAppointment);
 
     const data = {
-      appointmentData,
-      pendingAppointment,
+      currentAppointment: appointmentData,
+      newAppointment: pendingAppointment,
     };
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/notification/rescheduling-prompt",
-        data,
+        "http://localhost:3003/notification/rescheduling-prompt",
+        data
       );
 
       console.log("successfully sent msg");
@@ -22,7 +22,7 @@ class NotificationService {
         console.log(
           "Failed to send rescheduling prompt",
           response.status,
-          response.data,
+          response.data
         );
         throw new Error("Failed to send rescheduling prompt");
       }

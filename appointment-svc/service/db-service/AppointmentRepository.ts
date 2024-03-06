@@ -153,9 +153,9 @@ class AppointmentRepository {
 
     if (!availableAppointment) {
       console.log("No available appointment at this time");
+    } else {
+      return availableAppointment;
     }
-
-    return availableAppointment;
   }
 }
 

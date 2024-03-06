@@ -13,30 +13,13 @@ class AppoinmentController {
     try {
       const appointments = await AppointmentRepository.getAll(
         queryMaxDate,
-        queryMinDate,
+        queryMinDate
       );
 
       res.json(appointments);
     } catch (error) {
       console.error("Error fetching all appointments:", error);
       res.status(500).json({ error: "Error fetching all appointments:" });
-    }
-  }
-
-  async getAvailableAppointment(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) {
-    let queryCurrentDate = req.query.currentDate as string;
-    let currentDate = new Date(queryCurrentDate);
-
-    try {
-      const availableAppointment =
-        await AppointmentRepository.getAvailableAppointment(currentDate);
-      res.json(availableAppointment);
-    } catch (error) {
-      res.status(500).json({ error: "Error fetching available appointments" });
     }
   }
 
@@ -84,7 +67,7 @@ class AppoinmentController {
     try {
       const appointment = await AppointmentRepository.updateOne(
         appointment_data,
-        appointment_id,
+        appointment_id
       );
       res.json(appointment);
     } catch (error) {
@@ -149,7 +132,7 @@ class AppoinmentController {
     };
     const ignoredAppointments = await AppointmentRepository.getMany(condition);
     const ignoredAppointmentIds = ignoredAppointments.map(
-      (appointment) => appointment.id,
+      (appointment) => appointment.id
     );
 
     try {
@@ -168,12 +151,57 @@ class AppoinmentController {
     try {
       const isPendingStatus = await AppointmentRepository.changeIsPendingValue(
         appointment_id,
-        is_pending_status,
+        is_pending_status
       );
       res.json(isPendingStatus);
     } catch (error) {
       console.error("Error changing isPending value:", error);
       res.status(500).json({ error: "Error changing isPending value" });
+    }
+  }
+
+  async getAvailableAppointment(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    let queryCurrentDate = req.query.currentDate as string;
+    let currentDate = new Date(queryCurrentDate);
+
+    try {
+      const availableAppointment =
+        await AppointmentRepository.getAvailableAppointment(currentDate);
+      res.json(availableAppointment);
+    } catch (error) {
+      res.status(500).json({ error: "Error fetching available appointments" });
+    }
+  }
+
+  async getCanceledAppointments(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    console.log(req.query.currentDate);
+    let queryCurrentDate = req.query.currentDate as string;
+    let currentDate = new Date(queryCurrentDate);
+    let targetDate = new Date(currentDate);
+    targetDate.setDate(currentDate.getDate() + 1);
+
+    const condition = {
+      date: {
+        gte: currentDate,
+        lte: targetDate,
+      },
+      status: AppointmentStatus.CANCELED,
+    };
+
+    try {
+      const canceledAppointments =
+        await AppointmentRepository.getMany(condition);
+      res.json(canceledAppointments);
+    } catch (error) {
+      res.status(500).json({ error: "Error fetching open appointments" });
     }
   }
 }
