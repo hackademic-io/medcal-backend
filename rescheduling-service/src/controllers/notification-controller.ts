@@ -2,10 +2,13 @@ import NotificationService from "../services/NotificationService";
 
 class NotificationController {
   async sendReschedulingPrompt(req, res) {
-    const { email, appointmentData } = req.body;
+    const { appointmentData, pendingAppointment } = req.body;
 
     try {
-      await NotificationService.sendReschedulingPrompt(email, appointmentData);
+      await NotificationService.sendReschedulingPrompt(
+        appointmentData,
+        pendingAppointment,
+      );
       console.log("Rescheduling prompt sent successfully");
       res.status(200).send("Rescheduling prompt sent successfully");
     } catch (error) {
