@@ -41,7 +41,6 @@ class reschedulingController {
     const { open_appointment_id, current_appointment_id, status } = req.body;
 
     const listenerId = `_${current_appointment_id}_${open_appointment_id}`;
-    console.log("rescheduling confirmed");
 
     reschedulingEventEmitter.emit("prompt-handled" + listenerId, status);
     res.status(200).send("Your rescheduling confirmed");
