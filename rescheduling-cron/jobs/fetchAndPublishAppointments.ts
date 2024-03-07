@@ -1,4 +1,4 @@
-import { publishAppointmentsToQueue } from "../../appointment-svc/service/publishAppointmentsToQueue";
+import { publishAppointmentsToQueue } from "../service/publishAppointmentsToQueue";
 import axios from "axios";
 
 export async function fetchAndPublishAppointments() {

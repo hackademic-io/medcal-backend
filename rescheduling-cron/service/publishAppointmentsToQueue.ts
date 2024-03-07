@@ -1,7 +1,7 @@
 import * as amqp from "amqplib";
-import { Appointment } from "@prisma/client";
+import { IAppointmentProps } from "../types/appointment.interface";
 
-async function publishAppointmentsToQueue(appointments: Appointment[]) {
+async function publishAppointmentsToQueue(appointments: IAppointmentProps[]) {
   try {
     const connection = await amqp.connect("amqp://localhost");
     const channel = await connection.createChannel();
