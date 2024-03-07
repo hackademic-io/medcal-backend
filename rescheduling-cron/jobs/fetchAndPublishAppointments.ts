@@ -7,7 +7,6 @@ export async function fetchAndPublishAppointments() {
     `http://localhost:3000/appointments/canceled?currentDate=${currentDate}`
   );
   const canceledAppointments = response.data;
-  console.log(response.data);
 
   publishAppointmentsToQueue(canceledAppointments);
 }
