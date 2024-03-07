@@ -91,11 +91,15 @@ class PatientAppointmentController {
           "Oops! We couldn't update your preference to be open to earlier status changes. Please try again later.",
       });
     }
+    const current_appointment = AppointmentRepository.getOne(
+      current_appointment_id
+    );
+    const open_appointment = AppointmentRepository.getOne(open_appointment_id);
 
     try {
       const responseToNotification = {
-        current_appointment_id,
-        open_appointment_id,
+        current_appointment,
+        open_appointment,
         status: "rejected",
       };
 
@@ -156,12 +160,10 @@ class PatientAppointmentController {
       res.json(appointment);
     } catch (error) {
       console.error("Error confirming appointment:", error);
-      res
-        .status(500)
-        .json({
-          error:
-            "Oops! Something went wrong while processing your request. Please try again later.",
-        });
+      res.status(500).json({
+        error:
+          "Oops! Something went wrong while processing your request. Please try again later.",
+      });
     }
   }
 }
