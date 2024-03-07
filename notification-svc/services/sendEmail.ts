@@ -32,7 +32,7 @@ function sendEmail(
                 },
                 To: [
                   {
-                    Email: "lycakvladislav@gmail.com",
+                    Email: "misha.fomenko00@gmail.com",
                     Name: `${currentAppointment.first_name} ${currentAppointment.last_name}`,
                   },
                 ],
@@ -55,7 +55,7 @@ function sendEmail(
                 },
                 To: [
                   {
-                    Email: "lycakvladislav@gmail.com",
+                    Email: "misha.fomenko00@gmail.com",
                     Name: `${currentAppointment.first_name} ${currentAppointment.last_name}`,
                   },
                 ],

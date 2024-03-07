@@ -2,6 +2,7 @@ import { Response, Request } from "express";
 import { reschedulingEventEmitter } from "../utils/customEventEmitters";
 import sendEmail from "../services/sendEmail";
 import generateAndShareHash from "../utils/encryption";
+import publishAppointmentsToQueue from "../services/publishAppointmentsToQueue";
 
 class reschedulingController {
   prompt(req: Request, res: Response) {
@@ -42,20 +43,18 @@ class reschedulingController {
     const { open_appointment_id, current_appointment_id, status } = req.body;
 
     const listenerId = `_${current_appointment_id}_${open_appointment_id}`;
-    console.log("rescheduling confirmed");
 
     reschedulingEventEmitter.emit("prompt-handled" + listenerId, status);
-    res.status(200).send("Your rescheduling confirmed");
   }
 
   reject(req: Request, res: Response) {
-    const { open_appointment_id, current_appointment_id, status } = req.body;
+    const { open_appointment, current_appointment, status } = req.body;
 
-    const listenerId = `_${current_appointment_id}_${open_appointment_id}`;
-    console.log("rescheduling rejected");
+    const listenerId = `_${current_appointment.id}_${open_appointment.id}`;
 
     reschedulingEventEmitter.emit("prompt-handled" + listenerId, status);
-    res.status(200).send("Your rescheduling rejected");
+
+    publishAppointmentsToQueue(open_appointment);
   }
 }
 
