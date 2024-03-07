@@ -13,6 +13,7 @@ class reschedulingController {
       currentAppointment,
       newAppointment
     );
+
     const emailType = "rescheduling-prompt";
     sendEmail(
       emailType,
