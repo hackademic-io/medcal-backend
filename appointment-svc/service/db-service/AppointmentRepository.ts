@@ -137,6 +137,7 @@ class AppointmentRepository {
   }
 
   async getAvailableAppointment(currentDate: Date) {
+    currentDate.setDate(currentDate.getDate() + 1);
     const targetDate = new Date(currentDate);
     targetDate.setDate(currentDate.getDate() + 1);
 
@@ -150,6 +151,9 @@ class AppointmentRepository {
         },
       },
     });
+
+    console.log("current date:", currentDate);
+    console.log("target date:", targetDate);
 
     if (!availableAppointment) {
       console.log("No available appointment at this time");
