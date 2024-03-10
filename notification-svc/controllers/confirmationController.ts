@@ -21,7 +21,7 @@ class confirmationController {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     )
       .then((response) => {
         if (!response.ok) {
@@ -32,7 +32,7 @@ class confirmationController {
       .catch((error) => {
         console.error(
           "There has been a problem with your fetch operation:",
-          error
+          error,
         );
       });
 
@@ -42,7 +42,7 @@ class confirmationController {
       sendEmail(emailType, hash, encryptionIV, appointment);
     });
     const idsToConfirm = appointmentsToConfirm.map(
-      (appointment: IAppointmentProps) => appointment.id
+      (appointment: IAppointmentProps) => appointment.id,
     );
     setTimeout(
       async () => {
@@ -56,7 +56,7 @@ class confirmationController {
           }),
         });
       },
-      1000 * 60 * 60 * 2
+      1000 * 60 * 60 * 2,
     );
   }
 }

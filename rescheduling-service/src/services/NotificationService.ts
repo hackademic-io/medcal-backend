@@ -8,13 +8,13 @@ class NotificationService {
 
     const data = {
       currentAppointment: appointmentData,
-      newAppointment: pendingAppointment,
+      newAppointment: pendingAppointment
     };
 
     try {
       const response = await axios.post(
         `${NOTIFICATION_URL}/notification/rescheduling-prompt`,
-        data,
+        data
       );
 
       console.log("successfully sent msg");
@@ -23,7 +23,7 @@ class NotificationService {
         console.log(
           "Failed to send rescheduling prompt",
           response.status,
-          response.data,
+          response.data
         );
         throw new Error("Failed to send rescheduling prompt");
       }

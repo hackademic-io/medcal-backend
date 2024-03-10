@@ -21,7 +21,7 @@ async function consumeAppointmentQueue() {
 
         const currentDate = new Date();
         const availableAppointment = await axios.get(
-          `${APPOINTMENT_URL}/appointments/avaliable?currentDate=${currentDate}`,
+          `${APPOINTMENT_URL}/appointments/avaliable?currentDate=${currentDate}`
         );
 
         console.log(availableAppointment.data.id);
@@ -32,13 +32,13 @@ async function consumeAppointmentQueue() {
 
         await axios.put(
           `${APPOINTMENT_URL}/appointment/changePendingStatus/${availableAppointment.data.id}`,
-          { isPending: true },
+          { isPending: true }
         );
 
         if (availableAppointment) {
           await NotificationService.sendReschedulingPrompt(
             appointment,
-            availableAppointment.data,
+            availableAppointment.data
           );
         }
       }

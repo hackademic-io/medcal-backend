@@ -3,7 +3,7 @@ import { IAppointmentProps } from "../types/appointment.interface";
 function confirmationEmailHTML(
   currentAppointment: IAppointmentProps,
   hash: string,
-  encryptionIV: string
+  encryptionIV: string,
 ): string {
   const html = `<!DOCTYPE html>
 <html>

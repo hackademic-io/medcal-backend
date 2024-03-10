@@ -6,12 +6,10 @@ const hashMiddlware = (req: Request, res: Response, next: NextFunction) => {
 
   if (!hash || !encryptionIV) {
     console.log(new Error("Hash or EncryptionIV is missing"));
-    return res
-      .status(500)
-      .json({
-        error:
-          "We're sorry, but the link you've provided is invalid. Please double-check and try again.",
-      });
+    return res.status(500).json({
+      error:
+        "We're sorry, but the link you've provided is invalid. Please double-check and try again.",
+    });
   }
 
   try {
