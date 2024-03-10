@@ -1,6 +1,7 @@
 import * as amqp from "amqplib";
 import NotificationService from "../services/NotificationService";
-import AppointmentRepository from "../../../appointment-svc/service/db-service/AppointmentRepository";
+import axios from "axios";
+import { APPOINTMENT_URL } from "../../config";
 
 async function consumeAppointmentQueue() {
   try {
@@ -18,19 +19,26 @@ async function consumeAppointmentQueue() {
 
         channel.ack(msg);
 
-        // Will change the static date to the current date in production since db only has March dates
-        const availableAppointment =
-          await AppointmentRepository.getAvailableAppointment(new Date());
+        const currentDate = new Date();
+        const availableAppointment = await axios.get(
+          `${APPOINTMENT_URL}/appointments/avaliable?currentDate=${currentDate}`,
+        );
 
-        await AppointmentRepository.changeIsPendingValue(
-          availableAppointment?.id,
-          true
+        console.log(availableAppointment.data.id);
+
+        if (!availableAppointment.data) {
+          throw new Error("Avaliable appointment is not found");
+        }
+
+        await axios.put(
+          `${APPOINTMENT_URL}/appointment/changePendingStatus/${availableAppointment.data.id}`,
+          { isPending: true },
         );
 
         if (availableAppointment) {
           await NotificationService.sendReschedulingPrompt(
             appointment,
-            availableAppointment
+            availableAppointment.data,
           );
         }
       }

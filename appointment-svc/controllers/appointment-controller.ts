@@ -13,7 +13,7 @@ class AppoinmentController {
     try {
       const appointments = await AppointmentRepository.getAll(
         queryMaxDate,
-        queryMinDate
+        queryMinDate,
       );
 
       res.json(appointments);
@@ -67,7 +67,7 @@ class AppoinmentController {
     try {
       const appointment = await AppointmentRepository.updateOne(
         appointment_data,
-        appointment_id
+        appointment_id,
       );
       res.json(appointment);
     } catch (error) {
@@ -132,7 +132,7 @@ class AppoinmentController {
     };
     const ignoredAppointments = await AppointmentRepository.getMany(condition);
     const ignoredAppointmentIds = ignoredAppointments.map(
-      (appointment) => appointment.id
+      (appointment) => appointment.id,
     );
 
     try {
@@ -151,7 +151,7 @@ class AppoinmentController {
     try {
       const isPendingStatus = await AppointmentRepository.changeIsPendingValue(
         appointment_id,
-        is_pending_status
+        is_pending_status,
       );
       res.json(isPendingStatus);
     } catch (error) {
@@ -163,14 +163,26 @@ class AppoinmentController {
   async getAvailableAppointment(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) {
     let queryCurrentDate = req.query.currentDate as string;
     let currentDate = new Date(queryCurrentDate);
+    currentDate.setDate(currentDate.getDate());
+    const targetDate = new Date(currentDate);
+    targetDate.setDate(currentDate.getDate() + 1);
+
+    const condition = {
+      open_to_earlier: true,
+      isPending: false,
+      date: {
+        gte: currentDate,
+        lte: targetDate,
+      },
+    };
 
     try {
       const availableAppointment =
-        await AppointmentRepository.getAvailableAppointment(currentDate);
+        await AppointmentRepository.getAvailableAppointment(condition);
       res.json(availableAppointment);
     } catch (error) {
       res.status(500).json({ error: "Error fetching available appointments" });
@@ -180,9 +192,8 @@ class AppoinmentController {
   async getCanceledAppointments(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) {
-    console.log(req.query.currentDate);
     let queryCurrentDate = req.query.currentDate as string;
     let currentDate = new Date(queryCurrentDate);
     let targetDate = new Date(currentDate);
