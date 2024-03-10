@@ -24,7 +24,7 @@ const encryptionIV = crypto
 
 export default function generateAndShareHash(
   currentAppointment: IAppointmentProps,
-  newAppointment?: IAppointmentProps,
+  newAppointment?: IAppointmentProps
 ) {
   const expirationDate = new Date();
   expirationDate.setHours(expirationDate.getHours() + 2);
@@ -32,12 +32,12 @@ export default function generateAndShareHash(
   toEncrypt = {
     current_app_id: currentAppointment.id,
     open_app_id: newAppointment ? newAppointment.id : null,
-    expirationDate,
+    expirationDate
   };
   const toEncryptString = JSON.stringify(toEncrypt);
   const cipher = crypto.createCipheriv(ecnryption_method, key, encryptionIV);
   const hash = Buffer.from(
-    cipher.update(toEncryptString, "utf8", "hex") + cipher.final("hex"),
+    cipher.update(toEncryptString, "utf8", "hex") + cipher.final("hex")
   ).toString("base64");
 
   return { hash, encryptionIV };

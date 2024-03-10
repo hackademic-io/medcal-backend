@@ -11,14 +11,14 @@ class reschedulingController {
       "Current Appointment:",
       currentAppointment,
       "New Appointment:",
-      newAppointment,
+      newAppointment
     );
     let isPending = true;
     const listenerId = `_${currentAppointment.id}_${newAppointment.id}`;
 
     const { hash, encryptionIV } = generateAndShareHash(
       currentAppointment,
-      newAppointment,
+      newAppointment
     );
 
     const emailType = "rescheduling-prompt";
@@ -27,7 +27,7 @@ class reschedulingController {
       hash,
       encryptionIV,
       currentAppointment,
-      newAppointment,
+      newAppointment
     );
 
     isPending &&
@@ -36,7 +36,7 @@ class reschedulingController {
         (message) => {
           res.status(200).send(message);
           isPending = false;
-        },
+        }
       );
     setTimeout(() => {
       isPending && (reschedulingEventEmitter.emit = () => false);

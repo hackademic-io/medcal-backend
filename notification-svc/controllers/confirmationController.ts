@@ -19,9 +19,9 @@ class confirmationController {
       {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
+          "Content-Type": "application/json"
+        }
+      }
     )
       .then((response) => {
         if (!response.ok) {
@@ -32,7 +32,7 @@ class confirmationController {
       .catch((error) => {
         console.error(
           "There has been a problem with your fetch operation:",
-          error,
+          error
         );
       });
 
@@ -42,21 +42,21 @@ class confirmationController {
       sendEmail(emailType, hash, encryptionIV, appointment);
     });
     const idsToConfirm = appointmentsToConfirm.map(
-      (appointment: IAppointmentProps) => appointment.id,
+      (appointment: IAppointmentProps) => appointment.id
     );
     setTimeout(
       async () => {
         fetch("http://localhost:3000/appointments", {
           method: "DELETE",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            in: idsToConfirm,
-          }),
+            in: idsToConfirm
+          })
         });
       },
-      1000 * 60 * 60 * 2,
+      1000 * 60 * 60 * 2
     );
   }
 }
