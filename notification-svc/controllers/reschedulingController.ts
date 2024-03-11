@@ -3,6 +3,7 @@ import { reschedulingEventEmitter } from "../utils/customEventEmitters";
 import sendEmail from "../services/sendEmail";
 import generateAndShareHash from "../utils/encryption";
 import publishAppointmentsToQueue from "../services/publishAppointmentsToQueue";
+import axios from "axios";
 
 class reschedulingController {
   prompt(req: Request, res: Response) {
@@ -46,11 +47,16 @@ class reschedulingController {
   }
 
   confirm(req: Request, res: Response) {
-    const { open_appointment_id, current_appointment_id, status } = req.body;
+    const { open_appointment, current_appointment, status } = req.body;
 
-    const listenerId = `_${current_appointment_id}_${open_appointment_id}`;
+    const listenerId = `_${current_appointment.id}_${open_appointment.id}`;
 
     reschedulingEventEmitter.emit("prompt-handled" + listenerId, status);
+
+    axios.put(
+      `${process.env.APPOINTMENT_URL}/appointment/changePendingStatus/${open_appointment.id}`,
+      { isPending: false }
+    );
   }
 
   reject(req: Request, res: Response) {
@@ -61,6 +67,11 @@ class reschedulingController {
     reschedulingEventEmitter.emit("prompt-handled" + listenerId, status);
 
     publishAppointmentsToQueue(open_appointment);
+
+    axios.put(
+      `${process.env.APPOINTMENT_URL}/appointment/changePendingStatus/${open_appointment.id}`,
+      { isPending: false }
+    );
   }
 }
 
