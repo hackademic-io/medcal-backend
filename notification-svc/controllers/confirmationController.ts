@@ -19,8 +19,8 @@ class confirmationController {
       {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
-        },
+          "Content-Type": "application/json"
+        }
       }
     )
       .then((response) => {
@@ -49,11 +49,11 @@ class confirmationController {
         fetch("http://localhost:3000/appointments", {
           method: "DELETE",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            in: idsToConfirm,
-          }),
+            in: idsToConfirm
+          })
         });
       },
       1000 * 60 * 60 * 2

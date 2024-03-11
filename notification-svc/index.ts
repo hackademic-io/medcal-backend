@@ -10,7 +10,7 @@ const app: Express = express();
 const PORT =
   (process.env.NOTIFICATION_SERVICE_PORT &&
     parseInt(process.env.NOTIFICATION_SERVICE_PORT)) ||
-  3000;
+  3003;
 
 app.use(express.json());
 app.use(cors({ origin: "*" }));

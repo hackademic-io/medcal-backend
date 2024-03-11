@@ -1,4 +1,5 @@
-const axios = require("axios");
+import axios from "axios";
+import { NOTIFICATION_URL } from "../../config";
 
 class NotificationService {
   async sendReschedulingPrompt(appointmentData, pendingAppointment) {
@@ -7,12 +8,12 @@ class NotificationService {
 
     const data = {
       currentAppointment: appointmentData,
-      newAppointment: pendingAppointment,
+      newAppointment: pendingAppointment
     };
 
     try {
       const response = await axios.post(
-        "http://localhost:3003/notification/rescheduling-prompt",
+        `${NOTIFICATION_URL}/notification/rescheduling-prompt`,
         data
       );
 

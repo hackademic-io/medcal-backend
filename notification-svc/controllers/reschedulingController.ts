@@ -7,6 +7,12 @@ import publishAppointmentsToQueue from "../services/publishAppointmentsToQueue";
 class reschedulingController {
   prompt(req: Request, res: Response) {
     const { currentAppointment, newAppointment } = req.body;
+    console.log(
+      "Current Appointment:",
+      currentAppointment,
+      "New Appointment:",
+      newAppointment
+    );
     let isPending = true;
     const listenerId = `_${currentAppointment.id}_${newAppointment.id}`;
 
