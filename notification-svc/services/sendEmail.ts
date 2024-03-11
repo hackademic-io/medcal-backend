@@ -28,13 +28,13 @@ function sendEmail(
               {
                 From: {
                   Email: "misha.fomenko00@gmail.com",
-                  Name: "Misha (MedCal CEO)",
+                  Name: "Misha (MedCal CEO)"
                 },
                 To: [
                   {
-                    Email: "misha.fomenko00@gmail.com",
-                    Name: `${currentAppointment.first_name} ${currentAppointment.last_name}`,
-                  },
+                    Email: "lycakvladislav@gmail.com",
+                    Name: `${currentAppointment.first_name} ${currentAppointment.last_name}`
+                  }
                 ],
 
                 Subject: `Dear ${currentAppointment.first_name} ${currentAppointment.last_name}, we have an earlier appointment available for you on ${newAppointment.date} at ${newAppointment.time}.`,
@@ -44,20 +44,20 @@ function sendEmail(
                   newAppointment,
                   hash,
                   encryptionIV
-                ),
-              },
+                )
+              }
             ]
           : [
               {
                 From: {
                   Email: "misha.fomenko00@gmail.com",
-                  Name: "Misha",
+                  Name: "Misha"
                 },
                 To: [
                   {
-                    Email: "misha.fomenko00@gmail.com",
-                    Name: `${currentAppointment.first_name} ${currentAppointment.last_name}`,
-                  },
+                    Email: "lycakvladislav00@gmail.com",
+                    Name: `${currentAppointment.first_name} ${currentAppointment.last_name}`
+                  }
                 ],
 
                 Subject: `Dear ${currentAppointment.first_name} ${currentAppointment.last_name}, are you still going to use your appointment on ${currentAppointment.date} at ${currentAppointment.time}?`,
@@ -66,9 +66,9 @@ function sendEmail(
                   currentAppointment,
                   hash,
                   encryptionIV
-                ),
-              },
-            ],
+                )
+              }
+            ]
     });
 }
 

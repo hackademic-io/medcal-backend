@@ -10,6 +10,10 @@ adminRouter.get(
   "/appointments/canceled",
   appointmentController.getCanceledAppointments
 );
+adminRouter.get(
+  "/appointments/avaliable",
+  appointmentController.getAvailableAppointment
+);
 
 adminRouter.post("/appointment", appointmentController.createOne);
 

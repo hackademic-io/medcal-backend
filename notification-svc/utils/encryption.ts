@@ -32,7 +32,7 @@ export default function generateAndShareHash(
   toEncrypt = {
     current_app_id: currentAppointment.id,
     open_app_id: newAppointment ? newAppointment.id : null,
-    expirationDate,
+    expirationDate
   };
   const toEncryptString = JSON.stringify(toEncrypt);
   const cipher = crypto.createCipheriv(ecnryption_method, key, encryptionIV);
