@@ -43,6 +43,10 @@ class reschedulingController {
       isPending && (reschedulingEventEmitter.emit = () => false);
       isPending && res.status(200).send("expired");
       isPending = false;
+      axios.put(
+        `${process.env.APPOINTMENT_URL}/appointment/changePendingStatus/${newAppointment.id}`,
+        { isPending: false }
+      );
     }, 60000);
   }
 
