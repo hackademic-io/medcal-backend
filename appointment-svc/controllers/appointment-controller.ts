@@ -2,7 +2,7 @@ import { Request, Response, NextFunction, query } from "express";
 import AppointmentRepository from "../service/db-service/AppointmentRepository";
 import {
   IUpdateAppointmentProps,
-  AppointmentStatus
+  AppointmentStatus,
 } from "../types/appointment.interface";
 
 class AppoinmentController {
@@ -13,7 +13,7 @@ class AppoinmentController {
     try {
       const appointments = await AppointmentRepository.getAll(
         queryMaxDate,
-        queryMinDate
+        queryMinDate,
       );
 
       res.json(appointments);
@@ -34,10 +34,10 @@ class AppoinmentController {
           {
             date: {
               gte: queryMinDate,
-              lt: queryMaxDate
-            }
-          }
-        ]
+              lt: queryMaxDate,
+            },
+          },
+        ],
       };
       const bookedAppointments = await AppointmentRepository.getMany(condition);
 
@@ -67,7 +67,7 @@ class AppoinmentController {
     try {
       const appointment = await AppointmentRepository.updateOne(
         appointment_data,
-        appointment_id
+        appointment_id,
       );
       res.json(appointment);
     } catch (error) {
@@ -85,13 +85,13 @@ class AppoinmentController {
       "10:00 AM",
       "01:00 PM",
       "02:00 PM",
-      "03:00 PM"
+      "03:00 PM",
     ];
 
     if (!validTimes.includes(appointment_data.time)) {
       const validTimeSlots = validTimes.join(", ");
       res.status(500).json({
-        error: `Error creating appointment, time should be one of these slots: ${validTimeSlots}`
+        error: `Error creating appointment, time should be one of these slots: ${validTimeSlots}`,
       });
     }
 
@@ -128,11 +128,11 @@ class AppoinmentController {
   async deleteMany(req: Request, res: Response, next: NextFunction) {
     const ignoredIds: string[] = req.body;
     const condition = {
-      AND: [{ status: AppointmentStatus.BOOKED }, { id: { in: ignoredIds } }]
+      AND: [{ status: AppointmentStatus.BOOKED }, { id: { in: ignoredIds } }],
     };
     const ignoredAppointments = await AppointmentRepository.getMany(condition);
     const ignoredAppointmentIds = ignoredAppointments.map(
-      (appointment) => appointment.id
+      (appointment) => appointment.id,
     );
 
     try {
@@ -151,7 +151,7 @@ class AppoinmentController {
     try {
       const isPendingStatus = await AppointmentRepository.changeIsPendingValue(
         appointment_id,
-        is_pending_status
+        is_pending_status,
       );
       res.json(isPendingStatus);
     } catch (error) {
@@ -163,21 +163,21 @@ class AppoinmentController {
   async getAvailableAppointment(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) {
     let queryCurrentDate = req.query.currentDate as string;
     let currentDate = new Date(queryCurrentDate);
     currentDate.setDate(currentDate.getDate());
     const targetDate = new Date(currentDate);
-    targetDate.setDate(currentDate.getDate() + 1);
+    targetDate.setDate(currentDate.getDate() + 2);
 
     const condition = {
       open_to_earlier: true,
       isPending: false,
       date: {
         gte: currentDate,
-        lte: targetDate
-      }
+        lte: targetDate,
+      },
     };
 
     try {
@@ -192,7 +192,7 @@ class AppoinmentController {
   async getCanceledAppointments(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) {
     let queryCurrentDate = req.query.currentDate as string;
     let currentDate = new Date(queryCurrentDate);
@@ -202,9 +202,9 @@ class AppoinmentController {
     const condition = {
       date: {
         gte: currentDate,
-        lte: targetDate
+        lte: targetDate,
       },
-      status: AppointmentStatus.CANCELED
+      status: AppointmentStatus.CANCELED,
     };
 
     try {

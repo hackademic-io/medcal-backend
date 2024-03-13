@@ -8,7 +8,7 @@ const hashMiddlware = (req: Request, res: Response, next: NextFunction) => {
     console.log(new Error("Hash or EncryptionIV is missing"));
     return res.status(500).json({
       error:
-        "We're sorry, but the link you've provided is invalid. Please double-check and try again."
+        "We're sorry, but the link you've provided is invalid. Please double-check and try again.",
     });
   }
 
@@ -19,7 +19,7 @@ const hashMiddlware = (req: Request, res: Response, next: NextFunction) => {
     const currentDate = new Date();
     const expirationDate = new Date(decryptedData.expirationDate);
 
-    if (expirationDate > currentDate) {
+    if (expirationDate < currentDate) {
       console.log(new Error("Hash expired"));
       return res.status(500).json({ error: "Link expired" });
     }

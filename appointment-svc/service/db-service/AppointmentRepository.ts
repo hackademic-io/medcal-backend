@@ -68,7 +68,11 @@ class AppointmentRepository {
         first_name: null,
         last_name: null,
         open_to_earlier: false,
+<<<<<<< HEAD
         status: AppointmentStatus.CANCELED,
+=======
+        status: "CANCELED",
+>>>>>>> 876dc63096d2feb739c011b93b62498e521cb669
       },
     });
 
@@ -87,7 +91,11 @@ class AppointmentRepository {
         first_name: null,
         last_name: null,
         open_to_earlier: false,
+<<<<<<< HEAD
         status: AppointmentStatus.CANCELED,
+=======
+        status: "CANCELED",
+>>>>>>> 876dc63096d2feb739c011b93b62498e521cb669
       },
     });
 

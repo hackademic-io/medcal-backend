@@ -25,8 +25,6 @@ async function consumeAppointmentQueue() {
           `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointments/avaliable?currentDate=${currentDate}`,
         );
 
-        console.log(availableAppointment.data.id);
-
         if (!availableAppointment.data) {
           throw new Error("Avaliable appointment is not found");
         }

@@ -3,13 +3,13 @@ import { NOTIFICATION_URL } from "../../config";
 require("dotenv").config();
 
 class NotificationService {
-  async sendReschedulingPrompt(appointmentData, pendingAppointment) {
-    console.log("appointmentData:", appointmentData);
-    console.log("pendingAppointment:", pendingAppointment);
+  async sendReschedulingPrompt(cancelled_appointment, offer_appointment_to) {
+    console.log("cancelled_appointment", cancelled_appointment);
+    console.log("appointment_offer_to:", offer_appointment_to);
 
     const data = {
-      currentAppointment: appointmentData,
-      newAppointment: pendingAppointment,
+      offer_appointment_to,
+      cancelled_appointment,
     };
 
     try {

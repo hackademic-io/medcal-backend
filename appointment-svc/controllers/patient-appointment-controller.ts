@@ -63,7 +63,11 @@ class PatientAppointmentController {
       };
 
       axios.post(
+<<<<<<< HEAD
         `${process.env.NOTIFICATION_BASE_URL}:${process.env.NOTIFICATION_SERVICE_PORT}/notification/rescheduling-confirm`,
+=======
+        `${process.env.NOTIFICATION_URL}/notification/rescheduling-confirm`,
+>>>>>>> 876dc63096d2feb739c011b93b62498e521cb669
         responseToNotification,
       );
 
@@ -86,10 +90,18 @@ class PatientAppointmentController {
     const current_appointment_id = decryptedData.current_app_id;
     const open_appointment_id = decryptedData.open_app_id;
 
+<<<<<<< HEAD
     const open_to_earlier_status = AppointmentRepository.changeOpenToEarlier(
       current_appointment_id,
       false,
     );
+=======
+    const open_to_earlier_status =
+      await AppointmentRepository.changeOpenToEarlier(
+        current_appointment_id,
+        false,
+      );
+>>>>>>> 876dc63096d2feb739c011b93b62498e521cb669
 
     if (!open_to_earlier_status) {
       return res.status(400).json({
@@ -111,7 +123,11 @@ class PatientAppointmentController {
       };
 
       axios.post(
+<<<<<<< HEAD
         `${process.env.NOTIFICATION_BASE_URL}:${process.env.NOTIFICATION_SERVICE_PORT}/notification/rescheduling-reject`,
+=======
+        `${process.env.NOTIFICATION_URL}/notification/rescheduling-reject`,
+>>>>>>> 876dc63096d2feb739c011b93b62498e521cb669
         responseToNotification,
       );
       res.json({ message: "Rejected reschedule request successfully" });

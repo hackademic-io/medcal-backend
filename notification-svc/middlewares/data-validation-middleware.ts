@@ -3,18 +3,16 @@ import { Request, Response, NextFunction } from "express";
 const dataValidationMiddlware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
-  const { open_appointment_id, current_appointment_id, status } = req.body;
+  const { current_appointment, open_appointment, status } = req.body;
 
-  if (!open_appointment_id || !current_appointment_id) {
-    return res.status(400).json({ error: "Appointments Id's are missing" });
+  if (!current_appointment || !open_appointment) {
+    return res.status(400).json({ error: "Appointments are missing" });
   }
 
-  if (status !== "rejected" || !status) {
-    return res
-      .status(400)
-      .json({ error: "Status is not 'rejected' or its missing" });
+  if (!status) {
+    return res.status(400).json({ error: "Status is missing" });
   }
   next();
 };
