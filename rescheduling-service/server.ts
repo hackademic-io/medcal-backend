@@ -11,7 +11,7 @@ app.use(cors({ origin: "*" }));
 const PORT =
   (process.env.RESCHEDULING_SERVICE_PORT &&
     parseInt(process.env.RESCHEDULING_SERVICE_PORT)) ||
-  3003;
+  3002;
 consumeAppointmentQueue();
 
 app.listen(PORT, () => {
