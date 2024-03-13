@@ -7,19 +7,13 @@ import axios from "axios";
 
 class reschedulingController {
   prompt(req: Request, res: Response) {
-    const { currentAppointment, newAppointment } = req.body;
-    console.log(
-      "Current Appointment:",
-      currentAppointment,
-      "New Appointment:",
-      newAppointment
-    );
+    const { offer_appointment_to, cancelled_appointment } = req.body;
     let isPending = true;
-    const listenerId = `_${currentAppointment.id}_${newAppointment.id}`;
+    const listenerId = `_${offer_appointment_to.id}_${cancelled_appointment.id}`;
 
     const { hash, encryptionIV } = generateAndShareHash(
-      currentAppointment,
-      newAppointment
+      offer_appointment_to,
+      cancelled_appointment,
     );
 
     const emailType = "rescheduling-prompt";
@@ -27,8 +21,8 @@ class reschedulingController {
       emailType,
       hash,
       encryptionIV,
-      currentAppointment,
-      newAppointment
+      offer_appointment_to,
+      cancelled_appointment,
     );
 
     isPending &&
@@ -37,15 +31,15 @@ class reschedulingController {
         (message) => {
           res.status(200).send(message);
           isPending = false;
-        }
+        },
       );
     setTimeout(() => {
       isPending && (reschedulingEventEmitter.emit = () => false);
       isPending && res.status(200).send("expired");
       isPending = false;
       axios.put(
-        `${process.env.APPOINTMENT_URL}/appointment/changePendingStatus/${newAppointment.id}`,
-        { isPending: false }
+        `${process.env.APPOINTMENT_URL}/appointment/changePendingStatus/${offer_appointment_to.id}`,
+        { isPending: false },
       );
     }, 60000);
   }
@@ -58,8 +52,8 @@ class reschedulingController {
     reschedulingEventEmitter.emit("prompt-handled" + listenerId, status);
 
     axios.put(
-      `${process.env.APPOINTMENT_URL}/appointment/changePendingStatus/${open_appointment.id}`,
-      { isPending: false }
+      `${process.env.APPOINTMENT_URL}/appointment/changePendingStatus/${current_appointment.id}`,
+      { isPending: false },
     );
   }
 
@@ -73,8 +67,8 @@ class reschedulingController {
     publishAppointmentsToQueue(open_appointment);
 
     axios.put(
-      `${process.env.APPOINTMENT_URL}/appointment/changePendingStatus/${open_appointment.id}`,
-      { isPending: false }
+      `${process.env.APPOINTMENT_URL}/appointment/changePendingStatus/${current_appointment.id}`,
+      { isPending: false },
     );
   }
 }
