@@ -1,7 +1,7 @@
 import { PrismaClient, Prisma, AppointmentStatus } from "@prisma/client";
 import {
   IAppointmentProps,
-  IUpdateAppointmentProps
+  IUpdateAppointmentProps,
 } from "../../types/appointment.interface";
 
 const prisma = new PrismaClient();
@@ -13,8 +13,8 @@ class AppointmentRepository {
 
     const appointments = await prisma.appointment.findMany({
       where: {
-        AND: [{ date: { gte: minDate } }, { date: { lte: maxDate } }]
-      }
+        AND: [{ date: { gte: minDate } }, { date: { lte: maxDate } }],
+      },
     });
 
     return appointments;
@@ -22,14 +22,14 @@ class AppointmentRepository {
 
   async getMany(condition: Prisma.AppointmentWhereInput) {
     const appointmentsToConfirm = await prisma.appointment.findMany({
-      where: condition
+      where: condition,
     });
     return appointmentsToConfirm;
   }
 
   async getOne(id: string) {
     const appointment = await prisma.appointment.findFirst({
-      where: { id }
+      where: { id },
     });
 
     return appointment;
@@ -43,8 +43,8 @@ class AppointmentRepository {
         first_name: data.first_name,
         last_name: data.last_name,
         open_to_earlier: data.open_to_earlier,
-        status: data.status
-      }
+        status: data.status,
+      },
     });
 
     return appointment;
@@ -53,8 +53,8 @@ class AppointmentRepository {
   async createOne(data: IAppointmentProps) {
     const newAppointment = await prisma.appointment.create({
       data: {
-        ...data
-      }
+        ...data,
+      },
     });
 
     return newAppointment;
@@ -68,8 +68,8 @@ class AppointmentRepository {
         first_name: null,
         last_name: null,
         open_to_earlier: false,
-        status: "CANCELED"
-      }
+        status: AppointmentStatus.CANCELED,
+      },
     });
 
     return deletedAppointment;
@@ -79,16 +79,16 @@ class AppointmentRepository {
     const deletedAppointments = await prisma.appointment.updateMany({
       where: {
         id: {
-          in: ids
-        }
+          in: ids,
+        },
       },
       data: {
         email: null,
         first_name: null,
         last_name: null,
         open_to_earlier: false,
-        status: "CANCELED"
-      }
+        status: AppointmentStatus.CANCELED,
+      },
     });
 
     return deletedAppointments;
@@ -97,7 +97,7 @@ class AppointmentRepository {
   async checkStatus(id: string) {
     const appointmentStatus = await prisma.appointment.findFirst({
       where: { id },
-      select: { status: true }
+      select: { status: true },
     });
 
     return appointmentStatus?.status;
@@ -107,8 +107,8 @@ class AppointmentRepository {
     const appointmentStatus = await prisma.appointment.update({
       where: { id },
       data: {
-        status: AppointmentStatus.CONFIRMED
-      }
+        status: AppointmentStatus.CONFIRMED,
+      },
     });
 
     return appointmentStatus?.status;
@@ -118,8 +118,8 @@ class AppointmentRepository {
     const appointmentOpenToEarlier = await prisma.appointment.update({
       where: { id },
       data: {
-        open_to_earlier
-      }
+        open_to_earlier,
+      },
     });
 
     return appointmentOpenToEarlier;
@@ -129,8 +129,8 @@ class AppointmentRepository {
     const isPendingStatus = await prisma.appointment.update({
       where: { id },
       data: {
-        isPending
-      }
+        isPending,
+      },
     });
 
     return isPendingStatus;
@@ -138,7 +138,7 @@ class AppointmentRepository {
 
   async getAvailableAppointment(condition: Prisma.AppointmentWhereInput) {
     const availableAppointment = await prisma.appointment.findFirst({
-      where: condition
+      where: condition,
     });
 
     if (!availableAppointment) {

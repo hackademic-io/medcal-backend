@@ -1,9 +1,11 @@
 import * as amqp from "amqplib";
 import { IAppointmentProps } from "../types/appointment.interface";
+require("dotenv").config();
 
 async function publishAppointmentsToQueue(appointments: IAppointmentProps[]) {
+  if (!process.env.RABBITMQ_URL) return;
   try {
-    const connection = await amqp.connect("amqp://localhost");
+    const connection = await amqp.connect(process.env.RABBITMQ_URL);
     const channel = await connection.createChannel();
 
     const queue = "appointments";
