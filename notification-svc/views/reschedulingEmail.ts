@@ -1,4 +1,5 @@
 import { IAppointmentProps } from "../types/appointment.interface";
+require("dotenv").config();
 
 function reschedulingEmailHTML(
   currentAppointment: IAppointmentProps,
@@ -66,8 +67,8 @@ function reschedulingEmailHTML(
                 <p>Date: <strong>${newAppointment.date}</strong><br>
                 Time: <strong>${newAppointment.time}</strong></p>
                 <p>Please confirm or reject your new appointment using the links below (if you decide to book this appointment, your previous appointment will be automatically canceled):</p>
-                <a href="${process.env.FRONTEND_URL}/move-earlier/approved?hash=${hash}&iv=${encryptionIV}" class="btn">Book Appointment</a>
-                <a href="${process.env.FRONTEND_URL}/move-earlier/rejected?hash=${hash}&iv=${encryptionIV}" class="btn">Reject Appointment</a>
+                <a href="${process.env.FRONTEND_URL}:${process.env.FRONTEND_PORT}/move-earlier/approved?hash=${hash}&iv=${encryptionIV}" class="btn">Book Appointment</a>
+                <a href="${process.env.FRONTEND_URL}:${process.env.FRONTEND_PORT}/move-earlier/rejected?hash=${hash}&iv=${encryptionIV}" class="btn">Reject Appointment</a>
                 <p class="expiration-note">Please note, that this offer is only valid for 2 hours.</p>
                 <p>We look forward to serving you and wish you the best in health.</p>
                 <p>Warm regards,</p>

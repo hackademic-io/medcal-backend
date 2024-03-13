@@ -63,7 +63,7 @@ class PatientAppointmentController {
       };
 
       axios.post(
-        `${process.env.NOTIFICATION_URL}/notification/rescheduling-confirm`,
+        `${process.env.NOTIFICATION_BASE_URL}:${process.env.NOTIFICATION_SERVICE_PORT}/notification/rescheduling-confirm`,
         responseToNotification,
       );
 
@@ -112,7 +112,7 @@ class PatientAppointmentController {
       };
 
       axios.post(
-        `${process.env.NOTIFICATION_URL}/notification/rescheduling-reject`,
+        `${process.env.NOTIFICATION_BASE_URL}:${process.env.NOTIFICATION_SERVICE_PORT}/notification/rescheduling-reject`,
         responseToNotification,
       );
       res.json({ message: "Rejected reschedule request successfully" });

@@ -68,7 +68,7 @@ class AppointmentRepository {
         first_name: null,
         last_name: null,
         open_to_earlier: false,
-        status: "CANCELED",
+        status: AppointmentStatus.CANCELED,
       },
     });
 
@@ -87,7 +87,7 @@ class AppointmentRepository {
         first_name: null,
         last_name: null,
         open_to_earlier: false,
-        status: "CANCELED",
+        status: AppointmentStatus.CANCELED,
       },
     });
 

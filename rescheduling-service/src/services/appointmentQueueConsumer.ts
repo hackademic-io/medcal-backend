@@ -2,6 +2,7 @@ import * as amqp from "amqplib";
 import NotificationService from "../services/NotificationService";
 import axios from "axios";
 import { APPOINTMENT_URL } from "../../config";
+require("dotenv").config();
 
 async function consumeAppointmentQueue() {
   try {
@@ -21,7 +22,7 @@ async function consumeAppointmentQueue() {
 
         const currentDate = new Date();
         const availableAppointment = await axios.get(
-          `${APPOINTMENT_URL}/appointments/avaliable?currentDate=${currentDate}`,
+          `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointments/avaliable?currentDate=${currentDate}`,
         );
 
         if (!availableAppointment.data) {
@@ -29,7 +30,7 @@ async function consumeAppointmentQueue() {
         }
 
         await axios.put(
-          `${APPOINTMENT_URL}/appointment/changePendingStatus/${availableAppointment.data.id}`,
+          `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointment/changePendingStatus/${availableAppointment.data.id}`,
           { isPending: true },
         );
 

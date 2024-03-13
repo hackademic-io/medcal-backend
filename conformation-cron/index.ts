@@ -6,9 +6,9 @@ require("dotenv").config();
 const app: Express = express();
 
 const PORT =
-  (process.env.NOTIFICATION_SERVICE_PORT &&
-    parseInt(process.env.NOTIFICATION_SERVICE_PORT)) ||
-  3003;
+  (process.env.CONFIRMATION_CRON_PORT &&
+    parseInt(process.env.CONFIRMATION_CRON_PORT)) ||
+  3004;
 
 app.use(express.json());
 

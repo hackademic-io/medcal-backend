@@ -1,5 +1,6 @@
 import axios from "axios";
 import { NOTIFICATION_URL } from "../../config";
+require("dotenv").config();
 
 class NotificationService {
   async sendReschedulingPrompt(cancelled_appointment, offer_appointment_to) {
@@ -13,7 +14,7 @@ class NotificationService {
 
     try {
       const response = await axios.post(
-        `${NOTIFICATION_URL}/notification/rescheduling-prompt`,
+        `${process.env.NOTIFICATION_BASE_URL}:${process.env.NOTIFICATION_SERVICE_PORT}/notification/rescheduling-prompt`,
         data,
       );
 

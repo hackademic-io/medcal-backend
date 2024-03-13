@@ -12,7 +12,7 @@ const app: Express = express();
 const PORT =
   (process.env.APPOINTMENT_SERVICE_PORT &&
     parseInt(process.env.APPOINTMENT_SERVICE_PORT)) ||
-  3000;
+  3001;
 
 app.use(express.json());
 app.use(cors({ origin: "*" }));

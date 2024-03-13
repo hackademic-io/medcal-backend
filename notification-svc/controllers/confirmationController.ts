@@ -2,6 +2,7 @@ import { Response, Request } from "express";
 import sendEmail from "../services/sendEmail";
 import { IAppointmentProps } from "../types/appointment.interface";
 import generateAndShareHash from "../utils/encryption";
+require("dotenv").config();
 
 class confirmationController {
   async startCron(req: Request, res: Response) {
@@ -15,13 +16,13 @@ class confirmationController {
     threeDaysFromNow.setDate(twoDaysFromNow.getDate() + 1);
 
     const appointmentsToConfirm: IAppointmentProps[] = await fetch(
-      `http://localhost:3000/appointment/booked?MaxDate=${threeDaysFromNow}&MinDate=${twoDaysFromNow}`,
+      `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointment/booked?MaxDate=${threeDaysFromNow}&MinDate=${twoDaysFromNow}`,
       {
         method: "GET",
         headers: {
-          "Content-Type": "application/json"
-        }
-      }
+          "Content-Type": "application/json",
+        },
+      },
     )
       .then((response) => {
         if (!response.ok) {
@@ -32,7 +33,7 @@ class confirmationController {
       .catch((error) => {
         console.error(
           "There has been a problem with your fetch operation:",
-          error
+          error,
         );
       });
 
@@ -42,21 +43,24 @@ class confirmationController {
       sendEmail(emailType, hash, encryptionIV, appointment);
     });
     const idsToConfirm = appointmentsToConfirm.map(
-      (appointment: IAppointmentProps) => appointment.id
+      (appointment: IAppointmentProps) => appointment.id,
     );
     setTimeout(
       async () => {
-        fetch("http://localhost:3000/appointments", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json"
+        fetch(
+          `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointments`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              in: idsToConfirm,
+            }),
           },
-          body: JSON.stringify({
-            in: idsToConfirm
-          })
-        });
+        );
       },
-      1000 * 60 * 60 * 2
+      1000 * 60 * 60 * 2,
     );
   }
 }

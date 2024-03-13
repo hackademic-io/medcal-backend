@@ -4,6 +4,7 @@ import sendEmail from "../services/sendEmail";
 import generateAndShareHash from "../utils/encryption";
 import publishAppointmentsToQueue from "../services/publishAppointmentsToQueue";
 import axios from "axios";
+require("dotenv").config();
 
 class reschedulingController {
   prompt(req: Request, res: Response) {
@@ -38,7 +39,7 @@ class reschedulingController {
       isPending && res.status(200).send("expired");
       isPending = false;
       axios.put(
-        `${process.env.APPOINTMENT_URL}/appointment/changePendingStatus/${offer_appointment_to.id}`,
+        `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointment/changePendingStatus/${offer_appointment_to.id}`,
         { isPending: false },
       );
     }, 60000);
@@ -52,7 +53,7 @@ class reschedulingController {
     reschedulingEventEmitter.emit("prompt-handled" + listenerId, status);
 
     axios.put(
-      `${process.env.APPOINTMENT_URL}/appointment/changePendingStatus/${current_appointment.id}`,
+      `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointment/changePendingStatus/${current_appointment.id}`,
       { isPending: false },
     );
   }
@@ -67,7 +68,7 @@ class reschedulingController {
     publishAppointmentsToQueue(open_appointment);
 
     axios.put(
-      `${process.env.APPOINTMENT_URL}/appointment/changePendingStatus/${current_appointment.id}`,
+      `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointment/changePendingStatus/${current_appointment.id}`,
       { isPending: false },
     );
   }
