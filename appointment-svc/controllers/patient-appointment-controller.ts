@@ -2,7 +2,7 @@ import { Request, Response, NextFunction, query } from "express";
 import AppointmentRepository from "../service/db-service/AppointmentRepository";
 import {
   IUpdateAppointmentProps,
-  AppointmentStatus
+  AppointmentStatus,
 } from "../types/appointment.interface";
 import axios from "axios";
 
@@ -39,7 +39,7 @@ class PatientAppointmentController {
           email: appointment_data.email,
           open_to_earlier: false,
           isPending: false,
-          status: AppointmentStatus.BOOKED
+          status: AppointmentStatus.BOOKED,
         };
       }
 
@@ -50,10 +50,16 @@ class PatientAppointmentController {
         open_appointment_id
       );
 
+      const current_appointment = await AppointmentRepository.getOne(
+        current_appointment_id
+      );
+      const open_appointment =
+        await AppointmentRepository.getOne(open_appointment_id);
+
       const responseToNotification = {
-        current_appointment_id,
-        open_appointment_id,
-        status: "confirmed"
+        current_appointment,
+        open_appointment,
+        status: "confirmed",
       };
 
       axios.post(
@@ -66,7 +72,7 @@ class PatientAppointmentController {
       console.error("Error rescheduling appointment:", error);
       res.status(500).json({
         error:
-          "Oops! Something went wrong while processing your request. Please try again later."
+          "Oops! Something went wrong while processing your request. Please try again later.",
       });
     }
   }
@@ -88,19 +94,20 @@ class PatientAppointmentController {
     if (!open_to_earlier_status) {
       return res.status(400).json({
         error:
-          "Oops! We couldn't update your preference to be open to earlier status changes. Please try again later."
+          "Oops! We couldn't update your preference to be open to earlier status changes. Please try again later.",
       });
     }
-    const current_appointment = AppointmentRepository.getOne(
+    const current_appointment = await AppointmentRepository.getOne(
       current_appointment_id
     );
-    const open_appointment = AppointmentRepository.getOne(open_appointment_id);
+    const open_appointment =
+      await AppointmentRepository.getOne(open_appointment_id);
 
     try {
       const responseToNotification = {
         current_appointment,
         open_appointment,
-        status: "rejected"
+        status: "rejected",
       };
 
       axios.post(
@@ -112,7 +119,7 @@ class PatientAppointmentController {
       console.error("Error changing open_to_earlier status:", error);
       res.status(500).json({
         error:
-          "Oops! Something went wrong while processing your request. Please try again later."
+          "Oops! Something went wrong while processing your request. Please try again later.",
       });
     }
   }
@@ -137,7 +144,7 @@ class PatientAppointmentController {
       console.error("Error deleting appointment:", error);
       res.status(500).json({
         error:
-          "Oops! Something went wrong while processing your request. Please try again later."
+          "Oops! Something went wrong while processing your request. Please try again later.",
       });
     }
   }
@@ -162,7 +169,7 @@ class PatientAppointmentController {
       console.error("Error confirming appointment:", error);
       res.status(500).json({
         error:
-          "Oops! Something went wrong while processing your request. Please try again later."
+          "Oops! Something went wrong while processing your request. Please try again later.",
       });
     }
   }
