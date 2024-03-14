@@ -6,7 +6,7 @@
 
 ### 2. Run docker daemon. The Docker app will open
 
-### 3. In the CLI go to each services' folder and run
+### 3. In the CLI go to each service's folder and run
 
 ```
 docker build -t service-name .
@@ -14,7 +14,7 @@ docker build -t service-name .
 
 (Now you should be able to see the image in the Docker app)
 
-### 4. Then, in each services' folder run
+### 4. Then, in each service's folder run
 
 ```
 docker run -p INNER_PORT:OUTER_PORT service-name
