@@ -9,9 +9,7 @@
 ### 3. In the CLI go to each services' folder and run
 
 ```
-
 docker build -t service-name .
-
 ```
 
 (Now you should be able to see the image in the Docker app)
