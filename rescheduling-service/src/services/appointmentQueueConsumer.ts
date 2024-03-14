@@ -1,7 +1,6 @@
 import * as amqp from "amqplib";
 import NotificationService from "../services/NotificationService";
 import axios from "axios";
-import { APPOINTMENT_URL } from "../../config";
 require("dotenv").config();
 
 async function consumeAppointmentQueue() {
@@ -18,28 +17,34 @@ async function consumeAppointmentQueue() {
       if (msg !== null) {
         const appointment = JSON.parse(msg.content.toString());
 
-        channel.ack(msg);
-
         const currentDate = new Date();
-        const availableAppointment = await axios.get(
-          `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointments/avaliable?currentDate=${currentDate}`,
+        const tomorrowDate = new Date(currentDate);
+        tomorrowDate.setDate(currentDate.getDate() + 1);
+
+        const availableAppointmentResponse = await axios.get(
+          `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointments/avaliable?currentDate=${tomorrowDate}`,
         );
 
-        if (!availableAppointment.data) {
-          throw new Error("Avaliable appointment is not found");
+        const availableAppointment = availableAppointmentResponse.data;
+
+        if (!availableAppointment) {
+          console.error("Avaliable appointment is not found");
+          return;
         }
 
+        console.log("AVALIABLIE APP:", availableAppointment);
+
         await axios.put(
-          `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointment/changePendingStatus/${availableAppointment.data.id}`,
+          `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointment/changePendingStatus/${availableAppointment.id}`,
           { isPending: true },
         );
 
-        if (availableAppointment) {
-          await NotificationService.sendReschedulingPrompt(
-            appointment,
-            availableAppointment.data,
-          );
-        }
+        await NotificationService.sendReschedulingPrompt(
+          appointment,
+          availableAppointment,
+        );
+
+        channel.ack(msg);
       }
     });
   } catch (error) {

@@ -1,5 +1,4 @@
 import axios from "axios";
-import { NOTIFICATION_URL } from "../../config";
 require("dotenv").config();
 
 class NotificationService {
