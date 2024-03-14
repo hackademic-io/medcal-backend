@@ -126,6 +126,7 @@ class AppointmentRepository {
   }
 
   async changeIsPendingValue(id: string, isPending: boolean) {
+    console.log(id, isPending);
     const isPendingStatus = await prisma.appointment.update({
       where: { id },
       data: {

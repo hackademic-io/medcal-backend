@@ -166,6 +166,7 @@ class AppoinmentController {
     next: NextFunction,
   ) {
     let queryCurrentDate = req.query.currentDate as string;
+
     let currentDate = new Date(queryCurrentDate);
     currentDate.setDate(currentDate.getDate());
     const targetDate = new Date(currentDate);
