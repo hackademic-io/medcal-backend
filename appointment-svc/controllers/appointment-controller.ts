@@ -179,6 +179,7 @@ class AppoinmentController {
         gte: currentDate,
         lte: targetDate,
       },
+      status: AppointmentStatus.BOOKED,
     };
 
     try {
