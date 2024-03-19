@@ -11,6 +11,8 @@ async function consumeAppointmentQueue() {
     const queue = "appointments";
     await channel.assertQueue(queue, { durable: false });
 
+    await channel.prefetch(1);
+
     console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
 
     channel.consume(queue, async (msg) => {
@@ -39,7 +41,7 @@ async function consumeAppointmentQueue() {
           { isPending: true },
         );
 
-        await NotificationService.sendReschedulingPrompt(
+        NotificationService.sendReschedulingPrompt(
           appointment,
           availableAppointment,
         );
