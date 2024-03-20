@@ -1,0 +1,60 @@
+version: "3"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    container_name: "rabbitmq"
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - my_network
+
+  appointment-svc:
+    build:
+      context: ./appointment-svc
+    ports:
+      - "3001:3001"
+    networks:
+      - my_network
+
+  notification-svc:
+    build:
+      context: ./notification-svc
+    ports:
+      - "3003:3003"
+    networks:
+      - my_network
+
+  rescheduling-service:
+    build:
+      context: ./rescheduling-service
+    ports:
+      - "3002:3002"
+    depends_on:
+      - rabbitmq
+    networks:
+      - my_network
+    links:
+      - rabbitmq
+
+  rescheduling-cron:
+    build:
+      context: ./rescheduling-cron
+    networks:
+      - my_network
+    links:
+      - rabbitmq
+
+  conformation-cron:
+    build:
+      context: ./conformation-cron
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge

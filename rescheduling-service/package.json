@@ -2,11 +2,11 @@
   "name": "rescheduling-service",
   "version": "1.0.0",
   "description": "",
-  "main": "server.ts",
+  "main": "index.ts",
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon server.ts"
+    "dev": "nodemon index.ts"
   },
   "keywords": [],
   "author": "",
