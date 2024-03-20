@@ -4,7 +4,7 @@
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/engine/reference/builder/
 
-ARG NODE_VERSION=20.5.1
+ARG NODE_VERSION=20.11.0
 
 ################################################################################
 # Use node image for base image for all stages.
@@ -40,6 +40,9 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 
 # Copy the rest of the source files into the image.
 COPY . .
+
+RUN npx prisma generate
+
 # Run the build script.
 RUN npm run build
 

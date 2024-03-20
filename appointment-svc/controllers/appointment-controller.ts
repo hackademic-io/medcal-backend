@@ -3,6 +3,7 @@ import AppointmentRepository from "../service/db-service/AppointmentRepository";
 import {
   IUpdateAppointmentProps,
   AppointmentStatus,
+  IAppointmentProps,
 } from "../types/appointment.interface";
 
 class AppoinmentController {
@@ -132,7 +133,7 @@ class AppoinmentController {
     };
     const ignoredAppointments = await AppointmentRepository.getMany(condition);
     const ignoredAppointmentIds = ignoredAppointments.map(
-      (appointment) => appointment.id,
+      (appointment: any) => appointment.id,
     );
 
     try {
