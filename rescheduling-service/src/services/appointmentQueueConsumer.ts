@@ -34,8 +34,6 @@ async function consumeAppointmentQueue() {
           return;
         }
 
-        console.log("AVALIABLIE APP:", availableAppointment);
-
         await axios.put(
           `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointment/changePendingStatus/${availableAppointment.id}`,
           { isPending: true },
