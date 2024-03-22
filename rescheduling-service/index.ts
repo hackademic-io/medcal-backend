@@ -12,6 +12,7 @@ const PORT =
   (process.env.RESCHEDULING_SERVICE_PORT &&
     parseInt(process.env.RESCHEDULING_SERVICE_PORT)) ||
   3002;
+
 consumeAppointmentQueue();
 
 app.listen(PORT, () => {
