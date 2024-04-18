@@ -495,7 +495,7 @@ adminRouter.put("/appointment/:id", appointmentController.updateOne);
 
 /**
  * @swagger
- * '/appointment/changePendingStatus/{id}':
+ * '/appointment/pending/{id}':
  *  put:
  *     tags:
  *     - Appointment - admin router
@@ -536,7 +536,7 @@ adminRouter.put("/appointment/:id", appointmentController.updateOne);
  *                   example: "Error changing isPending value"
  */
 adminRouter.put(
-  "/appointment/changePendingStatus/:id",
+  "/appointment/pending/:id",
   appointmentController.changeIsPending,
 );
 
