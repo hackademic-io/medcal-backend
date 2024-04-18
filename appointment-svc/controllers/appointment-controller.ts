@@ -1,10 +1,6 @@
-import { Request, Response, NextFunction, query } from "express";
+import { Request, Response, NextFunction } from "express";
 import AppointmentRepository from "../service/db-service/AppointmentRepository";
-import {
-  IUpdateAppointmentProps,
-  AppointmentStatus,
-  IAppointmentProps,
-} from "../types/appointment.interface";
+import { AppointmentStatus } from "../types/appointment.interface";
 
 class AppoinmentController {
   async getAll(req: Request, res: Response, next: NextFunction) {
@@ -56,8 +52,8 @@ class AppoinmentController {
       const appointment = await AppointmentRepository.getOne(appointment_id);
       res.json(appointment);
     } catch (error) {
-      console.error("Error fetching all appointments:", error);
-      res.status(500).json({ error: "Error getting one appointment:" });
+      console.error("Error fetching one appointment:", error);
+      res.status(500).json({ error: "Error fetching one appointment:" });
     }
   }
 
@@ -72,7 +68,7 @@ class AppoinmentController {
       );
       res.json(appointment);
     } catch (error) {
-      console.error("Error updating one appointment:", error);
+      console.error("Error updating appointment:", error);
       res.status(500).json({ error: "Error updating appointment" });
     }
   }
@@ -121,7 +117,7 @@ class AppoinmentController {
         await AppointmentRepository.deleteOne(appointment_id);
       res.json(canceledAppointment);
     } catch (error) {
-      console.error("Error deleting appointment:", error);
+      console.error("Error canceling appointment:", error);
       res.status(500).json({ error: "Error canceling appointment" });
     }
   }
