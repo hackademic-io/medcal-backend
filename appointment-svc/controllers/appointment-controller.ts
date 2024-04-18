@@ -127,6 +127,7 @@ class AppoinmentController {
     const condition = {
       AND: [{ status: AppointmentStatus.BOOKED }, { id: { in: ignoredIds } }],
     };
+
     const ignoredAppointments = await AppointmentRepository.getMany(condition);
     const ignoredAppointmentIds = ignoredAppointments.map(
       (appointment: any) => appointment.id,
@@ -134,10 +135,10 @@ class AppoinmentController {
 
     try {
       await AppointmentRepository.deleteMany(ignoredAppointmentIds);
-      res.status(200);
+      res.status(200).json({ message: "Appointments deleted successfully" });
     } catch (error) {
-      console.error("Error deleting appointment:", error);
-      res.status(500).json({ error: "Error canceling appointment" });
+      console.error("Error canceling appointments:", error);
+      res.status(500).json({ error: "Error canceling appointments" });
     }
   }
 
@@ -184,6 +185,7 @@ class AppoinmentController {
         await AppointmentRepository.getAvailableAppointment(condition);
       res.json(availableAppointment);
     } catch (error) {
+      console.error("Error fetching available appointments:", error);
       res.status(500).json({ error: "Error fetching available appointments" });
     }
   }
@@ -211,6 +213,7 @@ class AppoinmentController {
         await AppointmentRepository.getMany(condition);
       res.json(canceledAppointments);
     } catch (error) {
+      console.error("Error fetching open appointments:", error);
       res.status(500).json({ error: "Error fetching open appointments" });
     }
   }

@@ -4,6 +4,7 @@ import appointmentController from "../controllers/appointment-controller";
 const adminRouter = Router();
 
 /** POST Methods */
+
 /**
  * @swagger
  * '/appointment':
@@ -67,6 +68,7 @@ const adminRouter = Router();
 adminRouter.post("/appointment", appointmentController.createOne);
 
 /** GET Methods */
+
 /**
  * @swagger
  * '/appointment/{id}':
@@ -129,13 +131,14 @@ adminRouter.post("/appointment", appointmentController.createOne);
  *                   example: "Error fetching one appointment"
  */
 adminRouter.get("/appointment/:id", appointmentController.getOne);
+
 /**
  * @swagger
  * '/appointment/booked':
  *  get:
  *     tags:
  *     - Appointment - admin router
- *     summary: Get all booked appointments
+ *     summary: Get all booked appointments in a date range
  *     parameters:
  *       - in: query
  *         name: MaxDate
@@ -204,7 +207,223 @@ adminRouter.get("/appointment/:id", appointmentController.getOne);
  */
 adminRouter.get("/appointment/booked", appointmentController.getBooked);
 
+/**
+ * @swagger
+ * '/appointments':
+ *  get:
+ *     tags:
+ *     - Appointments
+ *     summary: Get all appointments in a date range
+ *     parameters:
+ *       - in: query
+ *         name: MaxDate
+ *         schema:
+ *           type: string
+ *         description: >
+ *           Maximum date for filtering appointments (format: YYYY-MM-DD)
+ *           This parameter is required.
+ *         required: true
+ *       - in: query
+ *         name: MinDate
+ *         schema:
+ *           type: string
+ *         description: >
+ *           Minimum date for filtering appointments (format: YYYY-MM-DD)
+ *           This parameter is required.
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Appointments fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     example: "60564fcb544047cdc3844818"
+ *                   email:
+ *                     type: string
+ *                     example: "john.snow@email.com"
+ *                   first_name:
+ *                     type: string
+ *                     example: "John"
+ *                   last_name:
+ *                     type: string
+ *                     example: "Snow"
+ *                   open_to_earlier:
+ *                     type: boolean
+ *                     example: true
+ *                   date:
+ *                     type: string
+ *                     format: date-time
+ *                     example: "2024-04-17T12:00:00Z"
+ *                   time:
+ *                     type: string
+ *                     example: "09:00 AM"
+ *                   isPending:
+ *                     type: boolean
+ *                     example: true
+ *                   status:
+ *                     type: string
+ *                     example: "BOOKED"
+ *       500:
+ *         description: Error fetching all appointments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error fetching all appointments"
+ */
+adminRouter.get("/appointments", appointmentController.getAll);
+
+/**
+ * @swagger
+ * '/appointments/canceled':
+ *  get:
+ *     tags:
+ *     - Appointments
+ *     summary: Get all canceled appointments from the current date to the next day.
+ *     parameters:
+ *       - in: query
+ *         name: currentDate
+ *         schema:
+ *           type: string
+ *         description: >
+ *           Maximum date for filtering appointments (format: YYYY-MM-DD)
+ *           This parameter is required.
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Appointments fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     example: "60564fcb544047cdc3844818"
+ *                   email:
+ *                     type: string
+ *                     example: "john.snow@email.com"
+ *                   first_name:
+ *                     type: string
+ *                     example: "John"
+ *                   last_name:
+ *                     type: string
+ *                     example: "Snow"
+ *                   open_to_earlier:
+ *                     type: boolean
+ *                     example: true
+ *                   date:
+ *                     type: string
+ *                     format: date-time
+ *                     example: "2024-04-17T12:00:00Z"
+ *                   time:
+ *                     type: string
+ *                     example: "09:00 AM"
+ *                   isPending:
+ *                     type: boolean
+ *                     example: true
+ *                   status:
+ *                     type: string
+ *                     example: "CANCELED"
+ *       500:
+ *         description: Error fetching open appointments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error fetching open appointments"
+ */
+adminRouter.get(
+  "/appointments/canceled",
+  appointmentController.getCanceledAppointments,
+);
+
+/**
+ * @swagger
+ * '/appointments/avaliable':
+ *  get:
+ *     tags:
+ *     - Appointments
+ *     summary: Get all available (open_to_earlier = true, isPending = false) appointments from the current date to the next 2 days.
+ *     parameters:
+ *       - in: query
+ *         name: currentDate
+ *         schema:
+ *           type: string
+ *         description: >
+ *           Maximum date for filtering appointments (format: YYYY-MM-DD)
+ *           This parameter is required.
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Appointments fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     example: "60564fcb544047cdc3844818"
+ *                   email:
+ *                     type: string
+ *                     example: "john.snow@email.com"
+ *                   first_name:
+ *                     type: string
+ *                     example: "John"
+ *                   last_name:
+ *                     type: string
+ *                     example: "Snow"
+ *                   open_to_earlier:
+ *                     type: boolean
+ *                     example: true
+ *                   date:
+ *                     type: string
+ *                     format: date-time
+ *                     example: "2024-04-17T12:00:00Z"
+ *                   time:
+ *                     type: string
+ *                     example: "09:00 AM"
+ *                   isPending:
+ *                     type: boolean
+ *                     example: FALSE
+ *                   status:
+ *                     type: string
+ *                     example: "BOOKED"
+ *       500:
+ *         description: Error fetching available appointments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error fetching available appointments"
+ */
+adminRouter.get(
+  "/appointments/avaliable",
+  appointmentController.getAvailableAppointment,
+);
+
 /** PUT Methods */
+
 /**
  * @swagger
  * '/appointment/{id}':
@@ -273,6 +492,7 @@ adminRouter.get("/appointment/booked", appointmentController.getBooked);
  *                   example: "Error updating appointment"
  */
 adminRouter.put("/appointment/:id", appointmentController.updateOne);
+
 /**
  * @swagger
  * '/appointment/changePendingStatus/{id}':
@@ -321,6 +541,7 @@ adminRouter.put(
 );
 
 /** DELETE Methods */
+
 /**
  * @swagger
  * '/appointment/{id}':
@@ -384,15 +605,46 @@ adminRouter.put(
  */
 adminRouter.delete("/appointment/:id", appointmentController.deleteOne);
 
-adminRouter.get("/appointments", appointmentController.getAll);
-adminRouter.get(
-  "/appointments/canceled",
-  appointmentController.getCanceledAppointments,
-);
-adminRouter.get(
-  "/appointments/avaliable",
-  appointmentController.getAvailableAppointment,
-);
+/**
+ * @swagger
+ * '/appointments':
+ *  delete:
+ *     tags:
+ *     - Appointments
+ *     summary: Get all available (open_to_earlier = true, isPending = false) appointments from the current date to the next 2 days.
+ *     parameters:
+ *       - in: query
+ *         name: ignoredIds
+ *         schema:
+ *           type: array
+ *           items:
+ *            type: string
+ *         description: >
+ *           Array of ids of patients appointments who didn't answer the confirmation email.
+ *           This parameter is required.
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Appointments deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Appointments deleted successfully"
+ *       500:
+ *         description: Error canceling appointments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error canceling appointments"
+ */
 adminRouter.delete("/appointments", appointmentController.deleteMany);
 
 export default adminRouter;
