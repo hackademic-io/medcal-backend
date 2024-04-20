@@ -35,7 +35,7 @@ async function consumeAppointmentQueue() {
         }
 
         await axios.put(
-          `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointment/changePendingStatus/${availableAppointment.id}`,
+          `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointment/pending/${availableAppointment.id}`,
           { isPending: true },
         );
 

@@ -117,7 +117,7 @@ class PatientAppointmentController {
       );
       res.json({ message: "Rejected reschedule request successfully" });
     } catch (error) {
-      console.error("Error changing open_to_earlier status:", error);
+      console.error("Error rejecting reschedule of appointment:", error);
       res.status(500).json({
         error:
           "Oops! Something went wrong while processing your request. Please try again later.",
