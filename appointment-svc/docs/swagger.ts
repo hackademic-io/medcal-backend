@@ -2,6 +2,7 @@ import swaggerJsdoc from "swagger-jsdoc";
 
 const options = {
   definition: {
+    url: "https://petstore.swagger.io/v2/swagger.json",
     openapi: "3.0.0",
     info: {
       version: "1.3.0",
@@ -15,7 +16,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:8080/",
+        url: "http://localhost:3001/",
         description: "Local server",
       },
     ],

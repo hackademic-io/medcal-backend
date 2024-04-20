@@ -2,10 +2,10 @@ import express, { Express } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
-import { swaggerSpec } from "./docs/swagger";
 
 import adminRouter from "./router/adminRouter";
 import patientRouter from "./router/patientRouter";
+import { swaggerSpec } from "./docs/swagger";
 
 dotenv.config();
 
