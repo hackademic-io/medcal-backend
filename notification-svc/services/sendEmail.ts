@@ -55,7 +55,7 @@ function sendEmail(
                 },
                 To: [
                   {
-                    Email: "lycakvladislav00@gmail.com",
+                    Email: "misha.fomenko00@gmail.com",
                     Name: `${currentAppointment.first_name} ${currentAppointment.last_name}`,
                   },
                 ],
