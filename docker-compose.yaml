@@ -19,19 +19,19 @@ services:
       timeout: 5s
       retries: 5
 
-  appointment-svc:
-    container_name: "appointment-svc"
+  appointment-service:
+    container_name: "appointment-service"
     build:
-      context: ./appointment-svc
+      context: ./appointment-service
     ports:
       - "3001:3001"
     networks:
       - my_network
 
-  notification-svc:
-    container_name: "notification-svc"
+  notification-service:
+    container_name: "notification-service"
     build:
-      context: ./notification-svc
+      context: ./notification-service
     ports:
       - "3003:3003"
     networks:
@@ -59,7 +59,7 @@ services:
   confirmation-cron:
     container_name: "confirmation-cron"
     build:
-      context: ./conformation-cron
+      context: ./confirmation-cron
     networks:
       - my_network
 
