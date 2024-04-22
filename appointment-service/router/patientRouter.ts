@@ -187,13 +187,13 @@ patientRouter.put(
  *                   type: string
  *                   example: "60564fcb544047cdc3844818"
  *                 email:
- *                   type: null
+ *                   type: string
  *                   example: null
  *                 first_name:
- *                   type: null
+ *                   type: string
  *                   example: null
  *                 last_name:
- *                   type: null
+ *                   type: string
  *                   example: null
  *                 open_to_earlier:
  *                   type: boolean
