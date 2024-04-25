@@ -18,6 +18,7 @@ const PORT =
 
 app.use(express.json());
 app.use(cors({ origin: "*" }));
+
 app.use("/", adminRouter);
 app.use("/patient", patientRouter);
 app.use("/documentation", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

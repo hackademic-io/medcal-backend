@@ -64,7 +64,7 @@ function reschedulingEmailHTML(
                 <h2>Dear ${currentAppointment.first_name} ${currentAppointment.last_name},</h2>
                 <p>We are pleased to offer you an earlier appointment opportunity, as we understand the importance of your health and time.</p>
                 <p><strong>New appointment Details:</strong></p>
-                <p>Date: <strong>${newAppointment.date}</strong><br>
+                <p>Date: <strong>${new Date(newAppointment.date).toLocaleDateString()}</strong><br>
                 Time: <strong>${newAppointment.time}</strong></p>
                 <p>Please confirm or reject your new appointment using the links below (if you decide to book this appointment, your previous appointment will be automatically canceled):</p>
                 <a href="${process.env.FRONTEND_URL}:${process.env.FRONTEND_PORT}/move-earlier/approved?hash=${hash}&iv=${encryptionIV}" class="btn">Book Appointment</a>

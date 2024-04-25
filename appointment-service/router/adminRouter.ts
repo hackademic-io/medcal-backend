@@ -134,10 +134,10 @@ adminRouter.get("/appointment/:id", appointmentController.getOne);
 
 /**
  * @swagger
- * '/appointment/booked':
+ * '/appointments/booked':
  *  get:
  *     tags:
- *     - Appointment - admin router
+ *     - Appointments - admin router
  *     summary: Get all booked appointments in a date range
  *     parameters:
  *       - in: query
@@ -205,7 +205,7 @@ adminRouter.get("/appointment/:id", appointmentController.getOne);
  *                   type: string
  *                   example: "Error fetching booked appointments"
  */
-adminRouter.get("/appointment/booked", appointmentController.getBooked);
+adminRouter.get("/appointments/booked", appointmentController.getBooked);
 
 /**
  * @swagger

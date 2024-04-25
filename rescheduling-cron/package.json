@@ -1,8 +1,8 @@
 {
-  "name": "cron",
+  "name": "rescheduling-cron",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/index.js",

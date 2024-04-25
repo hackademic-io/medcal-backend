@@ -24,14 +24,17 @@ class AppoinmentController {
     let queryMaxDate = req.query.MaxDate as string;
     let queryMinDate = req.query.MinDate as string;
 
+    let maxDate = new Date(queryMaxDate);
+    let minDate = new Date(queryMinDate);
+
     try {
       const condition = {
         AND: [
           { status: AppointmentStatus.BOOKED },
           {
             date: {
-              gte: queryMinDate,
-              lt: queryMaxDate,
+              gte: minDate,
+              lt: maxDate,
             },
           },
         ],
