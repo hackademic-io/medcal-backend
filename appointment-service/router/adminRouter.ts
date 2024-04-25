@@ -137,7 +137,7 @@ adminRouter.get("/appointment/:id", appointmentController.getOne);
  * '/appointments/booked':
  *  get:
  *     tags:
- *     - Appointments - admin router
+ *     - Appointments
  *     summary: Get all booked appointments in a date range
  *     parameters:
  *       - in: query
