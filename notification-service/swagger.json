@@ -1,0 +1,214 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Express API",
+    "version": "1.0.0",
+    "description": "API documentation"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local Development Server"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "appointment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "60564fcb544047cdc3844818"
+          },
+          "email": {
+            "type": "string",
+            "example": "john.snow@email.com"
+          },
+          "first_name": {
+            "type": "string",
+            "example": "John"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Snow"
+          },
+          "open_to_earlier": {
+            "type": "boolean",
+            "example": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-04-17T12:00:00Z"
+          },
+          "time": {
+            "type": "string",
+            "example": "09:00 AM"
+          },
+          "isPending": {
+            "type": "boolean",
+            "example": true
+          },
+          "status": {
+            "type": "string",
+            "example": "PENDING"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/rescheduling-prompt": {
+      "post": {
+        "tags": [
+          "Rescheduling notification router"
+        ],
+        "summary": "Send a rescheduling prompt to involved parties.",
+        "description": "Triggers a process to send a rescheduling prompt to both parties involved in a cancelled appointment.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "offer_appointment_to",
+                  "cancelled_appointment"
+                ],
+                "properties": {
+                  "offer_appointment_to": {
+                    "$ref": "#/components/schemas/appointment"
+                  },
+                  "cancelled_appointment": {
+                    "$ref": "#/components/schemas/appointment"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Prompt sent successfully and waiting for response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Prompt handled successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request if the data is not properly formatted."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/rescheduling-confirm": {
+      "post": {
+        "tags": [
+          "Rescheduling notification router"
+        ],
+        "summary": "Confirm a rescheduling request.",
+        "description": "This endpoint confirms a rescheduling request and notifies all involved parties.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "open_appointment",
+                  "current_appointment",
+                  "status"
+                ],
+                "properties": {
+                  "open_appointment": {
+                    "$ref": "#/components/schemas/appointment"
+                  },
+                  "current_appointment": {
+                    "$ref": "#/components/schemas/appointment"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "Status of the confirmation.",
+                    "example": "PENDING"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Confirmation processed successfully."
+          },
+          "400": {
+            "description": "Bad request if the data is not properly formatted."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/rescheduling-reject": {
+      "post": {
+        "tags": [
+          "Rescheduling notification router"
+        ],
+        "summary": "Reject a rescheduling request.",
+        "description": "This endpoint rejects a rescheduling request and notifies all involved parties.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "open_appointment",
+                  "current_appointment",
+                  "status"
+                ],
+                "properties": {
+                  "open_appointment": {
+                    "$ref": "#/components/schemas/appointment"
+                  },
+                  "current_appointment": {
+                    "$ref": "#/components/schemas/appointment"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "Status of the rejection.",
+                    "example": "PENDING"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Rejection processed successfully."
+          },
+          "400": {
+            "description": "Bad request if the data is not properly formatted."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
