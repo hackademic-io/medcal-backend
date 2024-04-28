@@ -4,7 +4,7 @@ services:
   rabbitmq:
     image: rabbitmq:3.8-management-alpine
     container_name: "rabbitmq"
-    hostname: rabbitmq
+    hostname: rabbitmqhost
     ports:
       - 5672:5672
       - 15672:15672
@@ -37,7 +37,7 @@ services:
     networks:
       - my_network
 
-  rescheduling-service:
+  rescheduling-svc:
     container_name: "rescheduling-service"
     build:
       context: ./rescheduling-service

@@ -7,16 +7,16 @@ require("dotenv").config();
 class confirmationController {
   async startCron(req: Request, res: Response) {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
 
     const twoDaysFromNow = new Date(today);
-    twoDaysFromNow.setDate(today.getDate() + 2);
+    twoDaysFromNow.setUTCDate(today.getUTCDate() + 2);
 
     const threeDaysFromNow = new Date(twoDaysFromNow);
-    threeDaysFromNow.setDate(twoDaysFromNow.getDate() + 1);
+    threeDaysFromNow.setUTCDate(twoDaysFromNow.getUTCDate() + 1);
 
     const appointmentsToConfirm: IAppointmentProps[] = await fetch(
-      `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointment/booked?MaxDate=${threeDaysFromNow}&MinDate=${twoDaysFromNow}`,
+      `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointment/booked?MaxDate=${threeDaysFromNow.toISOString()}&MinDate=${twoDaysFromNow.toISOString()}`,
       {
         method: "GET",
         headers: {
