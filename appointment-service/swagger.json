@@ -1,60 +1,30 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Express API",
-    "version": "1.0.0",
-    "description": "API documentation"
+    "version": "1.3.0",
+    "title": "Appointment service - Documentation",
+    "description": "Appointment API is dedicated service to manage all the operations that connected with our Database",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
   },
   "servers": [
     {
-      "url": "http://localhost:3000",
-      "description": "Local Development Server"
+      "url": "http://localhost:3001/",
+      "description": "Local server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Appointment - admin router"
+    },
+    {
+      "name": "Appointments"
     }
   ],
   "components": {
     "schemas": {
-      "appointment": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "example": "60564fcb544047cdc3844818"
-          },
-          "email": {
-            "type": "string",
-            "example": "john.snow@email.com"
-          },
-          "first_name": {
-            "type": "string",
-            "example": "John"
-          },
-          "last_name": {
-            "type": "string",
-            "example": "Snow"
-          },
-          "open_to_earlier": {
-            "type": "boolean",
-            "example": true
-          },
-          "date": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-04-17T12:00:00Z"
-          },
-          "time": {
-            "type": "string",
-            "example": "09:00 AM"
-          },
-          "isPending": {
-            "type": "boolean",
-            "example": true
-          },
-          "status": {
-            "type": "string",
-            "example": "PENDING"
-          }
-        }
-      },
       "createAppointmentBody": {
         "type": "object",
         "properties": {
@@ -135,151 +105,11 @@
     }
   },
   "paths": {
-    "/rescheduling-prompt": {
-      "post": {
-        "tags": ["Rescheduling notification router"],
-        "summary": "Send a rescheduling prompt to involved parties.",
-        "description": "Triggers a process to send a rescheduling prompt to both parties involved in a cancelled appointment.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["offer_appointment_to", "cancelled_appointment"],
-                "properties": {
-                  "offer_appointment_to": {
-                    "$ref": "#/components/schemas/appointment"
-                  },
-                  "cancelled_appointment": {
-                    "$ref": "#/components/schemas/appointment"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Prompt sent successfully and waiting for response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Prompt handled successfully"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request if the data is not properly formatted."
-          },
-          "500": {
-            "description": "Internal server error."
-          }
-        }
-      }
-    },
-    "/rescheduling-confirm": {
-      "post": {
-        "tags": ["Rescheduling notification router"],
-        "summary": "Confirm a rescheduling request.",
-        "description": "This endpoint confirms a rescheduling request and notifies all involved parties.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "open_appointment",
-                  "current_appointment",
-                  "status"
-                ],
-                "properties": {
-                  "open_appointment": {
-                    "$ref": "#/components/schemas/appointment"
-                  },
-                  "current_appointment": {
-                    "$ref": "#/components/schemas/appointment"
-                  },
-                  "status": {
-                    "type": "string",
-                    "description": "Status of the confirmation.",
-                    "example": "PENDING"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Confirmation processed successfully."
-          },
-          "400": {
-            "description": "Bad request if the data is not properly formatted."
-          },
-          "500": {
-            "description": "Internal server error."
-          }
-        }
-      }
-    },
-    "/rescheduling-reject": {
-      "post": {
-        "tags": ["Rescheduling notification router"],
-        "summary": "Reject a rescheduling request.",
-        "description": "This endpoint rejects a rescheduling request and notifies all involved parties.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "open_appointment",
-                  "current_appointment",
-                  "status"
-                ],
-                "properties": {
-                  "open_appointment": {
-                    "$ref": "#/components/schemas/appointment"
-                  },
-                  "current_appointment": {
-                    "$ref": "#/components/schemas/appointment"
-                  },
-                  "status": {
-                    "type": "string",
-                    "description": "Status of the rejection.",
-                    "example": "PENDING"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Rejection processed successfully."
-          },
-          "400": {
-            "description": "Bad request if the data is not properly formatted."
-          },
-          "500": {
-            "description": "Internal server error."
-          }
-        }
-      }
-    },
     "/appointment": {
       "post": {
-        "tags": ["Appointment - admin router"],
+        "tags": [
+          "Appointment - admin router"
+        ],
         "summary": "Create a new appointment",
         "requestBody": {
           "required": true,
@@ -362,7 +192,9 @@
     },
     "/appointment/{id}": {
       "get": {
-        "tags": ["Appointment - admin router"],
+        "tags": [
+          "Appointment - admin router"
+        ],
         "summary": "Get one appointment",
         "parameters": [
           {
@@ -444,7 +276,9 @@
         }
       },
       "put": {
-        "tags": ["Appointment - admin router"],
+        "tags": [
+          "Appointment - admin router"
+        ],
         "summary": "Update one appointment",
         "parameters": [
           {
@@ -536,7 +370,9 @@
         }
       },
       "delete": {
-        "tags": ["Appointment - admin router"],
+        "tags": [
+          "Appointment - admin router"
+        ],
         "summary": "Delete (cancel) appointment",
         "parameters": [
           {
@@ -620,7 +456,9 @@
     },
     "/appointment/booked": {
       "get": {
-        "tags": ["Appointment - admin router"],
+        "tags": [
+          "Appointment - admin router"
+        ],
         "summary": "Get all booked appointments in a date range",
         "parameters": [
           {
@@ -716,7 +554,9 @@
     },
     "/appointments": {
       "get": {
-        "tags": ["Appointments"],
+        "tags": [
+          "Appointments"
+        ],
         "summary": "Get all appointments in a date range",
         "parameters": [
           {
@@ -810,7 +650,9 @@
         }
       },
       "delete": {
-        "tags": ["Appointments"],
+        "tags": [
+          "Appointments"
+        ],
         "summary": "Get all available (open_to_earlier = true, isPending = false) appointments from the current date to the next 2 days.",
         "parameters": [
           {
@@ -864,7 +706,9 @@
     },
     "/appointments/canceled": {
       "get": {
-        "tags": ["Appointments"],
+        "tags": [
+          "Appointments"
+        ],
         "summary": "Get all canceled appointments from the current date to the next day.",
         "parameters": [
           {
@@ -951,7 +795,9 @@
     },
     "/appointments/avaliable": {
       "get": {
-        "tags": ["Appointments"],
+        "tags": [
+          "Appointments"
+        ],
         "summary": "Get all available (open_to_earlier = true, isPending = false) appointments from the current date to the next 2 days.",
         "parameters": [
           {
@@ -1038,7 +884,9 @@
     },
     "/appointment/pending/{id}": {
       "put": {
-        "tags": ["Appointment - admin router"],
+        "tags": [
+          "Appointment - admin router"
+        ],
         "summary": "Update appointment pending status",
         "parameters": [
           {
@@ -1099,7 +947,9 @@
     },
     "/appointment/reschedule": {
       "put": {
-        "tags": ["Appointment - patient router"],
+        "tags": [
+          "Appointment - patient router"
+        ],
         "summary": "Cancel one appointment and reschedule another patient for its place",
         "responses": {
           "200": {
@@ -1155,7 +1005,9 @@
     },
     "/appointment/reject-reschedule": {
       "put": {
-        "tags": ["Appointment - patient router"],
+        "tags": [
+          "Appointment - patient router"
+        ],
         "summary": "Reject reschedule request and notify the parties involved",
         "responses": {
           "200": {
@@ -1211,7 +1063,9 @@
     },
     "/appointment/confirm": {
       "put": {
-        "tags": ["Appointment - patient router"],
+        "tags": [
+          "Appointment - patient router"
+        ],
         "summary": "Change appointment status to confirm",
         "responses": {
           "200": {
@@ -1300,7 +1154,9 @@
     },
     "/appointment/cancel": {
       "delete": {
-        "tags": ["Appointment - patient router"],
+        "tags": [
+          "Appointment - patient router"
+        ],
         "summary": "Change appointment status to canceled",
         "responses": {
           "200": {
@@ -1387,6 +1243,5 @@
         }
       }
     }
-  },
-  "tags": []
+  }
 }

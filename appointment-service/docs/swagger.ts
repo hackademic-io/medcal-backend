@@ -1,4 +1,5 @@
-import swaggerJsdoc from "swagger-jsdoc";
+const swaggerJsdoc = require("swagger-jsdoc");
+const fs = require("fs"); // No need to require js-yaml
 
 const options = {
   definition: {
@@ -112,4 +113,13 @@ const options = {
   apis: ["./router/adminRouter.ts", "./router/patientRouter.ts"],
 };
 
-export const swaggerSpec = swaggerJsdoc(options);
+const swaggerSpec = swaggerJsdoc(options);
+
+// Function to generate JSON documentation
+function generateJsonDoc() {
+  const jsonContent = JSON.stringify(swaggerSpec, null, 2); // Beautify the JSON output
+  fs.writeFileSync("./swagger.json", jsonContent);
+}
+
+// Call the function to generate the JSON file
+generateJsonDoc();
