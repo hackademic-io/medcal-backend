@@ -1,5 +1,5 @@
 const swaggerJSDoc = require("swagger-jsdoc");
-const fs = require("fs"); // No need to require js-yaml
+const fs = require("fs");
 
 // Swagger configuration
 const swaggerDefinition = {
@@ -55,7 +55,7 @@ const swaggerDefinition = {
           },
           status: {
             type: "string",
-            example: "PENDING",
+            example: "BOOKED",
           },
         },
       },
@@ -63,20 +63,16 @@ const swaggerDefinition = {
   },
 };
 
-// Options for Swagger
 const options = {
   swaggerDefinition,
-  apis: ["./routes/*.ts"], // Ensure this path matches your actual API routes
+  apis: ["./routes/*.ts"],
 };
 
-// Initialize swagger-jsdoc
 const swaggerSpec = swaggerJSDoc(options);
 
-// Function to generate JSON documentation
 function generateJsonDoc() {
-  const jsonContent = JSON.stringify(swaggerSpec, null, 2); // Beautify the JSON output
+  const jsonContent = JSON.stringify(swaggerSpec, null, 2);
   fs.writeFileSync("./swagger.json", jsonContent);
 }
 
-// Call the function to generate the JSON file
 generateJsonDoc();

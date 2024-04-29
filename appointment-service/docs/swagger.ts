@@ -67,7 +67,7 @@ const options = {
             },
             status: {
               type: "string",
-              example: "PENDING",
+              example: "CONFIRMED",
             },
           },
         },
