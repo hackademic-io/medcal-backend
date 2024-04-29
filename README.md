@@ -40,6 +40,8 @@ Executes on a specific schedule (e.g., daily) to:
   - If a patient accepts, their appointment is rescheduled to another date.
   - If a patient does not respond or rejects the offer, the appointment is put back into the queue for rescheduling.
 
+### [API Documentation (Link)](https://medcal-swagger-docs.netlify.app/)
+
 ## Frontend
 
 The frontend is an admin dashboard where the admin staff can:
