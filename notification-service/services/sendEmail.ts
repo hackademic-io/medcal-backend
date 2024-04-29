@@ -37,7 +37,7 @@ function sendEmail(
                   },
                 ],
 
-                Subject: `Dear ${currentAppointment.first_name} ${currentAppointment.last_name}, we have an earlier appointment available for you on ${newAppointment.date} at ${newAppointment.time}.`,
+                Subject: `Dear ${currentAppointment.first_name} ${currentAppointment.last_name}, we have an earlier appointment available for you on ${new Date(newAppointment.date).toLocaleDateString()} at ${newAppointment.time}.`,
                 TextPart: `Dear ${newAppointment.first_name} ${newAppointment.last_name}`,
                 HTMLPart: reschedulingEmailHTML(
                   currentAppointment,
@@ -60,7 +60,7 @@ function sendEmail(
                   },
                 ],
 
-                Subject: `Dear ${currentAppointment.first_name} ${currentAppointment.last_name}, are you still going to use your appointment on ${currentAppointment.date} at ${currentAppointment.time}?`,
+                Subject: `Dear ${currentAppointment.first_name} ${currentAppointment.last_name}, are you still going to use your appointment on ${new Date(currentAppointment.date).toLocaleDateString()} at ${currentAppointment.time}?`,
                 TextPart: `Dear ${currentAppointment.first_name} ${currentAppointment.last_name}`,
                 HTMLPart: confirmationEmailHTML(
                   currentAppointment,
