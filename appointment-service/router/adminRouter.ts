@@ -17,7 +17,7 @@ const adminRouter = Router();
  *      content:
  *        application/json:
  *           schema:
- *            $ref: "#/components/schemas/createAppointmentBody"
+ *            $ref: "#/components/schemas/appointmentBody"
  *     responses:
  *      201:
  *        description: Appointment created successfully!
@@ -53,7 +53,7 @@ const adminRouter = Router();
  *                  example: true
  *                status:
  *                  type: string
- *                  example: "PENDING"
+ *                  example: "BOOKED"
  *      500:
  *        description: Error creating appointment
  *        content:
@@ -118,7 +118,7 @@ adminRouter.post("/appointment", appointmentController.createOne);
  *                   example: true
  *                 status:
  *                   type: string
- *                   example: "PENDING"
+ *                   example: "BOOKED"
  *       500:
  *         description: Error fetching one appointment
  *         content:
@@ -479,7 +479,7 @@ adminRouter.get(
  *                   example: true
  *                 status:
  *                   type: string
- *                   example: "PENDING"
+ *                   example: "BOOKED"
  *       500:
  *         description: Error updating appointment
  *         content:

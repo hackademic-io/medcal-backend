@@ -29,7 +29,7 @@ const options = {
     ],
     components: {
       schemas: {
-        createAppointmentBody: {
+        appointmentBody: {
           type: "object",
           properties: {
             id: {
@@ -67,7 +67,7 @@ const options = {
             },
             status: {
               type: "string",
-              example: "CONFIRMED",
+              example: "BOOKED",
             },
           },
         },
