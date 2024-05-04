@@ -1,6 +1,8 @@
 # Medcal - Microservice-driven Appointment Management System (Backend)
 
-[![Demo Video](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID)
+## Demo video (click below)
+
+[![Demo Video](https://i.ytimg.com/vi/uyZQT91QNSE/hqdefault.jpg?sqp=-oaymwE1CKgBEF5IVfKriqkDKAgBFQAAiEIYAXABwAEG8AEB-AH-CYAC0AWKAgwIABABGGUgZShlMA8=\u0026rs=AOn4CLCe_YkhomzQFSSNXnJ-pNfjI7EOTg)](https://www.youtube.com/watch?v=uyZQT91QNSE&ab_channel=VladislavLychak)
 
 Medcal is a microservice-driven web application designed to help clinics efficiently manage appointments, reduce cancellations, and improve scheduling. It consists of separate [frontend](https://github.com/hackademic-io/medcal-frontend) and backend repositories.
 

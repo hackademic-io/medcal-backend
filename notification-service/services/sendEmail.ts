@@ -32,7 +32,7 @@ function sendEmail(
                 },
                 To: [
                   {
-                    Email: "misha.fomenko00@gmail.com",
+                    Email: "lycakvladislav@gmail.com",
                     Name: `${currentAppointment.first_name} ${currentAppointment.last_name}`,
                   },
                 ],
@@ -51,11 +51,11 @@ function sendEmail(
               {
                 From: {
                   Email: "misha.fomenko00@gmail.com",
-                  Name: "Misha",
+                  Name: "Misha (MedCal CEO)",
                 },
                 To: [
                   {
-                    Email: "misha.fomenko00@gmail.com",
+                    Email: "lycakvladislav@gmail.com",
                     Name: `${currentAppointment.first_name} ${currentAppointment.last_name}`,
                   },
                 ],

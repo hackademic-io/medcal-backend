@@ -16,7 +16,7 @@ class confirmationController {
     threeDaysFromNow.setUTCDate(twoDaysFromNow.getUTCDate() + 1);
 
     const appointmentsToConfirm: IAppointmentProps[] = await fetch(
-      `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointment/booked?MaxDate=${threeDaysFromNow.toISOString()}&MinDate=${twoDaysFromNow.toISOString()}`,
+      `${process.env.APPOINTMENT_BASE_URL}:${process.env.APPOINTMENT_SERVICE_PORT}/appointments/booked?MaxDate=${threeDaysFromNow.toISOString()}&MinDate=${twoDaysFromNow.toISOString()}`,
       {
         method: "GET",
         headers: {
