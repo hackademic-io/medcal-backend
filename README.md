@@ -127,5 +127,3 @@ The frontend is an admin dashboard where the admin staff can:
 Vladislav Lychak | [@Github](https://github.com/LychakVlad) <br />
 Mykhailo (Misha) Fomenko | [@Github](https://github.com/MishaFomenko) <br />
 Deepu Premrajan | [@Github](https://github.com/deepu-premrajan) <br />
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
