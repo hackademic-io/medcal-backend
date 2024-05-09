@@ -113,12 +113,6 @@ The frontend is an admin dashboard where the admin staff can:
 ### DevOps
 
 - Docker
-- Kubernetes
-
-<!-- ## Testing
-
-- End-to-End (E2E) Tests: Core functionality covered with Cypress.
-- Unit Tests: React components covered with Jest. -->
 
 ## [Link to frontend repo](https://github.com/hackademic-io/medcal-frontend)
 
