@@ -118,6 +118,6 @@ The frontend is an admin dashboard where the admin staff can:
 
 ## Developers
 
-Vladislav Lychak | [@Github](https://github.com/LychakVlad) <br />
+Vladislav Lychak | [@Github](https://github.com/vlad-lychak) <br />
 Mykhailo (Misha) Fomenko | [@Github](https://github.com/MishaFomenko) <br />
 Deepu Premrajan | [@Github](https://github.com/deepu-premrajan) <br />
